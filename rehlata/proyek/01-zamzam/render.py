@@ -286,7 +286,7 @@ def dy_glass(p, t):
 
 
 def ov_s0(f, t):
-    title = sticker_img([("REHLATA", 30, 700, (255, 255, 255)), ("EDUKASI", 104, 800, (255, 255, 255)),
+    title = sticker_img([("EDUKASI", 104, 800, (255, 255, 255)),
                          ("BAITULLAH", 118, 800, GREEN)], None, (255, 255, 255), pad=(10, 4), shadow=False)
     if t < 3.6:
         sc = backout((t - 0.1) / 0.45) if t > 0.1 else 0

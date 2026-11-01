@@ -737,8 +737,7 @@ def sc_bottle():
     bottles = []
     for i in range(10):
         parts = [box((.7, .5, 1.1), (0, 0, .55), btl, .16), box((.72, .52, .3), (0, 0, .5), lbl, .04),
-                 cyl(.13, .14, (0, 0, 1.17), capm, verts=20), torus(.18, .04, (.25, 0, 1.0), btl, rot=(math.pi / 2, 0, 0)),
-                 text3d("ZAMZAM", (0, -.265, .5), tm, size=.15)]
+                 cyl(.13, .14, (0, 0, 1.17), capm, verts=20), torus(.18, .04, (.25, 0, 1.0), btl, rot=(math.pi / 2, 0, 0))]
         bottles.append(empty_parent(parts))
     area((0, -6, 7), (0.7, 0, 0), 8, 1300)
     sun((0.9, 0.2, 0.4), 1.3)
@@ -795,8 +794,7 @@ def sc_truck():
              cyl(.87, .3, (-.4, 0, 1.55), m["blue"], rot=(0, math.pi / 2, 0), verts=40),
              box((1.5, 1.8, 1.8), (2.8, 0, 1.45), m["blue"], .15),
              box((.05, 1.5, .8), (3.56, 0, 1.8), mat("windshield", (0.55, 0.75, 0.9), .05, .3), .02),
-             box((5.8, 1.4, .3), (.4, 0, .6), m["dark"], .03),
-             text3d("ZAMZAM", (-.4, -.87, 1.6), mat("trtxt", (0.08, 0.35, 0.7), .4), size=.45, extrude=.01)]
+             box((5.8, 1.4, .3), (.4, 0, .6), m["dark"], .03)]
     wheels = []
     for wx in (-2.0, -.9, 2.8):
         for wy in (-.75, .75):
@@ -849,7 +847,6 @@ def sc_mosque():
         cyl(.5, .12, (x, 1.5, 1.82), lids[1 if i == 1 else 0], verts=40)
         cyl(.64, .12, (x, 1.5, 1.25), lids[1 if i == 1 else 0], verts=40)
         box((.16, .2, .2), (x, .92, .7), m["steel"], .02)
-        text3d("ZAMZAM", (x, .87, 1.0), tmc, size=.16)
     # petugas filling
     vest = mat("vest", (0.75, 0.62, 0.42), .7)
     person((-4.4, 1.2, 0), 1.65, body=vest, skin=mat("skin3", (0.6, 0.42, 0.3), .6), head=mat("cap", (0.95, 0.95, 0.95), .6))
@@ -869,9 +866,63 @@ def sc_mosque():
     return upd, dict(c0=(-3.0, 1.5, 2.4), c1=(-1.2, 1.5, 2.4))
 
 
+# ---------- outro: Rehlata Tour medallion
+def sc_logo():
+    sc = reset(sky=(0.01, 0.05, 0.03), sky_strength=0.3, samples=6, bounces=(3, 1, 2, 2))
+    m = M()
+    here = os.path.dirname(os.path.abspath(__file__))
+    # backdrop
+    bd = mat("backdrop", (0.0, 0.0, 0.0), 1.0)
+    n = bd.node_tree.nodes["Principled BSDF"]
+    n.inputs["Emission Color"].default_value = (0.02, 0.16, 0.08, 1); n.inputs["Emission Strength"].default_value = 0.45
+    box((40, 0.2, 40), (0, 6, 0), bd, 0)
+    # logo face material
+    lm = bpy.data.materials.new("logoface"); lm.use_nodes = True; nt = lm.node_tree
+    b = nt.nodes["Principled BSDF"]; b.inputs["Roughness"].default_value = 0.35
+    img = nt.nodes.new("ShaderNodeTexImage"); img.image = bpy.data.images.load(os.path.join(here, "assets/logo_sq.png"))
+    img.extension = "EXTEND"
+    tc = nt.nodes.new("ShaderNodeTexCoord"); mp = nt.nodes.new("ShaderNodeMapping")
+    mp.inputs["Scale"].default_value = (0.5, 0.5, 1); mp.inputs["Location"].default_value = (0.5, 0.5, 0)
+    nt.links.new(tc.outputs["Object"], mp.inputs["Vector"]); nt.links.new(mp.outputs["Vector"], img.inputs["Vector"])
+    nt.links.new(img.outputs["Color"], b.inputs["Base Color"])
+    b.inputs["Emission Strength"].default_value = 0.35
+    nt.links.new(img.outputs["Color"], b.inputs["Emission Color"])
+    # medallion: gold coin + logo disc on the front
+    coin = cyl(1.12, 0.22, (0, 0, 0), m["gold"], rot=(math.pi / 2, 0, 0), verts=96, bevel=0.03)
+    rim = torus(1.12, 0.07, (0, 0, 0), m["gold"], rot=(math.pi / 2, 0, 0))
+    bpy.ops.mesh.primitive_circle_add(vertices=96, radius=1.0, fill_type="NGON", location=(0, -0.115, 0), rotation=(math.pi / 2, 0, 0))
+    face = bpy.context.object; face.data.materials.append(lm)
+    bpy.ops.mesh.primitive_circle_add(vertices=96, radius=1.0, fill_type="NGON", location=(0, 0.115, 0), rotation=(-math.pi / 2, 0, 0))
+    back = bpy.context.object; back.data.materials.append(lm); back.scale.x = -1
+    med = empty_parent([coin, rim, face, back])
+    # gold sparkles
+    rnd = random.Random(7); spark = []
+    sm = mat("spark", (1.0, 0.82, 0.45), 0.3, emit=8)
+    for i in range(40):
+        o = sph(rnd.uniform(.012, .03), (0, 0, 0), sm, seg=8)
+        spark.append((o, rnd.uniform(-2.2, 2.2), rnd.uniform(-1.5, 3), rnd.uniform(-4, 4), rnd.uniform(.1, .35), rnd.uniform(0, 6)))
+    area((-2.5, -4, 2.5), (1.1, 0, -0.6), 3, 400, (1, 0.95, 0.85))
+    area((2.8, -3, -0.5), (1.6, 0, 0.8), 2.5, 250, (0.85, 1, 0.9))
+    area((0, 2, 4), (-0.5, 0, 0), 4, 300, (1, 0.9, 0.7))
+    cam = make_cam(40)
+    t0 = RANGE[13][0]
+    shots = Shots([(t0, ((0, -9.0, -1.3), (0, 0, -1.3), 40), ((0, -8.4, -1.3), (0, 0, -1.3), 40))], RANGE[13][1])
+
+    def upd(t):
+        shots.apply(cam, t)
+        u = t - t0
+        k = ease(u / 1.3)
+        med.location = (0, 0, lerp(-3.5, -0.25, k) + math.sin(u * 1.6) * 0.05)
+        med.rotation_euler = (math.sin(u * 1.1) * 0.08, 0, (1 - k) * 2 * math.pi + math.sin(u * 0.9) * 0.35)
+        s_ = lerp(0.3, 0.66, k); med.scale = (s_, s_, s_)
+        for o, x, z, y, sp, ph in spark:
+            o.location = (x + math.sin(u * .5 + ph) * .2, y * .2, -2.5 + ((z + 2.5 + u * sp) % 6))
+    return upd, dict(logo=(0, 0, -0.25))
+
+
 SCENE = {0: lambda: sc_glass(False), 1: lambda: sc_map("s1"), 2: sc_kaaba, 3: sc_dulu, 4: sc_pump,
          5: lambda: sc_map("s5"), 6: sc_factory, 7: sc_lab, 8: sc_bottle, 9: sc_truck, 10: sc_mosque,
-         12: lambda: sc_map("s12"), 13: lambda: sc_glass(True)}
+         12: lambda: sc_map("s12"), 13: sc_logo}
 RANGE = {0: (0.0, T(13)), 1: (T(13), T(17)), 2: (T(17), T(32)), 3: (T(32), T(37)), 4: (T(37), T(45)),
          5: (T(45), T(64)), 6: (T(64), T(74)), 7: (T(74), T(83)), 8: (T(83), T(91)), 9: (T(91), T(103)),
          10: (T(103), T(127)), 11: (T(127), T(149)), 12: (T(149), T(160) - .4), 13: (T(160) - .4, 79.1)}

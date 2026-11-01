@@ -28,7 +28,7 @@ def ov(i, f, t, a):
         disclaimer(f)
         pop(f, badge("LEWAT MANA?", 70, bg=(255, 255, 255), rot=-3), W / 2, 380, t, T(13) + .1)
     elif i == 2:
-        pop(f, label("KA'BAH", 46), *a("kaaba"), t, T(24))
+        pop(f, label("KA'BAH", 46), *a("kaaba"), t, T(24), T(25) - .15)
         pop(f, label("LANTAI THAWAF", 42), *a("floor"), t, T(26), T(28) - .1)
         pop(f, label("SUMUR ZAMZAM", 46, GREEN), *a("well"), t, T(28))
         pop(f, badge("± 30 m", 72), *a("depth"), t, T(30))
@@ -74,7 +74,38 @@ def ov(i, f, t, a):
         pop(f, badge("RUTE ZAMZAM", 72, rot=-2), W / 2, 360, t, T(153))
         disclaimer(f)
     elif i == 13:
-        ov_s13(f, t)
+        ov_cta(f, t, a)
+
+
+def ov_cta(f, t, a):
+    from PIL import ImageDraw
+    from render import font
+    card = Image.new("RGBA", (860, 330), (0, 0, 0, 0)); d = ImageDraw.Draw(card)
+    d.rounded_rectangle([0, 0, 859, 329], 44, fill=(6, 22, 14, 200), outline=(201, 162, 39, 200), width=3)
+    items = [("Like", T(160)), ("Share", T(161)), ("Follow", T(162))]
+    for k, (txt, ti) in enumerate(items):
+        x = 170 + k * 260; y = 110
+        on = t >= ti
+        kk = backout((t - ti) / 0.3) if on else 0.0
+        r = 58 * (0.75 + 0.25 * kk)
+        col = GREEN if on else (70, 90, 80)
+        d.ellipse([x - r, y - r, x + r, y + r], fill=col + (255,))
+        ic = (20, 30, 20); s = r * .44
+        if k == 0:
+            d.ellipse([x - s * 1.1, y - s * .9, x, y + s * .2], fill=ic); d.ellipse([x, y - s * .9, x + s * 1.1, y + s * .2], fill=ic)
+            d.polygon([(x - s * 1.08, y - s * .25), (x + s * 1.08, y - s * .25), (x, y + s * 1.05)], fill=ic)
+        elif k == 1:
+            d.line([(x - s, y + s * .6), (x - s, y - s * .1), (x + s * .3, y - s * .1)], fill=ic, width=int(r * .14))
+            d.polygon([(x + s * .2, y - s * .75), (x + s * 1.05, y - s * .1), (x + s * .2, y + s * .55)], fill=ic)
+        else:
+            d.line([(x - s, y), (x + s, y)], fill=ic, width=int(r * .16)); d.line([(x, y - s), (x, y + s)], fill=ic, width=int(r * .16))
+        d.text((x, y + 92), txt, font=font(32, 700), fill=(255, 255, 255), anchor="mm")
+    if t >= T(163):
+        d.text((430, 290), "@rehlata_tour", font=font(44, 800), fill=(232, 205, 120), anchor="mm")
+    t0 = T(160) - .25
+    put(f, card, W / 2, 1010, backout((t - t0) / 0.4))
+    if t >= T(169):
+        pop(f, label("Info edukasi umroh selanjutnya", 36), W / 2, 1420, t, T(169))
 
 
 def frame(i, n, cache):
