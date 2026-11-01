@@ -454,23 +454,29 @@ def sc_kaaba():
     # earth layers below front edge
     layers = [(-0.4, -1.2, (0.92, 0.9, 0.86)), (-1.2, -3.0, (0.55, 0.36, 0.20)), (-3.0, -5.0, (0.46, 0.29, 0.15)),
               (-5.0, -6.6, (0.36, 0.24, 0.14)), (-6.6, -9.0, (0.28, 0.19, 0.12))]
+    wx = 3.6
+    bpy.ops.mesh.primitive_cylinder_add(radius=.97, depth=7.4, location=(wx, 0.0, -3.9), vertices=40)
+    cutter = bpy.context.object; cutter.hide_render = True; cutter.display_type = "WIRE"
     for i, (z0, z1, c) in enumerate(layers):
         mm = tex_mat(f"earth{i}", "noise", c, tuple(v * .75 for v in c), 2.5, 0.95)
-        box((22, 16, z0 - z1), (0, 8, (z0 + z1) / 2), mm, 0.0)
+        lb = box((22, 16, z0 - z1), (0, 8, (z0 + z1) / 2), mm, 0.0)
+        if z1 > -7.8:
+            bo = lb.modifiers.new("hole", "BOOLEAN"); bo.operation = "DIFFERENCE"; bo.object = cutter; bo.solver = "EXACT"
     aq = mat("aquifer", (0.25, 0.55, 0.85), 0.3, emit=0.4)
-    box((22, .05, 1.0), (0, -0.03, -6.8), mat("aqf", (0.3, 0.6, 0.9), 0.4, emit=0.25, alpha=1), 0)
-    # well shaft (cut in half on front face)
-    wx = 3.6
-    shaft = cyl(.75, 7.0, (wx, 0.0, -3.9), mat("shaftdark", (0.03, 0.025, 0.02), 0.9), verts=40)
-    ring = tex_mat("stone", "brick", (0.55, 0.52, 0.48), (0.3, 0.28, 0.26), 6, 0.8)
+    for x0, x1 in ((-11, wx - .97), (wx + .97, 11)):
+        box((x1 - x0, .05, 1.0), ((x0 + x1) / 2, -0.03, -6.8), mat("aqf", (0.3, 0.6, 0.9), 0.4, emit=0.25, alpha=1), 0)
+    # well shaft: back half of a stone tube, open towards the camera
+    ring = tex_mat("wellstone", "noise", (0.36, 0.32, 0.28), (0.16, 0.14, 0.12), 6, 0.9)
     bpy.ops.mesh.primitive_cylinder_add(radius=.95, depth=7.0, location=(wx, 0.0, -3.9), vertices=40)
-    rw = bpy.context.object; sol = rw.modifiers.new("s", "SOLIDIFY"); sol.thickness = .2
+    rw = bpy.context.object
     bm = bmesh.new(); bm.from_mesh(rw.data)
     bmesh.ops.delete(bm, geom=[f for f in bm.faces if abs(f.normal.z) > .9], context="FACES")
-    bm.to_mesh(rw.data); bm.free(); _fin(rw, ring, smooth=True)
-    for o in (shaft, rw):  # cut front half
-        bpy.context.view_layer.objects.active = o; o.select_set(True)
-    water = cyl(.74, .5, (wx, 0.0, -7.1), m["waterflat"], verts=40)
+    bmesh.ops.bisect_plane(bm, geom=bm.verts[:] + bm.edges[:] + bm.faces[:], plane_co=(0, 0, 0), plane_no=(0, -1, 0), clear_outer=True)
+    bm.to_mesh(rw.data); bm.free()
+    rw.modifiers.new("s", "SOLIDIFY").thickness = .15
+    _fin(rw, ring, smooth=True)
+    water = half_cyl(.9, .6, (wx, 0.0, -7.05), mat("wellwater", (0.2, 0.6, 0.95), .1, emit=0.9))
+    area((wx, -2.5, -3.5), (math.pi / 2, 0, 0), 2, 40, (1, 0.95, 0.85))
     cover = cyl(1.1, .12, (wx, 0.0, 0.02), m["marble"], verts=40)
     # depth marker
     mk = mat("marker", (1, 1, 1), 0.4, emit=1.0)
