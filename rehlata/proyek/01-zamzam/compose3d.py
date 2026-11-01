@@ -103,7 +103,7 @@ def ov_cta(f, t, a):
     if t >= T(163):
         d.text((430, 290), "@rehlata_tour", font=font(44, 800), fill=(232, 205, 120), anchor="mm")
     t0 = T(160) - .25
-    put(f, card, W / 2, 1010, backout((t - t0) / 0.4))
+    put(f, card, W / 2, 1055, backout((t - t0) / 0.4))
     if t >= T(169):
         pop(f, label("Info edukasi umroh selanjutnya", 36), W / 2, 1420, t, T(169))
 
