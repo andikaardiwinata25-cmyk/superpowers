@@ -27,6 +27,22 @@ Disusun dari 3 video referensi (Listrik/SUTET, Air dari sumur ke keran, Lebah "d
 - **Highlight kata kunci:** kata penting diberi warna aksen **hijau muda (#9CF27A)**; teks lainnya **putih** (contoh: "Bayangin lo **pengangguran**", "Namanya **drone**", "madu dikerjakan **betina**"). Kata yang belum diucapkan boleh tampil redup/abu-abu lalu menyala saat diucapkan.
 - Bahasa santai sehari-hari, tanda baca seperlunya (koma, titik, "...").
 
+## 2b. Voice-over: "Dokter Brando" (alias "Dokter Toxic")
+
+Suara VO standar semua video Rehlata. Contoh asli: `rehlata/voice/dokter-brando-referensi.mp3`
+(isi: *"Kenapa umat Islam harus mengelilingi Ka'bah sebanyak 7 kali? Siapa yang pertama kali menetapkan aturan ini?"*).
+
+| Aspek | Karakter |
+|---|---|
+| Suara | Pria, nada tengah (±180 Hz rata-rata), jernih, dekat ke mic, tanpa gema |
+| Tempo | **±150 kata/menit** (±2,5 kata/detik), mengalir, tidak terburu-buru |
+| Intonasi | Ekspresif: nada naik tajam di akhir pertanyaan (sampai ±260 Hz), turun mantap di pernyataan |
+| Jeda | Jeda dramatis **±0,5 detik** setelah pertanyaan hook, sebelum pertanyaan/pernyataan berikutnya |
+| Gaya bicara | Membuka dengan **pertanyaan beruntun** yang memancing penasaran; bahasa Indonesia baku-santai, artikulasi jelas tiap suku kata |
+| Mixing | Puncak -1 dB, rata-rata ±-18 dB; VO paling depan, musik jauh di belakang |
+
+Patokan naskah: 60 detik ≈ **150 kata**. Hook = 1–2 pertanyaan pendek + jeda.
+
 ## 3. Gaya Visual
 
 Dua gaya yang dipakai, pilih sesuai topik:
@@ -73,4 +89,5 @@ Dua gaya yang dipakai, pilih sesuai topik:
 - [ ] Label istilah dan pop-up judul di momen kunci
 - [ ] Shot berganti tiap 2–4 detik, kamera selalu bergerak
 - [ ] Sumber foto / disclaimer dicantumkan kecil
+- [ ] VO pakai suara "Dokter Brando" (±150 kata/menit, hook pertanyaan + jeda)
 - [ ] Audio voice-over jelas, musik tidak menutupi suara

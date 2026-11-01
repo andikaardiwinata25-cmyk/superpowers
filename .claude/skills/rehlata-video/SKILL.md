@@ -19,6 +19,9 @@ no git/repo jargon. Just do the work and deliver the finished file.
 
 - Subtitle font **Montserrat**, **small** (≈2.35% of frame height:
   ~45px @1920, ~30px @1280), white, light-green (#9CF27A) keywords, word-by-word reveal.
+- Voice-over = **"Dokter Brando" / "Dokter Toxic"** voice (see STYLE.md 2b,
+  reference `rehlata/voice/dokter-brando-referensi.mp3`). Scripts: ~150 words
+  per 60 s, hook with 1–2 short questions + ~0.5 s pause.
 - 9:16, 30 fps, safe areas respected (bottom ~15%, right ~12%).
 
 ## Auto-subtitle workflow
