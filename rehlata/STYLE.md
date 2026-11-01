@@ -24,7 +24,7 @@ Disusun dari 3 video referensi (Listrik/SUTET, Air dari sumur ke keran, Lebah "d
 - **Warna:** putih, dengan drop shadow lembut atau outline tipis gelap supaya terbaca di background terang (langit, dinding putih)
 - **Posisi:** tengah horizontal, di **sepertiga bawah-tengah** (±55–65% tinggi frame dari atas). Jangan mepet bawah karena tertutup UI TikTok/Reels.
 - **Gaya muncul:** **kata per kata / frasa pendek (1–4 kata)**, sinkron dengan voice-over (karaoke-style). Satu baris; maksimal 2 baris pendek.
-- **Highlight kata kunci:** kata penting diberi warna aksen **kuning/emas** (contoh: "Bayangin lo **pengangguran**", "Namanya **drone**", "madu dikerjakan **betina**"). Kata yang belum diucapkan boleh tampil redup/abu-abu lalu menyala saat diucapkan.
+- **Highlight kata kunci:** kata penting diberi warna aksen **hijau muda (#9CF27A)**; teks lainnya **putih** (contoh: "Bayangin lo **pengangguran**", "Namanya **drone**", "madu dikerjakan **betina**"). Kata yang belum diucapkan boleh tampil redup/abu-abu lalu menyala saat diucapkan.
 - Bahasa santai sehari-hari, tanda baca seperlunya (koma, titik, "...").
 
 ## 3. Gaya Visual
@@ -68,7 +68,7 @@ Dua gaya yang dipakai, pilih sesuai topik:
 
 - [ ] 9:16, 30 fps, 60–75 detik
 - [ ] Hook kuat di 3 detik pertama
-- [ ] Subtitle Montserrat, **kecil**, putih, kata kunci kuning, sinkron kata per kata
+- [ ] Subtitle Montserrat, **kecil**, putih, kata kunci hijau muda, sinkron kata per kata
 - [ ] Subtitle & teks penting aman dari area UI (bawah ±15%, kanan ±12%)
 - [ ] Label istilah dan pop-up judul di momen kunci
 - [ ] Shot berganti tiap 2–4 detik, kamera selalu bergerak

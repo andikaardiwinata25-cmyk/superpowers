@@ -7,7 +7,7 @@ Step 1 - transcribe voice-over to an editable word list:
 Step 2 - (optional) fix typos in words.json, mark keywords with "key": true.
 
 Step 3 - burn subtitles in Rehlata style (Montserrat, small, white,
-keywords yellow, word-by-word reveal):
+keywords light green, word-by-word reveal):
     python3 rehlata/subtitle.py render INPUT.mp4 words.json -o OUTPUT.mp4 \
         [--keywords "drone,betina,SUTET"]
 
@@ -33,7 +33,7 @@ MAX_WORDS = 4
 MAX_CHARS = 22
 GAP_BREAK = 0.35           # seconds of silence that forces a new chunk
 WHITE = "&H00FFFFFF"
-YELLOW = "&H0033C8FF"      # ASS is BGR: FFC833 -> warm gold
+ACCENT = "&H007AF29C"      # ASS is BGR: 9CF27A -> light green (hijau muda)
 DIM = "&H40B4B4B4"         # not-yet-spoken words: grey, slightly transparent
 OUTLINE = "&H90000000"
 
@@ -133,7 +133,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                 continue
             parts = []
             for j, x in enumerate(c):
-                col = DIM if j > i else (YELLOW if x["key"] else WHITE)
+                col = DIM if j > i else (ACCENT if x["key"] else WHITE)
                 parts.append(f"{{\\c{col[:2]}{col[4:]}&\\1a&H{col[2:4]}&}}{esc(x['text'])}")
             lines.append(f"Dialogue: 0,{ts(start)},{ts(end)},Rehlata,,0,0,0,,{' '.join(parts)}")
     return head + "\n".join(lines) + "\n"

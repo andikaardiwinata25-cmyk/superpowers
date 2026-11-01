@@ -1,6 +1,6 @@
 ---
 name: rehlata-video
-description: Use for ANY work on Rehlata videos — editing, subtitling, reviewing, planning scripts/storyboards, or exporting short vertical videos (Reels/TikTok/Shorts) for the Rehlata channel. Applies the user's house editing style (Montserrat small subtitles, word-by-word reveal, gold keywords, fast cuts, 9:16).
+description: Use for ANY work on Rehlata videos — editing, subtitling, reviewing, planning scripts/storyboards, or exporting short vertical videos (Reels/TikTok/Shorts) for the Rehlata channel. Applies the user's house editing style (Montserrat small subtitles, word-by-word reveal, light-green (#9CF27A) keywords, fast cuts, 9:16).
 ---
 
 # Rehlata Video
@@ -18,7 +18,7 @@ no git/repo jargon. Just do the work and deliver the finished file.
 ## Non-negotiables
 
 - Subtitle font **Montserrat**, **small** (≈2.35% of frame height:
-  ~45px @1920, ~30px @1280), white, gold keywords, word-by-word reveal.
+  ~45px @1920, ~30px @1280), white, light-green (#9CF27A) keywords, word-by-word reveal.
 - 9:16, 30 fps, safe areas respected (bottom ~15%, right ~12%).
 
 ## Auto-subtitle workflow
@@ -33,7 +33,7 @@ python3 rehlata/subtitle.py render IN.mp4 words.json -o OUT.mp4 \
 
 Always show the user the transcript and ask for corrections only if
 something is genuinely ambiguous; otherwise fix obvious mishearings
-yourself. Pick 1 keyword per sentence or so (nouns/punchlines) for gold.
+yourself. Pick 1 keyword per sentence or so (nouns/punchlines) for light green.
 
 Check output: grab a few frames with ffmpeg and look at them before
 delivering. Save deliverables inside the working directory and send them
