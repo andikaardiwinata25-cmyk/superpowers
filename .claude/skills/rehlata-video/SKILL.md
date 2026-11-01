@@ -42,6 +42,15 @@ Check output: grab a few frames with ffmpeg and look at them before
 delivering. Save deliverables inside the working directory and send them
 with SendUserFile.
 
+## Voice-over (TTS)
+
+`bash rehlata/voice.sh naskah.txt out.mp3` — Edge TTS voice `id-ID-ArdiNeural`
+tuned toward Dokter Brando (rate +5%, pitch +8Hz). One sentence per line,
+empty line = 0.5 s pause. Requires `speech.platform.bing.com` in the
+environment's allowed domains. It only approximates the reference voice;
+say so. Compare against `rehlata/voice/dokter-brando-referensi.mp3` and
+tweak rate/pitch if needed. First test text: `rehlata/naskah/01-zamzam-hook.txt`.
+
 ## Other edits
 
 Use ffmpeg directly (cuts, concat, zoom/Ken Burns via `zoompan`, scale/pad

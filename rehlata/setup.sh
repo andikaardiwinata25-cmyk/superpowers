@@ -16,8 +16,8 @@ if ! fc-list | grep -qi montserrat; then
 fi
 
 # 2. faster-whisper (speech-to-text for auto subtitles)
-python3 -c "import faster_whisper" 2>/dev/null \
-  || pip install -q --break-system-packages faster-whisper
+python3 -c "import faster_whisper, edge_tts" 2>/dev/null \
+  || pip install -q --break-system-packages faster-whisper edge-tts
 
 # 3. Whisper-small model (CTranslate2 int8). HuggingFace is blocked in this
 #    environment, so it comes from an npm mirror split into 4 parts.
