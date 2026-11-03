@@ -56,3 +56,22 @@ tweak rate/pitch if needed. First test text: `rehlata/naskah/01-zamzam-hook.txt`
 Use ffmpeg directly (cuts, concat, zoom/Ken Burns via `zoompan`, scale/pad
 to 1080x1920, loudness `loudnorm=I=-14`). Keep shots 2–4 s, hook in first
 3 s, per STYLE.md.
+
+## Animated / motion-graphic videos (Remotion)
+
+When a Rehlata video needs more than cutting real footage — animated text,
+infographics, maps (e.g. mudik routes), counters, kinetic typography — build it
+in Remotion. Load the `remotion-best-practices` skill first; it routes to
+`remotion-create`, `remotion-markup`, `remotion-captions`, `remotion-maps`,
+`remotion-render` and the others (all in `.claude/skills/`, vendored from
+`remotion-dev/remotion` `packages/skills`).
+
+Rehlata style still wins over Remotion defaults:
+
+- Composition 1080x1920, 30 fps; keep text out of the safe areas above.
+- Subtitles via `remotion-captions`, styled per the non-negotiables (Montserrat,
+  small, white, #9CF27A keywords, word-by-word). `words.json` from
+  `subtitle.py transcribe` can feed the captions.
+- Voice-over from `voice.sh` as the audio track; time scenes to it.
+- Deliver a rendered MP4 (`remotion-render`), not only a Studio preview — the
+  user wants the finished file.
