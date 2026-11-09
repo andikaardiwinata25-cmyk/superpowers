@@ -1,0 +1,818 @@
+[
+ {
+  "text": "Air",
+  "start": 0.0,
+  "end": 0.36,
+  "key": false
+ },
+ {
+  "text": "Zamzam",
+  "start": 0.36,
+  "end": 0.76,
+  "key": false
+ },
+ {
+  "text": "yang",
+  "start": 0.76,
+  "end": 0.94,
+  "key": false
+ },
+ {
+  "text": "kamu",
+  "start": 0.94,
+  "end": 1.1,
+  "key": false
+ },
+ {
+  "text": "minum",
+  "start": 1.1,
+  "end": 1.36,
+  "key": false
+ },
+ {
+  "text": "di",
+  "start": 1.36,
+  "end": 1.52,
+  "key": false
+ },
+ {
+  "text": "Masjidil",
+  "start": 1.52,
+  "end": 1.86,
+  "key": false
+ },
+ {
+  "text": "Haram,",
+  "start": 1.86,
+  "end": 2.22,
+  "key": false
+ },
+ {
+  "text": "diambil",
+  "start": 2.44,
+  "end": 2.92,
+  "key": false
+ },
+ {
+  "text": "langsung",
+  "start": 2.92,
+  "end": 3.18,
+  "key": false
+ },
+ {
+  "text": "dari",
+  "start": 3.18,
+  "end": 3.36,
+  "key": false
+ },
+ {
+  "text": "sumurnya.",
+  "start": 3.36,
+  "end": 3.8,
+  "key": false
+ },
+ {
+  "text": "Ternyata",
+  "start": 5.12,
+  "end": 5.76,
+  "key": false
+ },
+ {
+  "text": "nggak,",
+  "start": 5.76,
+  "end": 6.0,
+  "key": false
+ },
+ {
+  "text": "airnya",
+  "start": 6.84,
+  "end": 7.46,
+  "key": false
+ },
+ {
+  "text": "mudik",
+  "start": 7.46,
+  "end": 7.7,
+  "key": false
+ },
+ {
+  "text": "dulu",
+  "start": 7.7,
+  "end": 7.94,
+  "key": false
+ },
+ {
+  "text": "keluar",
+  "start": 7.94,
+  "end": 8.2,
+  "key": false
+ },
+ {
+  "text": "kota.",
+  "start": 8.2,
+  "end": 8.52,
+  "key": false
+ },
+ {
+  "text": "Sumurnya",
+  "start": 9.48,
+  "end": 10.12,
+  "key": false
+ },
+ {
+  "text": "ada",
+  "start": 10.12,
+  "end": 10.24,
+  "key": false
+ },
+ {
+  "text": "di",
+  "start": 10.24,
+  "end": 10.38,
+  "key": false
+ },
+ {
+  "text": "sini,",
+  "start": 10.38,
+  "end": 10.62,
+  "key": false
+ },
+ {
+  "text": "cuma",
+  "start": 11.06,
+  "end": 11.3,
+  "key": false
+ },
+ {
+  "text": "beberapa",
+  "start": 11.3,
+  "end": 11.62,
+  "key": false
+ },
+ {
+  "text": "langkah",
+  "start": 11.62,
+  "end": 11.9,
+  "key": false
+ },
+ {
+  "text": "dari",
+  "start": 11.9,
+  "end": 12.1,
+  "key": false
+ },
+ {
+  "text": "Ka'bah.",
+  "start": 12.1,
+  "end": 12.48,
+  "key": false
+ },
+ {
+  "text": "Dalamnya",
+  "start": 13.38,
+  "end": 13.88,
+  "key": false
+ },
+ {
+  "text": "sekitar",
+  "start": 13.88,
+  "end": 14.24,
+  "key": false
+ },
+ {
+  "text": "30",
+  "start": 14.24,
+  "end": 14.64,
+  "key": false
+ },
+ {
+  "text": "meter.",
+  "start": 14.64,
+  "end": 14.92,
+  "key": false
+ },
+ {
+  "text": "Dulu,",
+  "start": 16.1,
+  "end": 16.46,
+  "key": false
+ },
+ {
+  "text": "airnya",
+  "start": 16.9,
+  "end": 17.32,
+  "key": false
+ },
+ {
+  "text": "ditimba",
+  "start": 17.32,
+  "end": 17.68,
+  "key": false
+ },
+ {
+  "text": "pakai",
+  "start": 17.68,
+  "end": 17.9,
+  "key": false
+ },
+ {
+  "text": "ember.",
+  "start": 17.9,
+  "end": 18.32,
+  "key": false
+ },
+ {
+  "text": "Sekarang,",
+  "start": 19.18,
+  "end": 19.82,
+  "key": false
+ },
+ {
+  "text": "pompa",
+  "start": 20.2,
+  "end": 20.48,
+  "key": false
+ },
+ {
+  "text": "listrik",
+  "start": 20.48,
+  "end": 20.76,
+  "key": false
+ },
+ {
+  "text": "nyedot",
+  "start": 20.76,
+  "end": 21.0,
+  "key": false
+ },
+ {
+  "text": "airnya",
+  "start": 21.0,
+  "end": 21.4,
+  "key": false
+ },
+ {
+  "text": "terus-terusan.",
+  "start": 21.4,
+  "end": 21.94,
+  "key": false
+ },
+ {
+  "text": "Tapi",
+  "start": 22.92,
+  "end": 23.34,
+  "key": false
+ },
+ {
+  "text": "airnya",
+  "start": 23.34,
+  "end": 23.7,
+  "key": false
+ },
+ {
+  "text": "nggak",
+  "start": 23.7,
+  "end": 23.82,
+  "key": false
+ },
+ {
+  "text": "langsung",
+  "start": 23.82,
+  "end": 24.12,
+  "key": false
+ },
+ {
+  "text": "ke",
+  "start": 24.12,
+  "end": 24.24,
+  "key": false
+ },
+ {
+  "text": "gelas",
+  "start": 24.24,
+  "end": 24.42,
+  "key": false
+ },
+ {
+  "text": "kamu.",
+  "start": 24.42,
+  "end": 24.68,
+  "key": false
+ },
+ {
+  "text": "Dia",
+  "start": 25.76,
+  "end": 25.98,
+  "key": false
+ },
+ {
+  "text": "dikirim",
+  "start": 25.98,
+  "end": 26.26,
+  "key": false
+ },
+ {
+  "text": "lewat",
+  "start": 26.26,
+  "end": 26.56,
+  "key": false
+ },
+ {
+  "text": "pipa",
+  "start": 26.56,
+  "end": 26.78,
+  "key": false
+ },
+ {
+  "text": "ke",
+  "start": 26.78,
+  "end": 26.88,
+  "key": false
+ },
+ {
+  "text": "Kudai,",
+  "start": 26.88,
+  "end": 27.22,
+  "key": false
+ },
+ {
+  "text": "sekitar",
+  "start": 27.66,
+  "end": 27.98,
+  "key": false
+ },
+ {
+  "text": "5",
+  "start": 27.98,
+  "end": 28.2,
+  "key": false
+ },
+ {
+  "text": "km",
+  "start": 28.2,
+  "end": 28.58,
+  "key": false
+ },
+ {
+  "text": "dari",
+  "start": 28.58,
+  "end": 28.84,
+  "key": false
+ },
+ {
+  "text": "Masjidil",
+  "start": 28.84,
+  "end": 29.34,
+  "key": false
+ },
+ {
+  "text": "Haram.",
+  "start": 29.34,
+  "end": 29.68,
+  "key": false
+ },
+ {
+  "text": "Tahun",
+  "start": 30.0,
+  "end": 31.0,
+  "key": false
+ },
+ {
+  "text": "2010,",
+  "start": 31.0,
+  "end": 31.52,
+  "key": false
+ },
+ {
+  "text": "di",
+  "start": 31.94,
+  "end": 32.26,
+  "key": false
+ },
+ {
+  "text": "sana",
+  "start": 32.26,
+  "end": 32.44,
+  "key": false
+ },
+ {
+  "text": "dibangun",
+  "start": 32.44,
+  "end": 32.86,
+  "key": false
+ },
+ {
+  "text": "pabrik",
+  "start": 32.86,
+  "end": 33.14,
+  "key": false
+ },
+ {
+  "text": "khusus.",
+  "start": 33.14,
+  "end": 33.7,
+  "key": false
+ },
+ {
+  "text": "Airnya",
+  "start": 34.36,
+  "end": 34.98,
+  "key": false
+ },
+ {
+  "text": "disaring",
+  "start": 34.98,
+  "end": 35.3,
+  "key": false
+ },
+ {
+  "text": "berlapis-lapis,",
+  "start": 35.3,
+  "end": 36.1,
+  "key": false
+ },
+ {
+  "text": "lalu",
+  "start": 36.44,
+  "end": 36.7,
+  "key": false
+ },
+ {
+  "text": "sampelnya",
+  "start": 36.7,
+  "end": 37.1,
+  "key": false
+ },
+ {
+  "text": "dicek",
+  "start": 37.1,
+  "end": 37.4,
+  "key": false
+ },
+ {
+  "text": "di",
+  "start": 37.4,
+  "end": 37.54,
+  "key": false
+ },
+ {
+  "text": "laboratorium.",
+  "start": 37.54,
+  "end": 38.08,
+  "key": false
+ },
+ {
+  "text": "Sebagian",
+  "start": 39.2,
+  "end": 39.76,
+  "key": false
+ },
+ {
+  "text": "dibotolin.",
+  "start": 39.76,
+  "end": 40.32,
+  "key": false
+ },
+ {
+  "text": "Sehari",
+  "start": 41.34,
+  "end": 41.72,
+  "key": false
+ },
+ {
+  "text": "bisa",
+  "start": 41.72,
+  "end": 42.0,
+  "key": false
+ },
+ {
+  "text": "sampai",
+  "start": 42.0,
+  "end": 42.24,
+  "key": false
+ },
+ {
+  "text": "200",
+  "start": 42.24,
+  "end": 42.54,
+  "key": false
+ },
+ {
+  "text": "ribu",
+  "start": 42.54,
+  "end": 42.92,
+  "key": false
+ },
+ {
+  "text": "botol.",
+  "start": 42.92,
+  "end": 43.32,
+  "key": false
+ },
+ {
+  "text": "Sebagian",
+  "start": 44.06,
+  "end": 44.76,
+  "key": false
+ },
+ {
+  "text": "lagi",
+  "start": 44.76,
+  "end": 45.0,
+  "key": false
+ },
+ {
+  "text": "ditampung",
+  "start": 45.0,
+  "end": 45.4,
+  "key": false
+ },
+ {
+  "text": "di",
+  "start": 45.4,
+  "end": 45.647,
+  "key": false
+ },
+ {
+  "text": "tangki",
+  "start": 45.647,
+  "end": 45.893,
+  "key": false
+ },
+ {
+  "text": "raksasa,",
+  "start": 45.893,
+  "end": 46.14,
+  "key": false
+ },
+ {
+  "text": "terus",
+  "start": 46.6,
+  "end": 46.82,
+  "key": false
+ },
+ {
+  "text": "pulang",
+  "start": 46.82,
+  "end": 47.08,
+  "key": false
+ },
+ {
+  "text": "lagi",
+  "start": 47.08,
+  "end": 47.34,
+  "key": false
+ },
+ {
+  "text": "ke",
+  "start": 47.34,
+  "end": 47.5,
+  "key": false
+ },
+ {
+  "text": "Masjidil",
+  "start": 47.5,
+  "end": 47.9,
+  "key": false
+ },
+ {
+  "text": "Haram.",
+  "start": 47.9,
+  "end": 48.24,
+  "key": false
+ },
+ {
+  "text": "Di",
+  "start": 49.02,
+  "end": 49.48,
+  "key": false
+ },
+ {
+  "text": "dalam",
+  "start": 49.48,
+  "end": 49.6,
+  "key": false
+ },
+ {
+  "text": "masjid,",
+  "start": 49.6,
+  "end": 50.06,
+  "key": false
+ },
+ {
+  "text": "petugas",
+  "start": 50.48,
+  "end": 50.78,
+  "key": false
+ },
+ {
+  "text": "ngisi",
+  "start": 50.78,
+  "end": 50.96,
+  "key": false
+ },
+ {
+  "text": "ribuan",
+  "start": 50.96,
+  "end": 51.26,
+  "key": false
+ },
+ {
+  "text": "galon",
+  "start": 51.26,
+  "end": 51.6,
+  "key": false
+ },
+ {
+  "text": "di",
+  "start": 51.6,
+  "end": 51.76,
+  "key": false
+ },
+ {
+  "text": "sepanjang",
+  "start": 51.76,
+  "end": 52.1,
+  "key": false
+ },
+ {
+  "text": "shaf.",
+  "start": 52.1,
+  "end": 52.48,
+  "key": false
+ },
+ {
+  "text": "Ada",
+  "start": 53.32,
+  "end": 53.64,
+  "key": false
+ },
+ {
+  "text": "yang",
+  "start": 53.64,
+  "end": 53.8,
+  "key": false
+ },
+ {
+  "text": "dingin,",
+  "start": 53.8,
+  "end": 54.16,
+  "key": false
+ },
+ {
+  "text": "ada",
+  "start": 54.54,
+  "end": 54.76,
+  "key": false
+ },
+ {
+  "text": "yang",
+  "start": 54.76,
+  "end": 54.9,
+  "key": false
+ },
+ {
+  "text": "tidak",
+  "start": 54.9,
+  "end": 55.08,
+  "key": false
+ },
+ {
+  "text": "dingin.",
+  "start": 55.08,
+  "end": 55.48,
+  "key": false
+ },
+ {
+  "text": "Jadi",
+  "start": 56.16,
+  "end": 56.76,
+  "key": false
+ },
+ {
+  "text": "satu",
+  "start": 56.9,
+  "end": 57.0,
+  "key": false
+ },
+ {
+  "text": "gelas",
+  "start": 57.0,
+  "end": 57.24,
+  "key": false
+ },
+ {
+  "text": "Zamzam",
+  "start": 57.24,
+  "end": 57.52,
+  "key": false
+ },
+ {
+  "text": "itu",
+  "start": 57.52,
+  "end": 57.8,
+  "key": false
+ },
+ {
+  "text": "naik",
+  "start": 57.8,
+  "end": 58.52,
+  "key": false
+ },
+ {
+  "text": "dari",
+  "start": 58.52,
+  "end": 58.66,
+  "key": false
+ },
+ {
+  "text": "perut",
+  "start": 58.66,
+  "end": 58.86,
+  "key": false
+ },
+ {
+  "text": "bumi,",
+  "start": 58.86,
+  "end": 59.22,
+  "key": false
+ },
+ {
+  "text": "keluar",
+  "start": 59.58,
+  "end": 59.78,
+  "key": false
+ },
+ {
+  "text": "kota,",
+  "start": 59.78,
+  "end": 60.16,
+  "key": false
+ },
+ {
+  "text": "disaring,",
+  "start": 60.68,
+  "end": 61.04,
+  "key": false
+ },
+ {
+  "text": "dicek,",
+  "start": 61.5,
+  "end": 61.98,
+  "key": false
+ },
+ {
+  "text": "terus",
+  "start": 62.4,
+  "end": 62.44,
+  "key": false
+ },
+ {
+  "text": "pulang",
+  "start": 62.44,
+  "end": 62.68,
+  "key": false
+ },
+ {
+  "text": "lagi.",
+  "start": 62.68,
+  "end": 62.98,
+  "key": false
+ },
+ {
+  "text": "Cuma",
+  "start": 63.36,
+  "end": 63.64,
+  "key": false
+ },
+ {
+  "text": "buat",
+  "start": 63.64,
+  "end": 63.8,
+  "key": false
+ },
+ {
+  "text": "nyampe",
+  "start": 63.8,
+  "end": 64.14,
+  "key": false
+ },
+ {
+  "text": "ke",
+  "start": 64.14,
+  "end": 64.27,
+  "key": false
+ },
+ {
+  "text": "tangan",
+  "start": 64.27,
+  "end": 64.4,
+  "key": false
+ },
+ {
+  "text": "kamu.",
+  "start": 64.4,
+  "end": 64.7,
+  "key": false
+ }
+]

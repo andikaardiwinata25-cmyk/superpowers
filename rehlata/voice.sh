@@ -12,7 +12,7 @@ ffmpeg -v error -f lavfi -i anullsrc=r=24000:cl=mono -t 0.5 -c:a libmp3lame "$D/
 while IFS= read -r line || [ -n "$line" ]; do
   if [ -z "${line// }" ]; then echo "file '$D/pause.mp3'" >> "$D/list.txt"; continue; fi
   i=$((i+1))
-  edge-tts --voice "$VOICE" --rate="$RATE" --pitch="$PITCH" --text "$line" --write-media "$D/$i.mp3"
+  edge-tts ${HTTPS_PROXY:+--proxy "$HTTPS_PROXY"} --voice "$VOICE" --rate="$RATE" --pitch="$PITCH" --text "$line" --write-media "$D/$i.mp3"
   echo "file '$D/$i.mp3'" >> "$D/list.txt"
 done < "$IN"
 ffmpeg -v error -y -f concat -safe 0 -i "$D/list.txt" -af "loudnorm=I=-16:TP=-1" -ar 44100 "$OUT"
