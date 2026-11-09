@@ -8,24 +8,6 @@ import world from 'world-atlas/countries-50m.json';
 import {Dot, H, Label, Pt, Route, W, ramp} from './kit';
 
 export type Key = {t: number; lon: number; lat: number; scale: number; ease?: (x: number) => number};
-
-// One continuous move through all keys: the whole shot is eased once and the
-// path is a Catmull-Rom spline, so the camera never stops at a middle key.
-const smoothCam = (keys: Key[], t: number) => {
-	const t0 = keys[0].t;
-	const tN = keys[keys.length - 1].t;
-	const g = Easing.inOut(Easing.sin)(Math.min(1, Math.max(0, (t - t0) / (tN - t0))));
-	const T = t0 + g * (tN - t0);
-	let i = 0;
-	while (i < keys.length - 2 && T > keys[i + 1].t) i++;
-	const k = (j: number) => keys[Math.max(0, Math.min(keys.length - 1, j))];
-	const u = (T - keys[i].t) / (keys[i + 1].t - keys[i].t);
-	const cr = (f: (q: Key) => number) => {
-		const p0 = f(k(i - 1)), p1 = f(k(i)), p2 = f(k(i + 1)), p3 = f(k(i + 2));
-		return 0.5 * (2 * p1 + (-p0 + p2) * u + (2 * p0 - 5 * p1 + 4 * p2 - p3) * u * u + (-p0 + 3 * p1 - 3 * p2 + p3) * u * u * u);
-	};
-	return {t, lon: cr((q) => q.lon), lat: cr((q) => q.lat), scale: Math.exp(cr((q) => Math.log(q.scale)))};
-};
 export type LL = [number, number];
 
 const countries = (feature(world as any, (world as any).objects.countries) as any).features as any[];
@@ -51,13 +33,12 @@ const cameraAt = (keys: Key[], t: number) => {
 export const WorldMap: React.FC<{
 	t: number;
 	keys: Key[];
-	smooth?: boolean;
 	highlight?: {ids: string[]; at: number; color: string}[];
 	routes?: {from: LL; to: LL; a: number; b: number; color?: string}[];
 	pins?: {ll: LL; at: number; color?: string}[];
 	labels?: {ll: LL; at: number; text: string; dx?: number; dy?: number; size?: number; bg?: string; rot?: number}[];
-}> = ({t, keys, smooth = false, highlight = [], routes = [], pins = [], labels = []}) => {
-	const cam = smooth ? smoothCam(keys, t) : cameraAt(keys, t);
+}> = ({t, keys, highlight = [], routes = [], pins = [], labels = []}) => {
+	const cam = cameraAt(keys, t);
 	const proj = geoMercator().center([cam.lon, cam.lat]).scale(cam.scale).translate([W / 2, H * 0.4]);
 	const path = geoPath(proj);
 	const fills = useMemo(() => new Map<string, {at: number; color: string}>(), []);
