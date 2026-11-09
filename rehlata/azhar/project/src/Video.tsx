@@ -1,5 +1,6 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Easing, Img, OffthreadVideo, Sequence, staticFile} from 'remotion';
+import {AbsoluteFill, Audio, Easing, Img, OffthreadVideo, Sequence, interpolate, staticFile} from 'remotion';
+import {CameraMotionBlur} from '@remotion/motion-blur';
 import {Camera, Caption, Disclaimer, FPS, Grain, INK, Label, Paper, SANS, SERIF, Tape, Torn, Vignette, YELLOW, pop, ramp, useT} from './kit';
 import {LL, WorldMap} from './WorldMap';
 import {HAS_KAABA} from './assets';
@@ -107,7 +108,7 @@ const B: React.FC<SP> = ({s, e}) => {
 				<Label t={t} at={4.28} x={700} y={300} size={44} rot={-2} bg="#fff">
 					memfasilitasi
 				</Label>
-				<Label t={t} at={5.38} x={640} y={1440} size={78} rot={-3}>
+				<Label t={t} at={5.38} x={485} y={1370} size={78} rot={-3}>
 					Jamaah Umroh
 				</Label>
 			</Camera>
@@ -117,38 +118,52 @@ const B: React.FC<SP> = ({s, e}) => {
 };
 
 // ---------- C. Map: Indonesia -> Makkah -> Mesir ----------
+// One continuous, eased camera move that follows the plane: tight on Jakarta,
+// pull out high over the ocean, then push in on Makkah and Cairo.
+// A slight 3D tilt settles as we climb and returns on the push-in; camera
+// motion blur smooths the fast middle of the move.
 const C: React.FC<SP> = ({s}) => {
 	const t = useT(s);
+	const tiltX = interpolate(t, [7.0, 7.9, 9.1], [26, 0, 12], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.sin)});
+	const rotZ = interpolate(t, [7.0, 7.9, 9.1], [-4, 0, 2.5], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.sin)});
 	return (
-		<AbsoluteFill>
-			<WorldMap
-				t={t}
-				keys={[
-					{t: 7.0, lon: 108, lat: -4, scale: 2600},
-					{t: 7.9, lon: 74, lat: 10, scale: 500, ease: Easing.inOut(Easing.cubic)},
-					{t: 9.1, lon: 70, lat: 12, scale: 560},
-				]}
-				highlight={[
-					{ids: ['360'], at: 7.0, color: GREEN},
-					{ids: ['682'], at: 8.0, color: '#f2c94c'},
-					{ids: ['818'], at: 8.5, color: '#f2c94c'},
-				]}
-				routes={[
-					{from: JAKARTA, to: MAKKAH, a: 7.4, b: 8.1},
-					{from: MAKKAH, to: CAIRO, a: 8.15, b: 8.6},
-				]}
-				pins={[
-					{ll: JAKARTA, at: 7.1},
-					{ll: MAKKAH, at: 8.0},
-					{ll: CAIRO, at: 8.5},
-				]}
-				labels={[
-					{ll: JAKARTA, at: 7.15, text: 'Indonesia', dy: 80},
-					{ll: MAKKAH, at: 8.02, text: 'Umroh', dx: 40, dy: 70},
-					{ll: CAIRO, at: 8.5, text: 'Mesir', dx: -40, dy: -70},
-				]}
-			/>
-			<Label t={t} at={8.38} x={540} y={1440} size={84} rot={-3}>
+		<AbsoluteFill style={{background: '#2b7c86', perspective: 1600}}>
+			<CameraMotionBlur samples={6} shutterAngle={200}>
+				<AbsoluteFill style={{transform: `scale(1.32) rotateX(${tiltX}deg) rotateZ(${rotZ}deg)`, transformOrigin: '50% 45%'}}>
+					<WorldMap
+						t={t}
+						smooth
+						keys={[
+							{t: 7.0, lon: 106.85, lat: -6.2, scale: 4800},
+							{t: 7.4, lon: 103, lat: -3, scale: 2300},
+							{t: 7.85, lon: 80, lat: 5, scale: 720},
+							{t: 8.3, lon: 52, lat: 17, scale: 680},
+							{t: 8.7, lon: 38, lat: 25, scale: 1250},
+							{t: 9.1, lon: 36, lat: 26, scale: 1600},
+						]}
+						highlight={[
+							{ids: ['360'], at: 7.0, color: GREEN},
+							{ids: ['682'], at: 8.0, color: '#f2c94c'},
+							{ids: ['818'], at: 8.5, color: '#f2c94c'},
+						]}
+						routes={[
+							{from: JAKARTA, to: MAKKAH, a: 7.3, b: 8.15},
+							{from: MAKKAH, to: CAIRO, a: 8.2, b: 8.6},
+						]}
+						pins={[
+							{ll: JAKARTA, at: 7.05},
+							{ll: MAKKAH, at: 8.0},
+							{ll: CAIRO, at: 8.5},
+						]}
+						labels={[
+							{ll: JAKARTA, at: 7.1, text: 'Indonesia', dy: 80},
+							{ll: MAKKAH, at: 8.02, text: 'Umroh', dx: 40, dy: 70},
+							{ll: CAIRO, at: 8.5, text: 'Mesir', dx: -40, dy: -70},
+						]}
+					/>
+				</AbsoluteFill>
+			</CameraMotionBlur>
+			<Label t={t} at={8.38} x={485} y={1370} size={84} rot={-3}>
 				UMROH + MESIR
 			</Label>
 		</AbsoluteFill>
@@ -237,7 +252,7 @@ const F: React.FC<SP> = ({s}) => {
 					{ll: [45, 24], at: 18.94, text: 'Timur Tengah', dy: 0, size: 64},
 				]}
 			/>
-			<Label t={t} at={18.38} x={540} y={1440} size={74} rot={-2} bg="#fff">
+			<Label t={t} at={18.38} x={485} y={1370} size={74} rot={-2} bg="#fff">
 				kuliah
 			</Label>
 		</AbsoluteFill>
@@ -277,18 +292,23 @@ const Hc: React.FC<SP> = ({s, e}) => {
 		<AbsoluteFill>
 			<Paper />
 			<Camera t={t} start={s} end={e} from={1.0} to={1.06}>
-				<div style={{position: 'absolute', left: 290, top: 620, transform: `translate(-50%,-50%) scale(${pop(t, 21.75)}) rotate(-5deg)`}}>
-					<Logo src="logo-tour.jpg" size={380} />
+				<div style={{position: 'absolute', left: 540, top: 520, transform: `translate(-50%,-50%) scale(${pop(t, 21.75)}) rotate(-2deg)`}}>
+					<div style={{position: 'relative', width: 820, height: 380}}>
+						<Torn x={0} y={0} w={820} h={380} seed="tourBadge" color="#1d5a33" amp={14}>
+							<div style={{position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 40% 35%, rgba(255,255,255,0.12), rgba(0,0,0,0.18) 80%)'}} />
+							<Img src={staticFile('logo-tour-wide.png')} style={{position: 'absolute', left: 60, top: 60, width: 700, height: 'auto', filter: 'drop-shadow(0 3px 2px rgba(0,0,0,0.35))'}} />
+						</Torn>
+					</div>
 				</div>
-				<div style={{position: 'absolute', left: 790, top: 720, transform: `translate(-50%,-50%) scale(${pop(t, 22.05)}) rotate(5deg)`}}>
-					<Logo src="logo-academy.jpg" size={380} />
+				{t > 21.75 ? <Tape x={170} y={345} rot={-28} /> : null}
+				{t > 21.75 ? <Tape x={910} y={350} rot={24} /> : null}
+				<div style={{position: 'absolute', left: 540, top: 920, transform: `translate(-50%,-50%) scale(${pop(t, 22.05)}) rotate(4deg)`}}>
+					<Logo src="logo-academy.jpg" size={300} />
 				</div>
-				{t > 21.75 ? <Tape x={200} y={440} rot={-30} /> : null}
-				{t > 22.05 ? <Tape x={880} y={540} rot={28} /> : null}
-				<Label t={t} at={22.4} x={540} y={1060} size={56} rot={-2}>
+				<Label t={t} at={22.4} x={485} y={1190} size={56} rot={-2}>
 					Umroh + Mesir
 				</Label>
-				<Label t={t} at={22.6} x={540} y={1160} size={56} rot={2} bg={GREEN}>
+				<Label t={t} at={22.6} x={485} y={1290} size={56} rot={2} bg={GREEN}>
 					Kuliah di Al-Azhar
 				</Label>
 			</Camera>
