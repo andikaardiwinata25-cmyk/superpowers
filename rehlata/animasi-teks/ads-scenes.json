@@ -67,7 +67,7 @@
   {
    "id": "mummy",
    "top": 700,
-   "end": 21.3,
+   "end": 20.95,
    "chord": 2,
    "inDur": 0.95,
    "lines": [
@@ -88,6 +88,30 @@
      "y": 92,
      "at": 18.65,
      "stagger": 0.04
+    }
+   ]
+  },
+  {
+   "id": "nile",
+   "top": 700,
+   "end": 24.45,
+   "chord": 3,
+   "lines": [
+    {
+     "text": "nile",
+     "style": "serif",
+     "size": 160,
+     "x": 0,
+     "y": 0,
+     "at": 21.05
+    },
+    {
+     "text": "cruise",
+     "style": "bold",
+     "size": 260,
+     "x": 0,
+     "y": 125,
+     "at": 21.3
     }
    ]
   },
