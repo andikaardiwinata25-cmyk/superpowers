@@ -8,8 +8,8 @@
   html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: transparent; }
   #stage { position: absolute; inset: 0; perspective: 1400px; perspective-origin: 50% 45%; }
   #cam { position: absolute; inset: 0; transform-style: preserve-3d; }
-  .scene { position: absolute; inset: 0; display: none; transform-style: preserve-3d; }
-  .line { position: absolute; left: 0; white-space: nowrap; transform-style: preserve-3d; }
+  .scene { position: absolute; inset: 0; display: none; transform-style: flat; }
+  .line { position: absolute; left: 0; white-space: nowrap; transform-style: preserve-3d; perspective: 1400px; }
   .ch { display: inline-block; transform-origin: 50% 70%; will-change: transform, filter, opacity; backface-visibility: hidden; }
   .serif { font-family: "PF Italic"; font-style: italic; color: #EEEDE8; }
   .bold { font-family: "Inter XB"; font-weight: 800; letter-spacing: -0.045em; }
