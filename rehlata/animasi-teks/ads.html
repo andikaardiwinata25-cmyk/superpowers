@@ -91,7 +91,8 @@ function build(cfg) {
       const bw = sc.stars.box.offsetWidth;
       sc.stars.box.style.left = ((minL + maxR) / 2 - bw / 2) + 'px';
     }
-    const width = maxR - minL, s = Math.min(1, 940 / width);
+    // Reels safe zone: x 35..1045, y 220..1470 (+ margin for 3D motion and camera push)
+    const width = maxR - minL, s = Math.min(1, 800 / width, (1380 - sc.top) / maxB);
     const ox = (W - width * s) / 2 - minL * s;
     sc.blk.style.transformOrigin = '0 0';
     sc.blk.style.transform = `translate(${ox}px, ${sc.top}px) scale(${s})`;
