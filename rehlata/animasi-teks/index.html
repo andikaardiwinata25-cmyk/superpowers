@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "PF Italic"; font-style: italic; font-weight: 400; src: url(fonts/playfair-display-latin-400-italic.woff2); }
+  @font-face { font-family: "Inter XB"; font-weight: 800; src: url(fonts/inter-latin-800-normal.woff2); }
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: transparent; }
+  #stage { position: absolute; inset: 0; perspective: 1400px; perspective-origin: 50% 45%; }
+  #cam { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .scene { position: absolute; inset: 0; display: none; transform-style: preserve-3d; }
+  .line { position: absolute; left: 0; white-space: nowrap; transform-style: preserve-3d; }
+  .ch { display: inline-block; transform-origin: 50% 70%; will-change: transform, filter, opacity; backface-visibility: hidden; }
+  .serif { font-family: "PF Italic"; font-style: italic; color: #EEEDE8; }
+  .bold { font-family: "Inter XB"; font-weight: 800; letter-spacing: -0.045em; }
+  .bold .ch { -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stars { position: absolute; display: flex; gap: 14px; transform-style: preserve-3d; }
+  .star { width: 116px; height: 116px; transform-style: preserve-3d; }
+  .star svg { width: 100%; height: 100%; overflow: visible; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="cam">
+
+  <!-- Scene A: amankan / seat mu -->
+  <div class="scene" id="A">
+    <div class="line serif" id="A1" style="font-size:208px; top:770px;">amankan</div>
+    <div class="line bold" id="A2" style="font-size:200px; top:898px;">seat mu</div>
+  </div>
+
+  <!-- Scene B: ★★★★★ / Hotel Mekkah / Bintang 5 -->
+  <div class="scene" id="B">
+    <div class="stars" id="Bstars" style="top:712px;"></div>
+    <div class="line bold" id="B2" style="font-size:204px; top:860px;">Bintang 5</div>
+    <div class="line serif" id="B1" style="font-size:112px; top:818px;">Hotel Mekkah</div>
+  </div>
+
+</div></div>
+<script>
+const W = 1080;
+const STAR = '<svg viewBox="-50 -50 100 100"><path d="M0,-48 L11.3,-15.5 L45.6,-14.8 L18.3,5.9 L28.2,38.8 L0,19.2 L-28.2,38.8 L-18.3,5.9 L-45.6,-14.8 L-11.3,-15.5Z" fill="#FF9B62"/></svg>';
+
+const GRAD = 'linear-gradient(90deg, #FF3131 0%, #FF5A3E 40%, #FF7E4A 72%, #FF9B55 100%)';
+
+function split(el) {
+  const text = el.textContent; el.textContent = '';
+  for (const c of text) {
+    const s = document.createElement('span');
+    s.className = 'ch'; s.textContent = c === ' ' ? ' ' : c;
+    el.appendChild(s);
+  }
+  return [...el.children];
+}
+
+const S = {};
+function setupScene(id, cfg) {
+  const sc = document.getElementById(id);
+  sc.style.display = 'block';
+  const out = { el: sc, lines: {} };
+  for (const [key, lid] of Object.entries(cfg.lines)) {
+    const el = document.getElementById(lid);
+    const chars = split(el);
+    out.lines[key] = { el, chars };
+  }
+  if (cfg.stars) {
+    const box = document.getElementById(cfg.stars);
+    out.stars = [];
+    for (let i = 0; i < 5; i++) {
+      const d = document.createElement('div'); d.className = 'star'; d.innerHTML = STAR;
+      box.appendChild(d); out.stars.push(d);
+    }
+    out.starBox = box;
+  }
+  sc.style.display = 'none';
+  S[id] = out;
+}
+
+function layout(id) {
+  const sc = S[id]; sc.el.style.display = 'block';
+  // horizontal positioning (group centred on frame)
+  if (id === 'A') {
+    const a1 = sc.lines.a1.el, a2 = sc.lines.a2.el;
+    const w1 = a1.offsetWidth, w2 = a2.offsetWidth, shift = 120;
+    const total = Math.max(w1, w2 + shift);
+    const x0 = (W - total) / 2;
+    a1.style.left = x0 + 'px'; a2.style.left = (x0 + shift) + 'px';
+  } else {
+    const b1 = sc.lines.b1.el, b2 = sc.lines.b2.el;
+    const w2 = b2.offsetWidth;
+    b2.style.left = (W - w2) / 2 + 'px';
+    b1.style.left = ((W - w2) / 2 + w2 * 0.20) + 'px';
+    const sb = sc.starBox; sb.style.left = (W - sb.offsetWidth) / 2 - 40 + 'px';
+  }
+  // gradient spanning the whole word, sliced per letter
+  for (const ln of Object.values(sc.lines)) {
+    if (!ln.el.classList.contains('bold')) continue;
+    const ww = ln.el.offsetWidth;
+    ln.chars.forEach(c => { c._x = c.offsetLeft; c._ww = ww; });
+  }
+  sc.el.style.display = 'none';
+}
+
+// ---------- easing ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const expoOut = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+const quintOut = t => 1 - Math.pow(1 - t, 5);
+const cubicIn = t => t * t * t;
+const sineInOut = t => -(Math.cos(Math.PI * t) - 1) / 2;
+function spring(t, k = 9, z = 0.55) { // damped spring 0 -> 1 (slight overshoot)
+  if (t <= 0) return 0;
+  const w = k, wd = w * Math.sqrt(1 - z * z);
+  return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + (z * w / wd) * Math.sin(wd * t));
+}
+const prog = (t, start, dur) => clamp((t - start) / dur);
+
+// letter in/out
+function letter(c, t, inStart, inDur, outStart, outDur, mode) {
+  const pi = prog(t, inStart, inDur), e = expoOut(pi);
+  const po = prog(t, outStart, outDur), o = cubicIn(po);
+  let rx, ty, tz, blur, op, sc;
+  if (mode === 'serif') {          // flips up from below, like a page turning towards camera
+    rx = -95 * (1 - e); ty = 70 * (1 - e); tz = -260 * (1 - e);
+  } else {                          // bold: rises from depth
+    rx = 75 * (1 - e); ty = 120 * (1 - e); tz = -420 * (1 - e);
+  }
+  blur = 16 * (1 - quintOut(pi)); op = clamp(pi * 2.2); sc = 1;
+  // exit: lift up, tilt away, dissolve into blur
+  rx += -70 * o; ty += -90 * o; tz += 180 * o; blur += 18 * o; op *= 1 - clamp(po * 1.25);
+  c.style.transform = `translate3d(0,${ty}px,${tz}px) rotateX(${rx}deg)`;
+  c.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : 'none';
+  c.style.opacity = op;
+}
+
+function boldBg(c, shineX) {
+  // shine: soft white band sweeping across the whole word
+  const shine = `linear-gradient(100deg, rgba(255,255,255,0) 0px, rgba(255,240,225,0) ${shineX - 140}px, rgba(255,245,235,0.55) ${shineX}px, rgba(255,240,225,0) ${shineX + 140}px, rgba(255,255,255,0) ${c._ww + 600}px)`;
+  c.style.backgroundImage = `${shine}, ${GRAD}`;
+  c.style.backgroundSize = `${c._ww + 600}px 100%, ${c._ww}px 100%`;
+  c.style.backgroundPosition = `${-c._x}px 0, ${-c._x}px 0`;
+  c.style.backgroundRepeat = 'no-repeat';
+}
+
+function camera(t, D) {
+  // slow Apple-style drift: gentle push-in + yaw, then a soft push through on exit
+  const p = sineInOut(clamp(t / D));
+  const ex = cubicIn(prog(t, D - 1.0, 1.0));
+  const ry = -6 + 8 * p, rx = 4 - 5 * p;
+  const s = 0.95 + 0.05 * p + 0.05 * ex;
+  document.getElementById('cam').style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) scale(${s})`;
+}
+
+const DUR = { A: 4.5, B: 5.0 };
+
+function render(id, t) {
+  for (const k of Object.keys(S)) S[k].el.style.display = k === id ? 'block' : 'none';
+  const sc = S[id], D = DUR[id];
+  camera(t, D);
+  if (id === 'A') {
+    const a1 = sc.lines.a1.chars, a2 = sc.lines.a2.chars;
+    a1.forEach((c, i) => letter(c, t, 0.05 + i * 0.05, 1.25, D - 1.05 + i * 0.03, 0.7, 'serif'));
+    const shineX = -300 + 1400 * sineInOut(prog(t, 1.55, 1.1));
+    a2.forEach((c, i) => { letter(c, t, 0.42 + i * 0.055, 1.3, D - 0.95 + i * 0.035, 0.75, 'bold'); boldBg(c, shineX); });
+  } else {
+    sc.stars.forEach((s, i) => {
+      const st = 0.1 + i * 0.09;
+      const p = clamp((t - st) / 1.2), e = spring(t - st, 11, 0.5);
+      const po = cubicIn(prog(t, D - 1.1 + i * 0.03, 0.7));
+      const ry = 180 * (1 - expoOut(p)) - 80 * po;
+      const scl = Math.max(0, e) * (1 - 0.4 * po);
+      s.style.transform = `translate3d(0,${-60 * po}px,${-200 * (1 - expoOut(p))}px) rotateY(${ry}deg) scale(${scl})`;
+      s.style.opacity = clamp(p * 3) * (1 - clamp(po * 1.3));
+      const b = 10 * (1 - quintOut(p)) + 14 * po;
+      s.style.filter = b > .05 ? `blur(${b}px)` : 'none';
+    });
+    const b2 = sc.lines.b2.chars, b1 = sc.lines.b1.chars;
+    const shineX = -300 + 2000 * sineInOut(prog(t, 1.75, 1.2));
+    b2.forEach((c, i) => { letter(c, t, 0.35 + i * 0.055, 1.3, D - 0.95 + i * 0.03, 0.75, 'bold'); boldBg(c, shineX); });
+    b1.forEach((c, i) => letter(c, t, 0.85 + i * 0.04, 1.2, D - 1.1 + i * 0.025, 0.7, 'serif'));
+  }
+}
+
+window.ready = document.fonts.ready.then(() => {
+  setupScene('A', { lines: { a1: 'A1', a2: 'A2' } });
+  setupScene('B', { lines: { b1: 'B1', b2: 'B2' }, stars: 'Bstars' });
+  layout('A'); layout('B');
+  window.render = render; window.DUR = DUR;
+  return true;
+});
+</script>
+</body>
+</html>
