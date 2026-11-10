@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "PF Italic"; font-style: italic; font-weight: 400; src: url(fonts/playfair-display-latin-400-italic.woff2); }
+  @font-face { font-family: "Inter XB"; font-weight: 800; src: url(fonts/inter-latin-800-normal.woff2); }
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: transparent; }
+  #stage { position: absolute; inset: 0; perspective: 1400px; perspective-origin: 50% 45%; }
+  .scrim { position: absolute; left: -200px; width: 1480px; pointer-events: none;
+           background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,.42) 0%, rgba(0,0,0,.22) 45%, rgba(0,0,0,0) 75%); }
+  .cam { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .scene { position: absolute; inset: 0; transform-style: flat; }
+  .blk { position: absolute; left: 0; top: 0; width: 1080px; transform-style: flat; }
+  .line { position: absolute; left: 0; white-space: nowrap; transform-style: preserve-3d; perspective: 1400px; line-height: 1.15; width: max-content; }
+  .ch { display: inline-block; transform-origin: 50% 70%; backface-visibility: hidden; }
+  .serif { font-family: "PF Italic"; font-style: italic; color: #EEEDE8; }
+  .bold { font-family: "Inter XB"; font-weight: 800; letter-spacing: -0.045em; }
+  .clip .ch { -webkit-background-clip: text; background-clip: text; color: transparent; background-repeat: no-repeat; }
+  .stars { position: absolute; display: flex; gap: 12px; transform-style: preserve-3d; perspective: 1400px; }
+  .star svg { width: 100%; height: 100%; overflow: visible; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const W = 1080;
+const STAR = '<svg viewBox="-50 -50 100 100"><path d="M0,-48 L11.3,-15.5 L45.6,-14.8 L18.3,5.9 L28.2,38.8 L0,19.2 L-28.2,38.8 L-18.3,5.9 L-45.6,-14.8 L-11.3,-15.5Z" fill="#FF9B62"/></svg>';
+const ORANGE = ['#FF3131', '#FF5A3E', '#FF7E4A', '#FF9B55'];
+const SHADOW = 'drop-shadow(0px 4px 26px rgba(0,0,0,0.6))';
+
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const expoOut = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+const quintOut = t => 1 - Math.pow(1 - t, 5);
+const cubicIn = t => t * t * t;
+const sineInOut = t => -(Math.cos(Math.PI * t) - 1) / 2;
+const prog = (t, s, d) => clamp((t - s) / d);
+function spring(t, k = 11, z = 0.5) {
+  if (t <= 0) return 0;
+  const wd = k * Math.sqrt(1 - z * z);
+  return 1 - Math.exp(-z * k * t) * (Math.cos(wd * t) + (z * k / wd) * Math.sin(wd * t));
+}
+
+let SCENES = [];
+
+function build(cfg) {
+  const stage = document.getElementById('stage');
+  for (const sc of cfg.scenes) {
+    sc.start = Math.min(...sc.lines.map(l => l.at), sc.stars ? sc.stars.at : 1e9) - 0.05;
+    const scrim = document.createElement('div'); scrim.className = 'scrim';
+    const cam = document.createElement('div'); cam.className = 'cam';
+    const el = document.createElement('div'); el.className = 'scene';
+    const blk = document.createElement('div'); blk.className = 'blk';
+    stage.appendChild(scrim); stage.appendChild(cam); cam.appendChild(el); el.appendChild(blk);
+    Object.assign(sc, { el, cam, blk, scrim });
+    if (sc.stars) {
+      const box = document.createElement('div'); box.className = 'stars';
+      box.style.top = sc.stars.y + 'px';
+      sc.stars.els = [];
+      for (let i = 0; i < 5; i++) {
+        const d = document.createElement('div'); d.className = 'star'; d.innerHTML = STAR;
+        d.style.width = d.style.height = sc.stars.size + 'px';
+        box.appendChild(d); sc.stars.els.push(d);
+      }
+      sc.stars.box = box; blk.appendChild(box);
+    }
+    for (const ln of sc.lines) {
+      const d = document.createElement('div');
+      d.className = 'line ' + ln.style + (ln.style === 'bold' || ln.grad ? ' clip' : '');
+      d.style.fontSize = ln.size + 'px'; d.style.top = ln.y + 'px';
+      ln.chars = [];
+      for (const c of ln.text) {
+        const s = document.createElement('span'); s.className = 'ch';
+        s.textContent = c === ' ' ? ' ' : c; d.appendChild(s); ln.chars.push(s);
+      }
+      ln.el = d; blk.appendChild(d);
+      if (!ln.grad && ln.style === 'bold') ln.grad = ORANGE;
+    }
+  }
+  // layout
+  for (const sc of cfg.scenes) {
+    let minL = 1e9, maxR = -1e9, maxB = 0;
+    sc.lines.forEach((ln, i) => {
+      const lc = ln.chars[ln.chars.length - 1]; ln.w = lc.offsetLeft + lc.offsetWidth;
+      ln.x = ln.after !== undefined ? sc.lines[ln.after].x + sc.lines[ln.after].w + (ln.gap || 20) : (ln.x || 0);
+      ln.el.style.left = ln.x + 'px';
+      minL = Math.min(minL, ln.x); maxR = Math.max(maxR, ln.x + ln.w);
+      maxB = Math.max(maxB, ln.y + ln.el.offsetHeight);
+    });
+    if (sc.stars) {
+      const bw = sc.stars.box.offsetWidth;
+      sc.stars.box.style.left = ((minL + maxR) / 2 - bw / 2) + 'px';
+    }
+    const width = maxR - minL, s = Math.min(1, 940 / width);
+    const ox = (W - width * s) / 2 - minL * s;
+    sc.blk.style.transformOrigin = '0 0';
+    sc.blk.style.transform = `translate(${ox}px, ${sc.top}px) scale(${s})`;
+    const h = maxB * s;
+    sc.scrim.style.top = (sc.top - 260) + 'px'; sc.scrim.style.height = (h + 520) + 'px';
+    sc.center = sc.top + h / 2;
+    sc.cam.style.perspectiveOrigin = `50% ${sc.center}px`;
+    for (const ln of sc.lines) {
+      if (!ln.grad) continue;
+      const g = `linear-gradient(90deg, ${ln.grad.map((c, i) => `${c} ${Math.round(100 * i / (ln.grad.length - 1))}%`).join(', ')})`;
+      ln.gradCss = g;
+      ln.chars.forEach(c => { c._x = c.offsetLeft; c._ww = ln.w; });
+    }
+    sc.el.style.display = 'none'; sc.scrim.style.display = 'none';
+  }
+  SCENES = cfg.scenes;
+}
+
+function letter(c, t, inStart, inDur, outStart, outDur, mode) {
+  const pi = prog(t, inStart, inDur), e = expoOut(pi);
+  const po = prog(t, outStart, outDur), o = cubicIn(po);
+  let rx, ty, tz;
+  if (mode === 'serif') { rx = -95 * (1 - e); ty = 70 * (1 - e); tz = -260 * (1 - e); }
+  else { rx = 75 * (1 - e); ty = 120 * (1 - e); tz = -420 * (1 - e); }
+  let blur = 16 * (1 - quintOut(pi));
+  let op = clamp(pi * 2.2);
+  rx += -70 * o; ty += -90 * o; tz += 180 * o; blur += 18 * o; op *= 1 - clamp(po * 1.25);
+  c.style.transform = `translate3d(0,${ty.toFixed(2)}px,${tz.toFixed(2)}px) rotateX(${rx.toFixed(2)}deg)`;
+  c.style.filter = (blur > 0.05 ? `blur(${blur.toFixed(2)}px) ` : '') + SHADOW;
+  c.style.opacity = op;
+}
+
+function gradBg(c, ln, shineX) {
+  const ww = c._ww;
+  const shine = `linear-gradient(100deg, rgba(255,255,255,0) 0px, rgba(255,240,225,0) ${shineX - 140}px, rgba(255,245,235,0.5) ${shineX}px, rgba(255,240,225,0) ${shineX + 140}px, rgba(255,255,255,0) ${ww + 600}px)`;
+  c.style.backgroundImage = `${shine}, ${ln.gradCss}`;
+  c.style.backgroundSize = `${ww + 600}px 100%, ${ww}px 100%`;
+  c.style.backgroundPosition = `${-c._x}px 0, ${-c._x}px 0`;
+}
+
+function renderAt(T) {
+  let any = false;
+  for (const sc of SCENES) {
+    const active = T >= sc.start - 0.02 && T <= sc.end + 0.02;
+    sc.el.style.display = active ? 'block' : 'none';
+    sc.scrim.style.display = active ? 'block' : 'none';
+    if (!active) continue;
+    any = true;
+    const D = sc.end - sc.start, lt = T - sc.start;
+    const inDur = sc.inDur || 1.15, outDur = 0.6, exitAt = sc.end - 0.8;
+    // camera drift
+    const p = sineInOut(clamp(lt / D)), ex = cubicIn(prog(T, exitAt, 0.8));
+    const ry = -5 + 7 * p, rx = 3 - 4 * p, s = 0.96 + 0.04 * p + 0.05 * ex;
+    sc.cam.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) scale(${s})`;
+    sc.cam.style.transformOrigin = `50% ${sc.center}px`;
+    sc.scrim.style.opacity = clamp(lt / 0.5) * (1 - prog(T, sc.end - 0.6, 0.6));
+    // stars
+    if (sc.stars) sc.stars.els.forEach((st, i) => {
+      const s0 = sc.stars.at + i * 0.08;
+      const pp = clamp((T - s0) / 1.1), e = spring(T - s0);
+      const po = cubicIn(prog(T, exitAt + i * 0.025, outDur));
+      const ryy = 180 * (1 - expoOut(pp)) - 80 * po;
+      st.style.transform = `translate3d(0,${-60 * po}px,${-200 * (1 - expoOut(pp))}px) rotateY(${ryy}deg) scale(${Math.max(0, e) * (1 - 0.4 * po)})`;
+      st.style.opacity = clamp(pp * 3) * (1 - clamp(po * 1.3));
+      const b = 10 * (1 - quintOut(pp)) + 14 * po;
+      st.style.filter = (b > .05 ? `blur(${b}px) ` : '') + SHADOW;
+    });
+    sc.lines.forEach((ln, li) => {
+      const st = ln.stagger || 0.045;
+      const shineStart = ln.at + 0.85;
+      const shineX = -300 + (ln.w + 700) * sineInOut(prog(T, shineStart, 1.0));
+      const outBase = exitAt + li * 0.04;
+      ln.chars.forEach((c, i) => {
+        letter(c, T, ln.at + i * st, inDur, outBase + i * 0.018, outDur, ln.style);
+        if (ln.gradCss) gradBg(c, ln, ln.style === 'bold' ? shineX : -9999);
+      });
+    });
+  }
+  return any;
+}
+
+window.init = cfg => Promise.all([document.fonts.load('800 100px "Inter XB"'), document.fonts.load('italic 400 100px "PF Italic"')]).then(() => { build(cfg); window.renderAt = renderAt; return true; });
+</script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+{
+ "video": "file_ads.MP4",
+ "duration": 55.0,
+ "scenes": [
+  {
+   "id": "ibadah",
+   "top": 640,
+   "end": 8.7,
+   "chord": 0,
+   "lines": [
+    {
+     "text": "bukan",
+     "style": "serif",
+     "size": 190,
+     "x": 0,
+     "y": 0,
+     "at": 4.54
+    },
+    {
+     "text": "sekedar",
+     "style": "serif",
+     "size": 118,
+     "after": 0,
+     "gap": 26,
+     "y": 62,
+     "at": 5.38,
+     "grad": [
+      "#E4FFF1",
+      "#B9EEDB",
+      "#9DC4FF"
+     ]
+    },
+    {
+     "text": "Ibadah",
+     "style": "bold",
+     "size": 300,
+     "x": -10,
+     "y": 175,
+     "at": 6.4
+    }
+   ]
+  },
+  {
+   "id": "sphinx",
+   "top": 700,
+   "end": 18.3,
+   "chord": 1,
+   "lines": [
+    {
+     "text": "piramida giza",
+     "style": "serif",
+     "size": 150,
+     "x": 0,
+     "y": 0,
+     "at": 14.5
+    },
+    {
+     "text": "sphinx",
+     "style": "bold",
+     "size": 250,
+     "x": 260,
+     "y": 118,
+     "at": 16.0
+    }
+   ]
+  },
+  {
+   "id": "mummy",
+   "top": 700,
+   "end": 21.3,
+   "chord": 2,
+   "inDur": 0.95,
+   "lines": [
+    {
+     "text": "museum",
+     "style": "serif",
+     "size": 140,
+     "x": 230,
+     "y": 0,
+     "at": 18.4,
+     "stagger": 0.035
+    },
+    {
+     "text": "mummy",
+     "style": "bold",
+     "size": 270,
+     "x": 0,
+     "y": 92,
+     "at": 18.65,
+     "stagger": 0.04
+    }
+   ]
+  },
+  {
+   "id": "egypt",
+   "top": 700,
+   "end": 26.6,
+   "chord": 3,
+   "inDur": 0.95,
+   "lines": [
+    {
+     "text": "Alexandria",
+     "style": "serif",
+     "size": 150,
+     "x": 0,
+     "y": 0,
+     "at": 24.6,
+     "stagger": 0.035
+    },
+    {
+     "text": "EGYPT",
+     "style": "bold",
+     "size": 250,
+     "x": 150,
+     "y": 122,
+     "at": 24.85,
+     "stagger": 0.05
+    }
+   ]
+  },
+  {
+   "id": "mesir",
+   "top": 700,
+   "end": 30.4,
+   "chord": 0,
+   "lines": [
+    {
+     "text": "ziarah auliya",
+     "style": "serif",
+     "size": 140,
+     "x": 0,
+     "y": 0,
+     "at": 26.6
+    },
+    {
+     "text": "MESIR",
+     "style": "bold",
+     "size": 250,
+     "x": 200,
+     "y": 115,
+     "at": 27.95
+    }
+   ]
+  },
+  {
+   "id": "qaitbay",
+   "top": 720,
+   "end": 36.3,
+   "chord": 1,
+   "lines": [
+    {
+     "text": "laut mediterania",
+     "style": "serif",
+     "size": 140,
+     "x": 0,
+     "y": 0,
+     "at": 30.55
+    },
+    {
+     "text": "benteng qaitbay",
+     "style": "bold",
+     "size": 150,
+     "x": 150,
+     "y": 112,
+     "at": 33.7
+    }
+   ]
+  },
+  {
+   "id": "hotel",
+   "top": 700,
+   "end": 43.8,
+   "chord": 2,
+   "stars": {
+    "y": 0,
+    "size": 112,
+    "at": 39.6
+   },
+   "lines": [
+    {
+     "text": "Bintang 5",
+     "style": "bold",
+     "size": 220,
+     "x": 0,
+     "y": 150,
+     "at": 40.0
+    },
+    {
+     "text": "Hotel Mekkah",
+     "style": "serif",
+     "size": 120,
+     "x": 170,
+     "y": 110,
+     "at": 39.82,
+     "stagger": 0.035
+    }
+   ]
+  },
+  {
+   "id": "azhar",
+   "top": 560,
+   "end": 48.3,
+   "chord": 3,
+   "lines": [
+    {
+     "text": "ustad muda",
+     "style": "serif",
+     "size": 130,
+     "x": 0,
+     "y": 0,
+     "at": 44.45
+    },
+    {
+     "text": "Alumni",
+     "style": "bold",
+     "size": 175,
+     "x": 250,
+     "y": 120,
+     "at": 45.05
+    },
+    {
+     "text": "Al Azhar",
+     "style": "bold",
+     "size": 175,
+     "x": 250,
+     "y": 285,
+     "at": 45.4
+    },
+    {
+     "text": "Gercep",
+     "style": "bold",
+     "size": 140,
+     "x": -40,
+     "y": 560,
+     "at": 46.2
+    },
+    {
+     "text": "Tanggap",
+     "style": "bold",
+     "size": 140,
+     "x": 470,
+     "y": 560,
+     "at": 46.9
+    }
+   ]
+  },
+  {
+   "id": "jadwal",
+   "top": 520,
+   "end": 52.2,
+   "chord": 0,
+   "lines": [
+    {
+     "text": "jadwal keberangkatan pasti",
+     "style": "serif",
+     "size": 92,
+     "x": 40,
+     "y": 0,
+     "at": 48.1,
+     "stagger": 0.025
+    },
+    {
+     "text": "14 januari 2027",
+     "style": "bold",
+     "size": 132,
+     "x": 0,
+     "y": 150,
+     "at": 48.9,
+     "stagger": 0.025
+    },
+    {
+     "text": "21 januari 2027",
+     "style": "bold",
+     "size": 132,
+     "x": 0,
+     "y": 280,
+     "at": 49.12,
+     "stagger": 0.025
+    },
+    {
+     "text": "28 januari 2027",
+     "style": "bold",
+     "size": 132,
+     "x": 0,
+     "y": 410,
+     "at": 49.34,
+     "stagger": 0.025
+    },
+    {
+     "text": "4 february 2027",
+     "style": "bold",
+     "size": 132,
+     "x": 0,
+     "y": 590,
+     "at": 49.56,
+     "stagger": 0.025
+    },
+    {
+     "text": "11 maret 2027",
+     "style": "bold",
+     "size": 132,
+     "x": 10,
+     "y": 770,
+     "at": 49.78,
+     "stagger": 0.025
+    }
+   ]
+  },
+  {
+   "id": "seat",
+   "top": 760,
+   "end": 55.0,
+   "chord": 1,
+   "lines": [
+    {
+     "text": "amankan",
+     "style": "serif",
+     "size": 208,
+     "x": 0,
+     "y": 0,
+     "at": 52.3
+    },
+    {
+     "text": "seat mu",
+     "style": "bold",
+     "size": 200,
+     "x": 120,
+     "y": 128,
+     "at": 52.7
+    }
+   ]
+  }
+ ]
+}

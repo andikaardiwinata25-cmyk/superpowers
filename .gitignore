@@ -18,3 +18,4 @@ __pycache__/
 *.pyo
 .pytest_cache/
 rehlata/animasi-teks/hasil/*.mov
+rehlata/animasi-teks/hasil/umrah-mesir-*.mp4
