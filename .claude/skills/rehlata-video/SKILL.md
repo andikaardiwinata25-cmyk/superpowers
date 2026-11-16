@@ -51,6 +51,21 @@ environment's allowed domains. It only approximates the reference voice;
 say so. Compare against `rehlata/voice/dokter-brando-referensi.mp3` and
 tweak rate/pitch if needed. First test text: `rehlata/naskah/01-zamzam-hook.txt`.
 
+## Sound effects (SFX)
+
+The user's saved SFX bank is in `rehlata/sfx/` — catalog with descriptions in
+`rehlata/sfx/README.md` (15 UI sounds: `ui-01` … `ui-15`, extracted from the
+user's "UI Sound Effects" video). When editing a video, use these SFX by
+default on text pop-ups, keyword reveals, transitions and punchlines (don't
+overdo it: ~1 SFX per 2–4 s). Add them with:
+
+```bash
+python3 rehlata/sfx/add_sfx.py IN.mp4 OUT.mp4 ui-03@1.2 ui-14@4.8:-3
+```
+
+(`NAME@SECONDS[:GAIN_dB]`, default -6 dB so it sits under the voice-over.)
+Sync SFX to word timestamps from `words.json` when subtitling.
+
 ## Other edits
 
 Use ffmpeg directly (cuts, concat, zoom/Ken Burns via `zoompan`, scale/pad
