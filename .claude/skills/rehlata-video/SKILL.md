@@ -54,8 +54,11 @@ tweak rate/pitch if needed. First test text: `rehlata/naskah/01-zamzam-hook.txt`
 ## Sound effects (SFX)
 
 The user's saved SFX bank is in `rehlata/sfx/` — catalog with descriptions in
-`rehlata/sfx/README.md` (15 UI sounds: `ui-01` … `ui-15`, extracted from the
-user's "UI Sound Effects" video). When editing a video, use these SFX by
+`rehlata/sfx/README.md`: 15 UI sounds `ui-01` … `ui-15` plus 18 named effects
+in `rehlata/sfx/fx/` (pop, reward, low-hit, glitch, whoosh-riser, camera-shutter,
+page-flip, iphone-vibrate, …; better audio quality — prefer them when the
+function matches). New SFX videos from the user: cut with `rehlata/sfx/cut.py`,
+check for duplicates, keep the best-quality version, update the README. When editing a video, use these SFX by
 default on text pop-ups, keyword reveals, transitions and punchlines (don't
 overdo it: ~1 SFX per 2–4 s). Add them with:
 

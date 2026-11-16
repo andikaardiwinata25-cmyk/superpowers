@@ -3,7 +3,7 @@
 
   python3 rehlata/sfx/add_sfx.py IN.mp4 OUT.mp4 ui-03@1.2 ui-14@4.8:-3
 
-Format tiap SFX: NAMA@DETIK[:GAIN_dB]. NAMA = file di rehlata/sfx/ui (tanpa .wav)
+Format tiap SFX: NAMA@DETIK[:GAIN_dB]. NAMA = file di rehlata/sfx/ui atau rehlata/sfx/fx (tanpa .wav)
 atau path WAV/MP3 lain. Gain default -6 dB.
 """
 import json, os, subprocess, sys
@@ -26,8 +26,9 @@ def main():
         name, rest = spec.split("@", 1)
         t, _, gain = rest.partition(":")
         gain = float(gain) if gain else -6.0
-        path = name if os.path.exists(name) else os.path.join(HERE, "ui", name + ".wav")
-        if not os.path.exists(path):
+        path = name if os.path.exists(name) else next(
+            (p for p in (os.path.join(HERE, d, name + ".wav") for d in ("ui", "fx")) if os.path.exists(p)), "")
+        if not path:
             sys.exit(f"SFX tidak ditemukan: {name}")
         inputs += ["-i", path]
         ms = int(float(t) * 1000)
