@@ -15,6 +15,25 @@ Disusun dari 3 video referensi (Listrik/SUTET, Air dari sumur ke keran, Lebah "d
 | Durasi | **60–75 detik** |
 | Audio | Voice-over jelas di depan, loudness rata (±-16 dB mean, ±-14 LUFS), musik pelan di belakang |
 
+## 1b. Safe Zone (WAJIB)
+
+Gambar acuan: `rehlata/safe-zone-referensi.png`. Di luar area ini tertutup UI
+TikTok/Reels/Shorts (username, caption, tombol like/comment/share).
+
+| Sisi | Jarak aman @1080×1920 | @720×1280 | % frame |
+|---|---|---|---|
+| Atas | **150 px** | 100 px | 7,8% tinggi |
+| Bawah | **320 px** | 213 px | 16,7% tinggi |
+| Kiri | **100 px** | 67 px | 9,3% lebar |
+| Kanan | **100 px** | 67 px | 9,3% lebar |
+
+→ Area aman @1080×1920 = **x 100–980, y 150–1600** (880×1450 px).
+
+- **Semua** teks, subtitle, logo, label, pop-up judul, sumber foto/disclaimer,
+  dan wajah/objek utama harus berada **di dalam** area aman.
+- Area merah (luar safe zone) hanya untuk background/footage yang boleh tertutup.
+- Untuk resolusi lain: skalakan proporsional (kalikan dengan tinggi/1920).
+
 ## 2. Subtitle (WAJIB)
 
 - **Font:** **Montserrat** (SemiBold/Bold)
@@ -22,7 +41,7 @@ Disusun dari 3 video referensi (Listrik/SUTET, Air dari sumur ke keran, Lebah "d
   - ±40–48 px di 1080×1920 (±28–32 px di 720×1280)
   - Lebar teks maksimal ±60–70% lebar frame
 - **Warna:** putih, dengan drop shadow lembut atau outline tipis gelap supaya terbaca di background terang (langit, dinding putih)
-- **Posisi:** tengah horizontal, di **sepertiga bawah-tengah** (±55–65% tinggi frame dari atas). Jangan mepet bawah karena tertutup UI TikTok/Reels.
+- **Posisi:** tengah horizontal, di **sepertiga bawah-tengah** (±55–65% tinggi frame dari atas). Jangan mepet bawah: seluruh baris subtitle harus di atas batas 320 px dari bawah (lihat Safe Zone 1b).
 - **Gaya muncul:** **kata per kata / frasa pendek (1–4 kata)**, sinkron dengan voice-over (karaoke-style). Satu baris; maksimal 2 baris pendek.
 - **Highlight kata kunci:** kata penting diberi warna aksen **hijau muda (#9CF27A)**; teks lainnya **putih** (contoh: "Bayangin lo **pengangguran**", "Namanya **drone**", "madu dikerjakan **betina**"). Kata yang belum diucapkan boleh tampil redup/abu-abu lalu menyala saat diucapkan.
 - Bahasa santai sehari-hari, tanda baca seperlunya (koma, titik, "...").
@@ -85,7 +104,7 @@ Dua gaya yang dipakai, pilih sesuai topik:
 - [ ] 9:16, 30 fps, 60–75 detik
 - [ ] Hook kuat di 3 detik pertama
 - [ ] Subtitle Montserrat, **kecil**, putih, kata kunci hijau muda, sinkron kata per kata
-- [ ] Subtitle & teks penting aman dari area UI (bawah ±15%, kanan ±12%)
+- [ ] Semua teks/logo/objek penting di dalam safe zone: atas 150 px, bawah 320 px, kiri 100 px, kanan 100 px (@1080×1920)
 - [ ] Label istilah dan pop-up judul di momen kunci
 - [ ] Shot berganti tiap 2–4 detik, kamera selalu bergerak
 - [ ] Sumber foto / disclaimer dicantumkan kecil

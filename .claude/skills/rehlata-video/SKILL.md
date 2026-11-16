@@ -22,7 +22,11 @@ no git/repo jargon. Just do the work and deliver the finished file.
 - Voice-over = **"Dokter Brando" / "Dokter Toxic"** voice (see STYLE.md 2b,
   reference `rehlata/voice/dokter-brando-referensi.mp3`). Scripts: ~150 words
   per 60 s, hook with 1–2 short questions + ~0.5 s pause.
-- 9:16, 30 fps, safe areas respected (bottom ~15%, right ~12%).
+- 9:16, 30 fps. **Safe zone @1080×1920: top 150 px, bottom 320 px, left 100 px,
+  right 100 px** → keep ALL text, subtitles, logos, labels, credits and the main
+  subject inside x 100–980, y 150–1600 (scale by height/1920 for other sizes).
+  Reference image: `rehlata/safe-zone-referensi.png`. Verify with an overlay
+  frame (`drawbox`) before delivering.
 
 ## Auto-subtitle workflow
 
