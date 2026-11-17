@@ -247,9 +247,6 @@ export const Main: React.FC = () => {
         </Sequence>
       ))}
 
-      <div style={{ position: "absolute", top: 40, width: "100%", textAlign: "center", fontFamily: "Montserrat", fontWeight: 700, fontSize: 20, letterSpacing: "0.2em", color: "rgba(255,255,255,0.55)" }}>
-        REHLATA
-      </div>
     </AbsoluteFill>
   );
 };

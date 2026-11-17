@@ -274,9 +274,6 @@ export const MapScene: React.FC<{
           ]}
         />
       ) : null}
-      <div style={{ position: "absolute", top: 70, width: "100%", textAlign: "center", fontFamily: FONT, fontWeight: 600, fontSize: 18, color: "rgba(255,255,255,0.65)" }}>
-        Ilustrasi rute · peta tidak berskala
-      </div>
     </AbsoluteFill>
   );
 };
