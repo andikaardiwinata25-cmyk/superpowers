@@ -30,6 +30,8 @@ const TXT = (tag: number, lines: number[], hl: number, v = 1): [number, string, 
 ];
 const MAPIN = (t: number): [number, string, number][] => [[t, "thump", 0.4], [t, "whoosh_low", 0.32]];
 const FLIGHT = (start: number, land: number): [number, string, number][] => [[start, "swish", 0.3], [land, "bubble_down", 0.28]];
+// overall level of the effects under the voice (processed clips are hot)
+const SFX_GAIN = 0.5;
 const SFX: [number, string, number][] = [
   // HOOK: question bubble + keyword highlights
   [0.3, "chime_up", 0.32], [2.6, "tick", 0.3], [3.0, "tick", 0.3], [6.6, "tick", 0.3], [7.5, "tick", 0.3],
@@ -275,7 +277,7 @@ export const Main: React.FC = () => {
 
       {SFX.map(([t, name, vol], i) => (
         <Sequence key={i} from={Math.max(0, s(t - (LEAD[name] ?? 0)))} durationInFrames={s(3.6)} layout="none">
-          <Audio src={staticFile(`sfx2/${name}.wav`)} volume={vol} />
+          <Audio src={staticFile(`sfx2/${name}.wav`)} volume={vol * SFX_GAIN} />
         </Sequence>
       ))}
 
