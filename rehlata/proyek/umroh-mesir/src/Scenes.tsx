@@ -1,13 +1,13 @@
 import React from "react";
 import { AbsoluteFill, Img, interpolate, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { C, GOLD_GRADIENT, KEY_GRADIENT, keys, pop, s, soft } from "./lib";
-import { Chip, FONT, GradText, GridPaper, PhotoCard, Sticker } from "./ui";
+import { C, KEY_GRADIENT, keys, pop, s, soft } from "./lib";
+import { BigType, FONT, GradText, GridPaper, PhotoCard, TagRow } from "./ui";
 
 /* ---------- 1. "Madinah dulu atau Mekkah dulu?" (footage card on the left) ---------- */
 export const VSScene: React.FC = () => {
   // local frame 0 = 6.4s
   const f = useCurrentFrame();
-  const vs = pop(f, s(1.15), 8, 0.5);
+  const vs = pop(f, s(0.45), 8, 0.5);
   const { durationInFrames } = useVideoConfig();
   const out = soft(f, durationInFrames - 10, 10);
   return (
@@ -15,8 +15,8 @@ export const VSScene: React.FC = () => {
       <Sequence from={0} durationInFrames={durationInFrames} layout="none">
         <PhotoCard src="madinah.jpg" x={735} y={445} w={370} h={270} dur={durationInFrames} caption="LANDING MADINAH" rz={4} ry={-14} from="right" />
       </Sequence>
-      <Sequence from={s(1.0)} durationInFrames={durationInFrames - s(1.0)} layout="none">
-        <PhotoCard src="kaaba.jpg" x={735} y={870} w={370} h={270} dur={durationInFrames - s(1.0)} caption="LANDING MEKKAH" rz={-4} ry={-14} from="right" />
+      <Sequence from={s(0.25)} durationInFrames={durationInFrames - s(0.25)} layout="none">
+        <PhotoCard src="kaaba.jpg" x={735} y={870} w={370} h={270} dur={durationInFrames - s(0.25)} caption="LANDING MEKKAH" rz={-4} ry={-14} from="right" />
       </Sequence>
       <div
         style={{
@@ -38,8 +38,8 @@ export const VSScene: React.FC = () => {
           VS
         </GradText>
       </div>
-      <Sequence from={s(2.9)} layout="none">
-        <Sticker text="BEDANYA APA?" y={1390} size={88} dur={durationInFrames - s(2.9)} gradient={GOLD_GRADIENT} depthColor="#5a2a00" />
+      <Sequence from={s(0.5)} layout="none">
+        <BigType dark align="center" y={1110} yellow="SEBENARNYA..." size={96} dur={durationInFrames - s(0.5)} lines={[{ t: "BEDANYA", at: s(0.3) }, { t: "APA?", at: s(0.9), hl: true }]} />
       </Sequence>
     </AbsoluteFill>
   );
@@ -47,7 +47,7 @@ export const VSScene: React.FC = () => {
 
 /* ---------- 2. Step tracker (Opsi 1 tahapan) under the footage card ---------- */
 const STEPS = [
-  { n: "1", t: "ZIARAH AULIYA", src: "pyramids.jpg", at: 3.1 },
+  { n: "1", t: "ZIARAH AULIYA", src: "mesir-masjid.jpg", at: 3.1 },
   { n: "2", t: "ZIARAH RASULULLAH", src: "makam.jpg", at: 5.9 },
   { n: "3", t: "UMROH", src: "kaaba.jpg", at: 7.9 },
 ];
@@ -59,10 +59,8 @@ export const StepTracker: React.FC = () => {
   const crown = pop(f, s(9.1), 9, 0.5);
   return (
     <AbsoluteFill style={{ perspective: 1200, opacity: 1 - out }}>
-      <div style={{ position: "absolute", left: 90, right: 160, top: 1062, textAlign: "center", opacity: soft(f, s(1.0)) }}>
-        <GradText size={36} gradient={KEY_GRADIENT} depthColor="#173b10" depth={4}>
-          TAHAPAN OPSI 1
-        </GradText>
+      <div style={{ position: "absolute", left: 90, top: 1060 }}>
+        <TagRow yellow text="TAHAPAN OPSI PERTAMA" at={s(1.0)} />
       </div>
       {/* connecting progress line */}
       <div style={{ position: "absolute", left: 255, top: 1500, width: 510, height: 8, borderRadius: 4, background: "rgba(0,0,0,0.15)" }} />
@@ -115,7 +113,9 @@ export const StepTracker: React.FC = () => {
         );
       })}
       <Sequence from={s(9.1)} layout="none">
-        <Sticker text="PUNCAKNYA!" x={740} y={900} size={50} tilt={6} dur={durationInFrames - s(9.1)} gradient={GOLD_GRADIENT} depthColor="#5a2a00" />
+        <div style={{ position: "absolute", left: 560, top: 1150, transform: "rotate(-4deg)" }}>
+          <TagRow yellow text="PUNCAKNYA!" at={0} />
+        </div>
       </Sequence>
     </AbsoluteFill>
   );
@@ -176,8 +176,8 @@ export const CompareScene: React.FC = () => {
       <GridPaper />
       <AbsoluteFill style={{ transform: `rotateY(${camRY}deg)`, transformStyle: "preserve-3d" }}>
         <div style={{ position: "absolute", top: 300, left: 90, right: 160, textAlign: "center", zIndex: 5, transform: `scale(${pop(f, 4, 11, 0.6)})` }}>
-          <div style={{ display: "inline-block", background: C.ink, padding: "14px 26px 18px", borderRadius: 16, boxShadow: "0 20px 40px rgba(0,0,0,0.35)" }}>
-            <GradText size={52}>JAMAAH LEBIH NYAMAN...</GradText>
+          <div style={{ display: "inline-flex" }}>
+            <TagRow yellow text="ADA JAMAAH YANG LEBIH NYAMAN..." at={0} />
           </div>
         </div>
         <Sequence from={6} layout="none">
@@ -208,7 +208,7 @@ export const PollCard: React.FC = () => {
           display: "flex",
           alignItems: "center",
           gap: 18,
-          background: hi > 0.5 ? C.green : "rgba(255,255,255,0.1)",
+          background: hi > 0.5 ? C.green : "#EFEBDF",
           borderRadius: 16,
           padding: "16px 22px",
           transform: `translateX(${(1 - op) * 200}px) scale(${1 + hi * 0.06})`,
@@ -216,10 +216,10 @@ export const PollCard: React.FC = () => {
           boxShadow: hi > 0.5 ? "0 0 40px rgba(156,242,122,0.6)" : undefined,
         }}
       >
-        <div style={{ width: 46, height: 46, borderRadius: 23, border: `4px solid ${hi > 0.5 ? C.ink : "white"}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT, fontWeight: 800, fontSize: 26, color: hi > 0.5 ? C.ink : "white" }}>
+        <div style={{ width: 46, height: 46, borderRadius: 23, border: `4px solid ${C.ink}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT, fontWeight: 800, fontSize: 26, color: C.ink }}>
           {i === 0 ? "A" : "B"}
         </div>
-        <div style={{ fontFamily: FONT, letterSpacing: "-0.04em", color: hi > 0.5 ? C.ink : "white" }}>
+        <div style={{ fontFamily: FONT, letterSpacing: "-0.04em", color: C.ink }}>
           <div style={{ fontWeight: 800, fontSize: 38 }}>{label}</div>
           <div style={{ fontWeight: 600, fontSize: 22, opacity: 0.8 }}>{sub}</div>
         </div>
@@ -236,23 +236,28 @@ export const PollCard: React.FC = () => {
           width: 740,
           transform: `translate(-50%,-50%) rotateX(${interpolate(p, [0, 1], [70, 6]) + Math.sin(f / 30) * 2 + out * 60}deg) rotateY(${Math.sin(f / 40) * 6}deg) scale(${interpolate(p, [0, 1], [0.6, 1]) * (1 - out * 0.4)})`,
           opacity: Math.min(1, p * 2) * (1 - out),
-          background: "rgba(14,20,18,0.9)",
+          background: "#FBF8EF",
           borderRadius: 28,
           padding: 30,
           display: "flex",
           flexDirection: "column",
           gap: 18,
-          boxShadow: "0 50px 90px rgba(0,0,0,0.55), inset 0 0 0 2px rgba(156,242,122,0.4)",
+          boxShadow: "0 50px 90px rgba(0,0,0,0.45)",
         }}
       >
-        <div style={{ textAlign: "center", marginBottom: 6 }}>
-          <GradText size={56}>KAMU PILIH MANA?</GradText>
+        <div style={{ marginBottom: 2 }}>
+          <div style={{ fontFamily: FONT, fontWeight: 700, fontSize: 19, letterSpacing: "0.08em", color: "#5B6B5F" }}>PERTANYAAN BUAT KAMU</div>
+          <div style={{ fontFamily: FONT, fontWeight: 800, fontSize: 52, letterSpacing: "-0.045em", color: "#121614", lineHeight: 1.1 }}>
+            Kamu lebih prefer <span style={{ background: C.green, padding: "0 8px", borderRadius: 5 }}>mana?</span>
+          </div>
         </div>
         {opt("UMROH DULU", "Mesir → Jeddah → Mekkah → Madinah", hA, 0)}
         {opt("MADINAH DULU", "Mesir → Madinah → Mekkah → Jeddah", hB, 1)}
       </div>
       <Sequence from={s(4.3)} layout="none">
-        <Chip text="TULIS DI KOLOM KOMENTAR ↓" x={505} y={1380} dur={durationInFrames - s(4.3)} size={40} />
+        <div style={{ position: "absolute", left: 90, top: 860 }}>
+          <TagRow yellow text="TULIS DI KOLOM KOMENTAR ↓" at={0} />
+        </div>
       </Sequence>
     </AbsoluteFill>
   );

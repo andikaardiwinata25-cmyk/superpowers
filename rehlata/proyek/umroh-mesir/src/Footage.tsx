@@ -19,7 +19,7 @@ const TY: [number, number][] = [
 
 // Footage shrinks into a floating 3D card on grid paper during these windows.
 const CARD: [number, number][] = [
-  [5.5, 0], [6.1, 1], [10.0, 1], [10.42, 0],
+  [7.95, 0], [8.45, 1], [10.0, 1], [10.42, 0],
   [31.5, 0], [32.1, 1], [41.2, 1], [41.7, 0],
 ];
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { C, KEY_GRADIENT, keys, pop, soft } from "./lib";
-import { FONT, GradText } from "./ui";
+import { BigType, FONT, GradText } from "./ui";
 
 // Coordinates in the original 1200x800 map image. The plane uses a 4x upscale.
 export const P = {
@@ -50,7 +50,7 @@ export const MapScene: React.FC<{
   pins?: Pin[];
   popups?: Popup[];
   flats?: Flat[];
-  header?: { tag: string; title: string; at?: number };
+  header?: { num: string; over: string; title: string; hl: string; at?: number };
 }> = ({ cams, routes = [], pins = [], popups = [], flats = [], header }) => {
   const f = useCurrentFrame();
   const { durationInFrames, width, height } = useVideoConfig();
@@ -86,7 +86,7 @@ export const MapScene: React.FC<{
             height: 800 * K,
             transformOrigin: "0 0",
             transformStyle: "preserve-3d",
-            transform: `translate(${width / 2}px, ${height * 0.47}px) rotateX(${tilt + exit * 25}deg) rotateZ(${rot}deg) scale(${z * (1 + exit * 0.3)}) translate(${-cx * K}px, ${-cy * K}px)`,
+            transform: `translate(${width / 2}px, ${height * 0.56}px) rotateX(${tilt + exit * 25}deg) rotateZ(${rot}deg) scale(${z * (1 + exit * 0.3)}) translate(${-cx * K}px, ${-cy * K}px)`,
           }}
         >
           <Img src={staticFile("map4x.jpg")} style={{ position: "absolute", width: 1200 * K, height: 800 * K }} />
@@ -215,7 +215,7 @@ export const MapScene: React.FC<{
             const p = pop(f, pu.at, 12, 0.9);
             const o = soft(f, pu.until, 12);
             const w = pu.w ?? 340;
-            const h = pu.h ?? 260;
+            const h = Math.min(pu.h ?? 260, 270);
             const stand = interpolate(p, [0, 1], [0, -tilt - 4]) * (1 - o);
             return (
               <div
@@ -260,7 +260,19 @@ export const MapScene: React.FC<{
       {/* paper vignette + warm grade */}
       <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 40%, rgba(30,15,0,0.55) 100%)" }} />
 
-      {header ? <MapHeader tag={header.tag} title={header.title} at={header.at ?? 6} /> : null}
+      {header ? (
+        <BigType
+          num={header.num}
+          over={header.over}
+          tagAt={header.at ?? 6}
+          size={92}
+          dur={durationInFrames + 60}
+          lines={[
+            { t: header.title, at: (header.at ?? 6) + 4 },
+            { t: header.hl, at: (header.at ?? 6) + 9, hl: true },
+          ]}
+        />
+      ) : null}
       <div style={{ position: "absolute", top: 70, width: "100%", textAlign: "center", fontFamily: FONT, fontWeight: 600, fontSize: 18, color: "rgba(255,255,255,0.65)" }}>
         Ilustrasi rute · peta tidak berskala
       </div>
@@ -268,31 +280,3 @@ export const MapScene: React.FC<{
   );
 };
 
-const MapHeader: React.FC<{ tag: string; title: string; at: number }> = ({ tag, title, at }) => {
-  const f = useCurrentFrame();
-  const p = pop(f, at, 11, 0.6);
-  const p2 = pop(f, at + 5, 11, 0.6);
-  return (
-    <div style={{ position: "absolute", top: 280, left: 90, right: 160, display: "flex", flexDirection: "column", alignItems: "center", gap: 12, perspective: 900 }}>
-      <div
-        style={{
-          fontFamily: FONT,
-          fontWeight: 800,
-          fontSize: 30,
-          letterSpacing: "0.06em",
-          color: "#0E1512",
-          background: C.green,
-          padding: "6px 18px",
-          borderRadius: 8,
-          transform: `rotateX(${(1 - p) * 90}deg)`,
-          opacity: p,
-        }}
-      >
-        {tag}
-      </div>
-      <div style={{ transform: `rotateX(${(1 - p2) * -90}deg) scale(${0.6 + p2 * 0.4})`, opacity: p2, background: "rgba(14,20,18,0.88)", padding: "14px 26px 18px", borderRadius: 16, boxShadow: "0 20px 40px rgba(0,0,0,0.45)" }}>
-        <GradText size={64}>{title}</GradText>
-      </div>
-    </div>
-  );
-};

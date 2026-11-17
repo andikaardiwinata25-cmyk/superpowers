@@ -312,3 +312,186 @@ export const GridPaper: React.FC<{ opacity?: number }> = ({ opacity = 1 }) => {
 };
 
 export { GOLD_GRADIENT };
+
+/* =================== Typography style (Rehlata "Date Confirmed" ref) =================== */
+const GREEN_BAR = "linear-gradient(90deg, #B4F890 0%, #9CF27A 55%, #86E86A 100%)";
+const easeOut = (x: number) => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
+
+export type TLine = { t: string; at: number; hl?: boolean; strikeAt?: number };
+
+/** Small header: green number box + overline, or a yellow tag. */
+export const TagRow: React.FC<{ num?: string; text: string; at: number; yellow?: boolean; red?: string }> = ({ num, text, at, yellow, red }) => {
+  const f = useCurrentFrame();
+  const p = pop(f, at, 12, 0.5);
+  if (f < at) return <div style={{ height: yellow ? 46 : 40 }} />;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 4, transform: `translateX(${(1 - p) * -40}px)`, opacity: Math.min(1, p * 2) }}>
+      {red ? <div style={{ fontFamily: FONT, fontWeight: 800, fontSize: 17, letterSpacing: "0.06em", color: "#FF6A3D" }}>{red}</div> : null}
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {num ? (
+          <div style={{ fontFamily: FONT, fontWeight: 800, fontSize: 30, letterSpacing: "-0.03em", color: "#0E1512", background: GREEN_BAR, borderRadius: 8, padding: "2px 12px", transform: `scale(${p})` }}>{num}</div>
+        ) : null}
+        <div
+          style={{
+            fontFamily: FONT,
+            fontWeight: 800,
+            fontSize: yellow ? 28 : 24,
+            letterSpacing: yellow ? "0.01em" : "0.05em",
+            color: yellow ? "#111" : "white",
+            background: yellow ? "#F9D949" : "transparent",
+            padding: yellow ? "8px 16px" : 0,
+            borderRadius: 8,
+            boxShadow: yellow ? "0 8px 20px rgba(0,0,0,0.3)" : undefined,
+            textShadow: yellow ? undefined : "0 2px 10px rgba(0,0,0,0.6)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {text}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/** Big stacked kinetic type: white lines with a mask-reveal, key line black on a green bar. */
+export const BigType: React.FC<{
+  x?: number;
+  y?: number;
+  num?: string;
+  over?: string;
+  yellow?: string;
+  tagAt?: number;
+  lines: TLine[];
+  dur: number;
+  size?: number;
+  align?: "left" | "center";
+  dark?: boolean;
+}> = ({ x = 90, y = 290, num, over, yellow, tagAt = 0, lines, dur, size = 100, align = "left", dark = false }) => {
+  const f = useCurrentFrame();
+  const out = soft(f, dur - 9, 9);
+  return (
+    <AbsoluteFill style={{ perspective: 1000, pointerEvents: "none" }}>
+      <div
+        style={{
+          position: "absolute",
+          left: align === "left" ? x : 90,
+          right: align === "left" ? undefined : 160,
+          top: y,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: align === "left" ? "flex-start" : "center",
+          gap: 10,
+          transform: `translateY(${-out * 40}px)`,
+          opacity: 1 - out,
+        }}
+      >
+        {over || yellow ? <TagRow num={num} text={(over ?? yellow) as string} at={tagAt} yellow={!!yellow} /> : null}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center" }}>
+          {lines.map((ln, i) => {
+            const p = easeOut((f - ln.at) / 9);
+            const bar = easeOut((f - ln.at - 2) / 8);
+            const st = ln.strikeAt !== undefined ? easeOut((f - ln.strikeAt) / 7) : 0;
+            if (f < ln.at - 1) return null;
+            return (
+              <div key={i} style={{ position: "relative", overflow: "hidden", padding: ln.hl ? "0 14px 4px" : "0 4px 6px", marginTop: i ? -size * 0.06 : 0 }}>
+                {ln.hl ? (
+                  <div style={{ position: "absolute", left: 0, right: 0, top: size * 0.06, bottom: size * 0.02, background: GREEN_BAR, borderRadius: 6, transformOrigin: "left center", transform: `scaleX(${bar})` }} />
+                ) : null}
+                <div
+                  style={{
+                    position: "relative",
+                    fontFamily: FONT,
+                    fontWeight: 800,
+                    fontSize: size,
+                    lineHeight: 1,
+                    letterSpacing: "-0.05em",
+                    color: ln.hl || dark ? "#0E1512" : "white",
+                    textShadow: ln.hl || dark ? undefined : "0 4px 22px rgba(0,0,0,0.55), 0 2px 4px rgba(0,0,0,0.35)",
+                    whiteSpace: "nowrap",
+                    transformOrigin: "50% 100%",
+                    transform: `translateY(${(1 - p) * 105}%) rotateX(${(1 - p) * -55}deg)`,
+                    opacity: ln.strikeAt !== undefined ? 1 - st * 0.45 : 1,
+                  }}
+                >
+                  {ln.t}
+                </div>
+                {ln.strikeAt !== undefined ? (
+                  <div style={{ position: "absolute", left: 0, right: 0, top: "50%", height: size * 0.09, background: "#FF5A4E", borderRadius: 4, transformOrigin: "left", transform: `scaleX(${st})` }} />
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+/** Cream chat-bubble question card with word-by-word ink-in and green marker highlights. */
+export const QuestionBubble: React.FC<{
+  over: string;
+  words: { t: string; at: number; hl?: boolean; br?: boolean; dim?: boolean }[];
+  dur: number;
+  x?: number;
+  y?: number;
+  width?: number;
+  size?: number;
+}> = ({ over, words, dur, x = 90, y = 290, width = 760, size = 50 }) => {
+  const f = useCurrentFrame();
+  const p = pop(f, 0, 13, 0.7);
+  const out = soft(f, dur - 9, 9);
+  return (
+    <AbsoluteFill style={{ perspective: 1200, pointerEvents: "none" }}>
+      <div
+        style={{
+          position: "absolute",
+          left: x,
+          top: y,
+          width,
+          transformOrigin: "10% 100%",
+          transform: `rotateY(${(1 - p) * -30 + Math.sin(f / 40) * 2}deg) rotateX(${Math.cos(f / 50) * 2}deg) scale(${(0.6 + p * 0.4) * (1 - out * 0.15)})`,
+          opacity: Math.min(1, p * 2) * (1 - out),
+        }}
+      >
+        <div style={{ background: "#FBF8EF", borderRadius: 26, padding: "24px 30px 28px", boxShadow: "0 30px 60px rgba(0,0,0,0.35)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+            <div style={{ width: 26, height: 26, borderRadius: 13, background: "#2E9E5B", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontFamily: FONT, fontWeight: 800, fontSize: 15 }}>?</div>
+            <div style={{ fontFamily: FONT, fontWeight: 700, fontSize: 19, letterSpacing: "0.08em", color: "#5B6B5F" }}>{over}</div>
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: size * 0.22, rowGap: 2 }}>
+            {words.map((w, i) => {
+              const on = easeOut((f - w.at) / 6);
+              const bar = easeOut((f - w.at - 1) / 7);
+              return (
+                <React.Fragment key={i}>
+                  {w.br ? <div style={{ flexBasis: "100%", height: 0 }} /> : null}
+                  <span style={{ position: "relative", padding: w.hl ? "0 8px" : 0, display: "inline-block" }}>
+                    {w.hl ? <span style={{ position: "absolute", inset: "8% 0 4% 0", background: GREEN_BAR, borderRadius: 5, transformOrigin: "left", transform: `scaleX(${bar})` }} /> : null}
+                    <span
+                      style={{
+                        position: "relative",
+                        fontFamily: FONT,
+                        fontWeight: 800,
+                        fontSize: w.dim ? size * 0.82 : size,
+                        letterSpacing: "-0.045em",
+                        lineHeight: 1.12,
+                        color: on > 0.5 ? (w.dim ? "#9AA39C" : "#121614") : "#D6D2C6",
+                        display: "inline-block",
+                        transform: `translateY(${(1 - on) * 6}px)`,
+                      }}
+                    >
+                      {w.t}
+                    </span>
+                  </span>
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+        <svg width={44} height={30} style={{ position: "absolute", left: 60, bottom: -26 }}>
+          <path d="M0 0 L44 0 L8 30 Z" fill="#FBF8EF" />
+        </svg>
+      </div>
+    </AbsoluteFill>
+  );
+};
