@@ -41,7 +41,7 @@ export const Subtitles: React.FC<{ y?: number }> = ({ y = 1180 }) => {
           position: "absolute",
           top: y,
           left: 110,
-          right: 130,
+          right: 170,
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "center",

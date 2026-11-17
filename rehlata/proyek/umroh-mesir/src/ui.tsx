@@ -76,7 +76,7 @@ export const Sticker: React.FC<{
   depthColor?: string;
   tilt?: number;
   box?: boolean;
-}> = ({ text, sub, x = 540, y, size = 92, dur, gradient = KEY_GRADIENT, depthColor = "#0E3B2A", tilt = -3, box = true }) => {
+}> = ({ text, sub, x = 505, y, size = 92, dur, gradient = KEY_GRADIENT, depthColor = "#0E3B2A", tilt = -3, box = true }) => {
   const f = useCurrentFrame();
   const p = pop(f, 0, 10, 0.6);
   const out = soft(f, dur - 9, 9);

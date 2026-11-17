@@ -1,6 +1,9 @@
 import { Easing, interpolate, spring } from "remotion";
 
 export const FPS = 30;
+
+/** Safe zone 1080x1920, aman untuk TikTok + Reels + Shorts sekaligus. */
+export const SAFE = { top: 270, bottom: 1500, left: 90, right: 920 };
 export const s = (sec: number) => Math.round(sec * FPS);
 
 export const C = {

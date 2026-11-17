@@ -32,9 +32,9 @@ export const Footage: React.FC = () => {
   const rz = Math.sin(f / 110) * 0.35;
   const cm = keysS(f, CARD);
   const layoutB = t > 20; // second card window: top centre; first: left side
-  const cardScale = layoutB ? 0.5 : 0.42;
-  const cardX = layoutB ? 0 : -260;
-  const cardY = layoutB ? -440 : -440;
+  const cardScale = layoutB ? 0.38 : 0.42;
+  const cardX = layoutB ? 0 : -240;
+  const cardY = layoutB ? -310 : -360;
   const cardRY = layoutB ? -8 + Math.sin(f / 40) * 4 : 18 + Math.sin(f / 40) * 4;
   const cardRX = 6 + Math.cos(f / 50) * 2;
 

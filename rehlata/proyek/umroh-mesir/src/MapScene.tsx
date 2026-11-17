@@ -273,7 +273,7 @@ const MapHeader: React.FC<{ tag: string; title: string; at: number }> = ({ tag, 
   const p = pop(f, at, 11, 0.6);
   const p2 = pop(f, at + 5, 11, 0.6);
   return (
-    <div style={{ position: "absolute", top: 150, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 12, perspective: 900 }}>
+    <div style={{ position: "absolute", top: 280, left: 90, right: 160, display: "flex", flexDirection: "column", alignItems: "center", gap: 12, perspective: 900 }}>
       <div
         style={{
           fontFamily: FONT,

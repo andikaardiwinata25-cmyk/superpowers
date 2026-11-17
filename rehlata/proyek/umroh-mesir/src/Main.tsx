@@ -39,7 +39,7 @@ const SFX: [number, string, number][] = [
 
 const StrikeChip: React.FC<{ at: number }> = ({ at }) => {
   const f = useCurrentFrame();
-  return <Chip text="MINUS" x={700} y={330} dur={s(2.7)} color="#FFFFFF" strike={soft(f, at, 8)} />;
+  return <Chip text="MINUS" x={700} y={400} dur={s(2.7)} color="#FFFFFF" strike={soft(f, at, 8)} />;
 };
 
 const Grain: React.FC = () => {
@@ -63,13 +63,13 @@ export const Main: React.FC = () => {
 
       {/* ---- HOOK ---- */}
       <At from={2.6} to={5.5}>
-        <Sticker text="UMROH + MESIR" sub="Landing mana dulu?" y={310} size={96} dur={s(2.9)} />
+        <Sticker text="UMROH + MESIR" sub="Landing mana dulu?" y={400} size={84} dur={s(2.9)} />
       </At>
       <At from={6.4} to={10.4}>
         <VSScene />
       </At>
       <At from={13.3} to={15.15}>
-        <Chip text="MASING-MASING PUNYA KELEBIHAN" x={540} y={300} dur={s(1.85)} size={38} />
+        <Chip text="MASING-MASING PUNYA KELEBIHAN" x={505} y={400} dur={s(1.85)} size={38} />
       </At>
 
       {/* ---- OPSI 1 ---- */}
@@ -152,7 +152,7 @@ export const Main: React.FC = () => {
 
       {/* ---- OPSI 2 ---- */}
       <At from={47.1} to={50.0}>
-        <Sticker text="OPSI 2" sub="Landing di Jeddah" y={330} size={120} dur={s(2.9)} gradient={GOLD_GRADIENT} depthColor="#5a2a00" />
+        <Sticker text="OPSI 2" sub="Landing di Jeddah" y={400} size={120} dur={s(2.9)} gradient={GOLD_GRADIENT} depthColor="#5a2a00" />
       </At>
       <At from={50.0} to={58.3}>
         <Box>
@@ -182,10 +182,10 @@ export const Main: React.FC = () => {
       <At from={58.3} to={63.8}>
         <PhotoScene src="kaaba.jpg" from={{ s: 1.28, x: 0, y: 50, ry: -8, rx: 4 }} to={{ s: 1.06, x: -20, y: 0, ry: 6, rx: 0 }}>
           <Sequence from={6} layout="none">
-            <Sticker text="LANGSUNG UMROH" y={330} size={86} dur={s(5.3)} />
+            <Sticker text="LANGSUNG UMROH" y={400} size={72} dur={s(5.3)} />
           </Sequence>
           <Sequence from={s(2.8)} layout="none">
-            <Chip text="LANGSUNG KE INTI" x={540} y={1440} dur={s(2.6)} color={C.gold} size={46} />
+            <Chip text="LANGSUNG KE INTI" x={505} y={1380} dur={s(2.6)} color={C.gold} size={46} />
           </Sequence>
         </PhotoScene>
       </At>
@@ -212,35 +212,35 @@ export const Main: React.FC = () => {
       <At from={67.0} to={72.9}>
         <PhotoScene src="madinah.jpg" from={{ s: 1.32, x: 0, y: -260, ry: 6, rx: 10 }} to={{ s: 1.1, x: 0, y: 110, ry: -4, rx: -2 }}>
           <Sequence from={s(2.7)} layout="none">
-            <Chip text="TENANG" x={330} y={1450} dur={s(3.2)} size={48} />
+            <Chip text="TENANG" x={330} y={1380} dur={s(3.2)} size={48} />
           </Sequence>
           <Sequence from={s(3.6)} layout="none">
-            <Chip text="DAMAI" x={750} y={1450} dur={s(2.3)} size={48} />
+            <Chip text="DAMAI" x={750} y={1380} dur={s(2.3)} size={48} />
           </Sequence>
           <Sequence from={s(4.7)} layout="none">
-            <Sticker text="PULANG DARI MADINAH" y={330} size={66} dur={s(1.2)} />
+            <Sticker text="PULANG DARI MADINAH" y={400} size={54} dur={s(1.2)} />
           </Sequence>
         </PhotoScene>
       </At>
 
       {/* ---- KESIMPULAN ---- */}
       <At from={76.1} to={78.8}>
-        <Chip text="PLUS" x={380} y={330} dur={s(2.7)} />
+        <Chip text="PLUS" x={390} y={400} dur={s(2.7)} />
       </At>
       <At from={76.3} to={79.0}>
         <StrikeChip at={s(1.7)} />
       </At>
       <At from={78.0} to={79.0}>
-        <Sticker text="PLUS SEMUA ✓" y={480} size={76} dur={s(1.0)} />
+        <Sticker text="PLUS SEMUA ✓" y={530} size={76} dur={s(1.0)} />
       </At>
       <At from={79.0} to={86.2}>
         <CompareScene />
       </At>
       <At from={87.6} to={89.4}>
-        <Sticker text="PALING IDEAL?" y={330} size={92} dur={s(1.8)} gradient={GOLD_GRADIENT} depthColor="#5a2a00" />
+        <Sticker text="PALING IDEAL?" y={400} size={80} dur={s(1.8)} gradient={GOLD_GRADIENT} depthColor="#5a2a00" />
       </At>
       <At from={89.9} to={92.2}>
-        <Sticker text="DUA-DUANYA" sub="punya kelebihan masing-masing" y={330} size={92} dur={s(2.3)} />
+        <Sticker text="DUA-DUANYA" sub="punya kelebihan masing-masing" y={400} size={84} dur={s(2.3)} />
       </At>
       <At from={92.6} to={99.3}>
         <PollCard />

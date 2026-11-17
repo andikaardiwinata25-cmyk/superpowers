@@ -13,16 +13,16 @@ export const VSScene: React.FC = () => {
   return (
     <AbsoluteFill>
       <Sequence from={0} durationInFrames={durationInFrames} layout="none">
-        <PhotoCard src="madinah.jpg" x={790} y={330} w={420} h={300} dur={durationInFrames} caption="LANDING MADINAH" rz={4} ry={-14} from="right" />
+        <PhotoCard src="madinah.jpg" x={735} y={445} w={370} h={270} dur={durationInFrames} caption="LANDING MADINAH" rz={4} ry={-14} from="right" />
       </Sequence>
       <Sequence from={s(1.0)} durationInFrames={durationInFrames - s(1.0)} layout="none">
-        <PhotoCard src="kaaba.jpg" x={790} y={790} w={420} h={300} dur={durationInFrames - s(1.0)} caption="LANDING MEKKAH" rz={-4} ry={-14} from="right" />
+        <PhotoCard src="kaaba.jpg" x={735} y={870} w={370} h={270} dur={durationInFrames - s(1.0)} caption="LANDING MEKKAH" rz={-4} ry={-14} from="right" />
       </Sequence>
       <div
         style={{
           position: "absolute",
-          left: 790,
-          top: 565,
+          left: 735,
+          top: 662,
           transform: `translate(-50%,-50%) scale(${vs * (1 - out)}) rotate(${(1 - vs) * 90 - 8}deg)`,
           width: 120,
           height: 120,
@@ -59,34 +59,34 @@ export const StepTracker: React.FC = () => {
   const crown = pop(f, s(9.1), 9, 0.5);
   return (
     <AbsoluteFill style={{ perspective: 1200, opacity: 1 - out }}>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 1275, textAlign: "center", opacity: soft(f, s(1.0)) }}>
-        <GradText size={38} gradient={KEY_GRADIENT} depthColor="#173b10" depth={4}>
+      <div style={{ position: "absolute", left: 90, right: 160, top: 1062, textAlign: "center", opacity: soft(f, s(1.0)) }}>
+        <GradText size={36} gradient={KEY_GRADIENT} depthColor="#173b10" depth={4}>
           TAHAPAN OPSI 1
         </GradText>
       </div>
       {/* connecting progress line */}
-      <div style={{ position: "absolute", left: 210, top: 1640, width: 660, height: 8, borderRadius: 4, background: "rgba(0,0,0,0.15)" }} />
+      <div style={{ position: "absolute", left: 255, top: 1500, width: 510, height: 8, borderRadius: 4, background: "rgba(0,0,0,0.15)" }} />
       <div
         style={{
           position: "absolute",
-          left: 210,
-          top: 1640,
+          left: 255,
+          top: 1500,
           height: 8,
           borderRadius: 4,
           background: KEY_GRADIENT,
           width: keys(f, [
             [s(3.1), 0],
             [s(5.9), 0],
-            [s(6.5), 330],
-            [s(7.9), 330],
-            [s(8.5), 660],
+            [s(6.5), 255],
+            [s(7.9), 255],
+            [s(8.5), 510],
           ]),
         }}
       />
       {STEPS.map((st, i) => {
         const p = pop(f, s(st.at), 11, 0.7);
         const active = f >= s(st.at);
-        const x = 210 + i * 330;
+        const x = 255 + i * 255;
         const hi = i === 2 ? crown : 0;
         return (
           <div
@@ -94,8 +94,8 @@ export const StepTracker: React.FC = () => {
             style={{
               position: "absolute",
               left: x,
-              top: 1625,
-              width: 270,
+              top: 1488,
+              width: 230,
               transformStyle: "preserve-3d",
               transform: `translate(-50%,-100%) rotateY(${interpolate(p, [0, 1], [-100, 0]) + Math.sin(f / 26 + i) * 5}deg) rotateX(${8 + Math.cos(f / 30 + i) * 3}deg) translateZ(${hi * 60}px) translateY(${-hi * 30}px)`,
               transformOrigin: "50% 100%",
@@ -103,10 +103,10 @@ export const StepTracker: React.FC = () => {
             }}
           >
             <div style={{ background: "white", padding: 10, paddingBottom: 56, borderRadius: 10, boxShadow: `0 30px 50px rgba(0,0,0,0.35)${hi ? `, 0 0 ${70 * hi}px rgba(255,211,107,${hi})` : ""}`, position: "relative" }}>
-              <div style={{ height: 170, overflow: "hidden", borderRadius: 4 }}>
+              <div style={{ height: 150, overflow: "hidden", borderRadius: 4 }}>
                 <Img src={staticFile(st.src)} style={{ width: "100%", height: "100%", objectFit: "cover", filter: active ? undefined : "grayscale(1)" }} />
               </div>
-              <div style={{ position: "absolute", bottom: 12, left: 0, right: 0, textAlign: "center", fontFamily: FONT, fontWeight: 800, fontSize: 22, letterSpacing: "-0.04em", color: C.ink }}>{st.t}</div>
+              <div style={{ position: "absolute", bottom: 12, left: 0, right: 0, textAlign: "center", fontFamily: FONT, fontWeight: 800, fontSize: 19, letterSpacing: "-0.04em", color: C.ink }}>{st.t}</div>
               <div style={{ position: "absolute", top: -22, left: -18, width: 54, height: 54, borderRadius: 27, background: active ? C.green : "#ccc", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT, fontWeight: 800, fontSize: 30, color: C.ink, boxShadow: "0 6px 14px rgba(0,0,0,0.3)" }}>
                 {st.n}
               </div>
@@ -115,7 +115,7 @@ export const StepTracker: React.FC = () => {
         );
       })}
       <Sequence from={s(9.1)} layout="none">
-        <Sticker text="PUNCAKNYA!" x={850} y={1330} size={54} tilt={6} dur={durationInFrames - s(9.1)} gradient={GOLD_GRADIENT} depthColor="#5a2a00" />
+        <Sticker text="PUNCAKNYA!" x={740} y={900} size={50} tilt={6} dur={durationInFrames - s(9.1)} gradient={GOLD_GRADIENT} depthColor="#5a2a00" />
       </Sequence>
     </AbsoluteFill>
   );
@@ -175,16 +175,16 @@ export const CompareScene: React.FC = () => {
     <AbsoluteFill style={{ opacity: enter * (1 - exit), transform: `scale(${1.15 - enter * 0.15})` }}>
       <GridPaper />
       <AbsoluteFill style={{ transform: `rotateY(${camRY}deg)`, transformStyle: "preserve-3d" }}>
-        <div style={{ position: "absolute", top: 230, left: 0, right: 0, textAlign: "center", zIndex: 5, transform: `scale(${pop(f, 4, 11, 0.6)})` }}>
+        <div style={{ position: "absolute", top: 300, left: 90, right: 160, textAlign: "center", zIndex: 5, transform: `scale(${pop(f, 4, 11, 0.6)})` }}>
           <div style={{ display: "inline-block", background: C.ink, padding: "14px 26px 18px", borderRadius: 16, boxShadow: "0 20px 40px rgba(0,0,0,0.35)" }}>
-            <GradText size={62}>JAMAAH LEBIH NYAMAN...</GradText>
+            <GradText size={52}>JAMAAH LEBIH NYAMAN...</GradText>
           </div>
         </div>
         <Sequence from={6} layout="none">
-          <PhotoCard src="kaaba-sketch-c.jpg" x={300} y={760} w={390} h={430} dur={durationInFrames - 6} caption="UMROH DULU" rz={-5} ry={16} from="left" blend highlight={hiL} />
+          <PhotoCard src="kaaba-sketch-c.jpg" x={305} y={760} w={360} h={420} dur={durationInFrames - 6} caption="UMROH DULU" rz={-5} ry={16} from="left" blend highlight={hiL} />
         </Sequence>
         <Sequence from={12} layout="none">
-          <PhotoCard src="madinah-sketch.jpg" x={780} y={760} w={390} h={430} dur={durationInFrames - 12} caption="MADINAH DULU" rz={5} ry={-16} from="right" blend highlight={hiR} />
+          <PhotoCard src="madinah-sketch.jpg" x={720} y={790} w={370} h={420} dur={durationInFrames - 12} caption="MADINAH DULU" rz={5} ry={-16} from="right" blend highlight={hiR} />
         </Sequence>
       </AbsoluteFill>
     </AbsoluteFill>
@@ -231,9 +231,9 @@ export const PollCard: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          left: 540,
+          left: 505,
           top: 520,
-          width: 760,
+          width: 740,
           transform: `translate(-50%,-50%) rotateX(${interpolate(p, [0, 1], [70, 6]) + Math.sin(f / 30) * 2 + out * 60}deg) rotateY(${Math.sin(f / 40) * 6}deg) scale(${interpolate(p, [0, 1], [0.6, 1]) * (1 - out * 0.4)})`,
           opacity: Math.min(1, p * 2) * (1 - out),
           background: "rgba(14,20,18,0.9)",
@@ -252,7 +252,7 @@ export const PollCard: React.FC = () => {
         {opt("MADINAH DULU", "Mesir → Madinah → Mekkah → Jeddah", hB, 1)}
       </div>
       <Sequence from={s(4.3)} layout="none">
-        <Chip text="TULIS DI KOLOM KOMENTAR ↓" x={540} y={1400} dur={durationInFrames - s(4.3)} size={40} />
+        <Chip text="TULIS DI KOLOM KOMENTAR ↓" x={505} y={1380} dur={durationInFrames - s(4.3)} size={40} />
       </Sequence>
     </AbsoluteFill>
   );
