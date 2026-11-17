@@ -1,5 +1,6 @@
 import React from "react";
 import { AbsoluteFill, Img, interpolate, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { Video } from "@remotion/media";
 import { C, KEY_GRADIENT, keys, pop, s, soft } from "./lib";
 import { BigType, FONT, GradText, GridPaper, PhotoCard, TagRow } from "./ui";
 
@@ -56,7 +57,7 @@ export const StepTracker: React.FC = () => {
   const f = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
   const out = soft(f, durationInFrames - 10, 10);
-  const crown = pop(f, s(9.1), 9, 0.5);
+  const crown = soft(f, s(9.1), 14);
   return (
     <AbsoluteFill style={{ perspective: 1200, opacity: 1 - out }}>
       <div style={{ position: "absolute", left: 90, top: 1060 }}>
@@ -82,8 +83,8 @@ export const StepTracker: React.FC = () => {
         }}
       />
       {STEPS.map((st, i) => {
-        const p = pop(f, s(st.at), 11, 0.7);
-        const active = f >= s(st.at);
+        const p = soft(f, s(st.at), 14);
+        const active = true;
         const x = 255 + i * 255;
         const hi = i === 2 ? crown : 0;
         return (
@@ -94,10 +95,8 @@ export const StepTracker: React.FC = () => {
               left: x,
               top: 1488,
               width: 230,
-              transformStyle: "preserve-3d",
-              transform: `translate(-50%,-100%) rotateY(${interpolate(p, [0, 1], [-100, 0]) + Math.sin(f / 26 + i) * 5}deg) rotateX(${8 + Math.cos(f / 30 + i) * 3}deg) translateZ(${hi * 60}px) translateY(${-hi * 30}px)`,
-              transformOrigin: "50% 100%",
-              opacity: active ? 1 : 0.35,
+              transform: `translate(-50%,-100%) translateY(${(1 - p) * 14 - hi * 12}px) scale(${0.97 + p * 0.03 + hi * 0.04})`,
+              opacity: p,
             }}
           >
             <div style={{ background: "white", padding: 10, paddingBottom: 56, borderRadius: 10, boxShadow: `0 30px 50px rgba(0,0,0,0.35)${hi ? `, 0 0 ${70 * hi}px rgba(255,211,107,${hi})` : ""}`, position: "relative" }}>
@@ -259,6 +258,41 @@ export const PollCard: React.FC = () => {
           <TagRow yellow text="TULIS DI KOLOM KOMENTAR ↓" at={0} />
         </div>
       </Sequence>
+    </AbsoluteFill>
+  );
+};
+
+/* ---------- Full-screen real video background with a slow 3D camera push ---------- */
+export const VideoScene: React.FC<{
+  clips: { src: string; at: number; dur: number; rate?: number; trim?: number }[];
+  children?: React.ReactNode;
+}> = ({ clips, children }) => {
+  const f = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const enter = soft(f, 0, 12);
+  const exit = soft(f, durationInFrames - 10, 10);
+  return (
+    <AbsoluteFill style={{ background: "#000", overflow: "hidden", opacity: enter * (1 - exit) }}>
+      {clips.map((c, i) => (
+        <Sequence key={i} from={c.at} durationInFrames={c.dur} layout="none">
+          <ClipLayer src={c.src} dur={c.dur} rate={c.rate ?? 1} trim={c.trim ?? 0} first={i === 0} />
+        </Sequence>
+      ))}
+      <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.35) 100%)" }} />
+      {children}
+    </AbsoluteFill>
+  );
+};
+
+const ClipLayer: React.FC<{ src: string; dur: number; rate: number; trim: number; first: boolean }> = ({ src, dur, rate, trim, first }) => {
+  const f = useCurrentFrame();
+  const fadeIn = first ? 1 : soft(f, 0, 8);
+  const t = f / dur;
+  return (
+    <AbsoluteFill style={{ opacity: fadeIn, perspective: 1400 }}>
+      <AbsoluteFill style={{ transform: `scale(${1.12 - t * 0.08}) rotateY(${(t - 0.5) * 4}deg) translateY(${(0.5 - t) * 20}px)` }}>
+        <Video src={staticFile(src)} playbackRate={rate} trimBefore={trim} muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };

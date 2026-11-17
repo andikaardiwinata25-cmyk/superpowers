@@ -30,6 +30,10 @@ export const Footage: React.FC = () => {
   const tx = keysS(f, TX) + Math.sin(f / 70) * 10;
   const ty = keysS(f, TY) + Math.cos(f / 83) * 8;
   const rz = Math.sin(f / 110) * 0.35;
+  // never reveal the black edge: scale must always cover the pan offsets (origin 58% 40%)
+  const W = 1080;
+  const H = 1920;
+  const cover = Math.max(1 + tx / (0.58 * W), 1 - tx / (0.42 * W), 1 + ty / (0.4 * H), 1 - ty / (0.6 * H)) + 0.015;
   const cm = keysS(f, CARD);
   const layoutB = t > 20; // second card window: top centre; first: left side
   const cardScale = layoutB ? 0.38 : 0.42;
@@ -53,7 +57,7 @@ export const Footage: React.FC = () => {
           <AbsoluteFill
             style={{
               transformOrigin: "58% 40%",
-              transform: `translate(${tx}px, ${ty}px) rotate(${rz}deg) scale(${sc})`,
+              transform: `translate(${tx}px, ${ty}px) rotate(${rz}deg) scale(${Math.max(sc, cover)})`,
             }}
           >
             <Video src={staticFile("main.mp4")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />

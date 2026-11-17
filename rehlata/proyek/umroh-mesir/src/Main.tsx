@@ -5,7 +5,7 @@ import { loadFont } from "@remotion/fonts";
 import { s } from "./lib";
 import { Footage } from "./Footage";
 import { MapScene, P } from "./MapScene";
-import { CompareScene, PhotoScene, PollCard, StepTracker, VSScene } from "./Scenes";
+import { CompareScene, PollCard, StepTracker, VideoScene, VSScene } from "./Scenes";
 import { BigType, PhotoCard, QuestionBubble, TagRow } from "./ui";
 
 for (const w of [500, 600, 700, 800]) {
@@ -81,23 +81,23 @@ export const Main: React.FC = () => {
           <MapScene
             header={{ num: "01", over: "OPSI PERTAMA", title: "LANDING", hl: "MADINAH" }}
             cams={[
-              { f: 0, x: 670, y: 330, zoom: 2.6, tilt: 10, rot: -4 },
-              { f: s(1.5), x: 668, y: 356, zoom: 5.5, tilt: 32, rot: 0 },
-              { f: s(4.0), x: 675, y: 364, zoom: 6.4, tilt: 36, rot: 1 },
-              { f: s(5.2), x: 659, y: 356, zoom: 7.2, tilt: 38, rot: 3 },
-              { f: s(7.7), x: 661, y: 353, zoom: 7.8, tilt: 40, rot: 1 },
+              { f: 0, x: 672, y: 290, zoom: 3, tilt: 14, rot: -3 },
+              { f: s(1.5), x: 677, y: 304, zoom: 9, tilt: 30, rot: 0 },
+              { f: s(4.0), x: 680, y: 307, zoom: 10, tilt: 32, rot: 1 },
+              { f: s(5.2), x: 668, y: 300, zoom: 11, tilt: 32, rot: 2 },
+              { f: s(7.7), x: 669, y: 299, zoom: 11.5, tilt: 33, rot: 1 },
             ]}
             flats={[
-              { pos: [636, 372], text: "MESIR", size: 7, at: 10 },
-              { pos: [712, 398], text: "ARAB SAUDI", size: 6, at: 20 },
-              { pos: [679, 380], text: "LAUT MERAH", size: 2.2, at: 25, rot: 66 },
+              { pos: [648, 312], text: "MESIR", size: 4, at: 10 },
+              { pos: [708, 322], text: "ARAB SAUDI", size: 3.4, at: 20 },
+              { pos: [681, 311], text: "LAUT MERAH", size: 1.3, at: 25, rot: 62 },
             ]}
             pins={[
               { pos: P.CAIRO, label: "MESIR", at: s(1.6), side: "left" },
               { pos: P.MADINAH, label: "MADINAH", at: s(3.3), color: "#2E9E5B" },
             ]}
-            routes={[{ from: P.CAIRO, to: P.MADINAH, start: s(2.2), dur: s(1.3), bend: -0.3 }]}
-            popups={[{ pos: P.CAIRO, src: "mesir-makam-emas.jpg", caption: "ZIARAH DI MESIR", at: s(5.0), until: s(7.4), dx: -22, h: 330 }]}
+            routes={[{ from: P.CAIRO, to: P.MADINAH, start: s(2.2), dur: s(1.3), bend: -0.18 }]}
+            popups={[{ pos: P.CAIRO, src: "mesir-makam-emas.jpg", caption: "ZIARAH DI MESIR", at: s(5.0), until: s(7.4), dx: -7, h: 330 }]}
           />
         </Box>
       </At>
@@ -108,9 +108,9 @@ export const Main: React.FC = () => {
         <Box>
           <MapScene
             cams={[
-              { f: 0, x: 686, y: 370, zoom: 8.6, tilt: 36, rot: -3 },
-              { f: s(2.0), x: 690, y: 381, zoom: 10, tilt: 40, rot: 0 },
-              { f: s(5.3), x: 693, y: 385, zoom: 10.8, tilt: 42, rot: 2 },
+              { f: 0, x: 688, y: 310, zoom: 11, tilt: 30, rot: -2 },
+              { f: s(2.0), x: 691, y: 317, zoom: 12.5, tilt: 32, rot: 0 },
+              { f: s(5.3), x: 692, y: 320, zoom: 13, tilt: 33, rot: 1.5 },
             ]}
             header={{ num: "01", over: "OPSI PERTAMA", title: "LALU KE", hl: "MEKKAH", at: 4 }}
             pins={[
@@ -118,10 +118,10 @@ export const Main: React.FC = () => {
               { pos: P.MEKKAH, label: "MEKKAH", at: s(1.8), big: true },
             ]}
             routes={[
-              { from: P.CAIRO, to: P.MADINAH, start: -100, dur: 1, bend: -0.3 },
-              { from: P.MADINAH, to: P.MEKKAH, start: s(0.6), dur: s(1.4), bend: -0.35 },
+              { from: P.CAIRO, to: P.MADINAH, start: -100, dur: 1, bend: -0.18 },
+              { from: P.MADINAH, to: P.MEKKAH, start: s(0.6), dur: s(1.4), bend: -0.18 },
             ]}
-            popups={[{ pos: P.MEKKAH, src: "kaaba.jpg", caption: "PUNCAK: UMROH", at: s(2.4), until: s(5.0), dx: 4 }]}
+            popups={[{ pos: P.MEKKAH, src: "kaaba.jpg", caption: "PUNCAK: UMROH", at: s(2.4), until: s(5.0), dx: 2 }]}
           />
         </Box>
       </At>
@@ -133,9 +133,9 @@ export const Main: React.FC = () => {
           <MapScene
             header={{ num: "01", over: "OPSI PERTAMA", title: "PULANG DARI", hl: "JEDDAH", at: s(2.6) }}
             cams={[
-              { f: 0, x: 672, y: 366, zoom: 4.6, tilt: 30, rot: -2 },
-              { f: s(2.5), x: 681, y: 373, zoom: 6.2, tilt: 35, rot: 0 },
-              { f: s(4.15), x: 688, y: 382, zoom: 8, tilt: 40, rot: 2 },
+              { f: 0, x: 678, y: 302, zoom: 7.5, tilt: 26, rot: -2 },
+              { f: s(2.5), x: 684, y: 310, zoom: 10, tilt: 30, rot: 0 },
+              { f: s(4.15), x: 689, y: 317, zoom: 12.5, tilt: 32, rot: 1.5 },
             ]}
             pins={[
               { pos: P.CAIRO, label: "MESIR", at: 0, side: "left" },
@@ -144,10 +144,10 @@ export const Main: React.FC = () => {
               { pos: P.JEDDAH, label: "JEDDAH", at: s(3.5), side: "left", color: "#2F6FDB" },
             ]}
             routes={[
-              { from: P.CAIRO, to: P.MADINAH, start: -100, dur: 1, bend: -0.3 },
-              { from: P.MADINAH, to: P.MEKKAH, start: -100, dur: 1, bend: -0.35 },
-              { from: P.MEKKAH, to: P.JEDDAH, start: s(2.9), dur: s(0.6), bend: 0.6, color: "#2F6FDB" },
-              { from: P.JEDDAH, to: P.HOME, start: s(3.4), dur: s(0.75), bend: 0.25, color: "#2F6FDB" },
+              { from: P.CAIRO, to: P.MADINAH, start: -100, dur: 1, bend: -0.18 },
+              { from: P.MADINAH, to: P.MEKKAH, start: -100, dur: 1, bend: -0.18 },
+              { from: P.MEKKAH, to: P.JEDDAH, start: s(2.9), dur: s(0.6), bend: 0.5, color: "#2F6FDB" },
+
             ]}
           />
         </Box>
@@ -162,41 +162,41 @@ export const Main: React.FC = () => {
           <MapScene
             header={{ num: "02", over: "OPSI KEDUA", title: "MESIR →", hl: "JEDDAH" }}
             cams={[
-              { f: 0, x: 668, y: 340, zoom: 3, tilt: 12, rot: 4 },
-              { f: s(1.6), x: 672, y: 368, zoom: 6, tilt: 34, rot: 0 },
-              { f: s(3.6), x: 680, y: 378, zoom: 7, tilt: 38, rot: -1 },
-              { f: s(5.4), x: 658, y: 355, zoom: 7.6, tilt: 38, rot: 2 },
-              { f: s(8.3), x: 660, y: 353, zoom: 8.2, tilt: 40, rot: 0 },
+              { f: 0, x: 672, y: 290, zoom: 3, tilt: 14, rot: 3 },
+              { f: s(1.6), x: 677, y: 306, zoom: 9, tilt: 30, rot: 0 },
+              { f: s(3.6), x: 681, y: 312, zoom: 10.5, tilt: 32, rot: -1 },
+              { f: s(5.4), x: 667, y: 299, zoom: 11, tilt: 32, rot: 2 },
+              { f: s(8.3), x: 668, y: 298, zoom: 11.5, tilt: 33, rot: 0 },
             ]}
             flats={[
-              { pos: [636, 372], text: "MESIR", size: 7, at: 10 },
-              { pos: [712, 398], text: "ARAB SAUDI", size: 6, at: 20 },
-              { pos: [679, 380], text: "LAUT MERAH", size: 2.2, at: 25, rot: 66 },
+              { pos: [648, 312], text: "MESIR", size: 4, at: 10 },
+              { pos: [708, 322], text: "ARAB SAUDI", size: 3.4, at: 20 },
+              { pos: [681, 311], text: "LAUT MERAH", size: 1.3, at: 25, rot: 62 },
             ]}
             pins={[
               { pos: P.CAIRO, label: "MESIR", at: s(0.8), side: "left" },
               { pos: P.JEDDAH, label: "JEDDAH", at: s(2.6), color: "#2F6FDB" },
             ]}
-            routes={[{ from: P.CAIRO, to: P.JEDDAH, start: s(1.1), dur: s(1.5), bend: -0.25, color: "#2F6FDB" }]}
-            popups={[{ pos: P.CAIRO, src: "mesir-makam-kayu.jpg", caption: "ZIARAH DI MESIR", at: s(5.6), until: s(8.0), dx: -22, h: 330 }]}
+            routes={[{ from: P.CAIRO, to: P.JEDDAH, start: s(1.1), dur: s(1.5), bend: -0.15, color: "#2F6FDB" }]}
+            popups={[{ pos: P.CAIRO, src: "mesir-makam-kayu.jpg", caption: "ZIARAH DI MESIR", at: s(5.6), until: s(8.0), dx: -7, h: 330 }]}
           />
         </Box>
       </At>
       <At from={58.3} to={63.8}>
-        <PhotoScene src="kaaba.jpg" from={{ s: 1.28, x: 0, y: 50, ry: -8, rx: 4 }} to={{ s: 1.06, x: -20, y: 0, ry: 6, rx: 0 }}>
+        <VideoScene clips={[{ src: "mekkah.mp4", at: 0, dur: s(5.5), trim: 15 }]}>
           <BigType over="SETELAH ZIARAH DI MESIR" dur={s(5.5)} lines={[{ t: "LANGSUNG", at: s(0.1) }, { t: "IBADAH", at: s(0.6) }, { t: "UMROH", at: s(1.2), hl: true }]} />
           <div style={{ position: "absolute", left: 90, top: 760 }}>
             <TagRow yellow text="LANGSUNG KE INTI" at={s(2.8)} />
           </div>
-        </PhotoScene>
+        </VideoScene>
       </At>
       <At from={63.8} to={67.0}>
         <Box>
           <MapScene
             header={{ num: "02", over: "OPSI KEDUA", title: "LALU KE", hl: "MADINAH", at: 4 }}
             cams={[
-              { f: 0, x: 690, y: 386, zoom: 10, tilt: 40, rot: 3 },
-              { f: s(3.2), x: 689, y: 376, zoom: 9, tilt: 36, rot: -2 },
+              { f: 0, x: 690, y: 322, zoom: 13, tilt: 32, rot: 2 },
+              { f: s(3.2), x: 690, y: 316, zoom: 12, tilt: 30, rot: -1.5 },
             ]}
             pins={[
               { pos: P.JEDDAH, label: "JEDDAH", at: 0, side: "left", color: "#2F6FDB" },
@@ -204,21 +204,22 @@ export const Main: React.FC = () => {
               { pos: P.MADINAH, label: "MADINAH", at: s(2.3), color: "#2E9E5B", big: true },
             ]}
             routes={[
-              { from: P.CAIRO, to: P.JEDDAH, start: -100, dur: 1, bend: -0.25, color: "#2F6FDB" },
-              { from: P.MEKKAH, to: P.MADINAH, start: s(1.0), dur: s(1.3), bend: -0.35, color: "#2F6FDB" },
+              { from: P.CAIRO, to: P.JEDDAH, start: -100, dur: 1, bend: -0.15, color: "#2F6FDB" },
+              { from: P.JEDDAH, to: P.MEKKAH, start: -100, dur: 1, bend: 0.5, color: "#2F6FDB" },
+              { from: P.MEKKAH, to: P.MADINAH, start: s(1.0), dur: s(1.3), bend: -0.18, color: "#2F6FDB" },
             ]}
           />
         </Box>
       </At>
       <At from={67.0} to={72.9}>
-        <PhotoScene src="madinah.jpg" from={{ s: 1.32, x: 0, y: -260, ry: 6, rx: 10 }} to={{ s: 1.1, x: 0, y: 110, ry: -4, rx: -2 }}>
+        <VideoScene clips={[{ src: "madinah-1.mp4", at: 0, dur: 107, rate: 0.8 }, { src: "madinah-2.mp4", at: 104, dur: s(5.9) - 104, rate: 0.85 }]}>
           <Sequence from={0} durationInFrames={s(4.6)} layout="none">
             <BigType over="MADINAH IDENTIK DENGAN" tagAt={s(1.0)} dur={s(4.6)} lines={[{ t: "SUASANA", at: s(2.2) }, { t: "TENANG", at: s(2.7) }, { t: "& DAMAI", at: s(3.6), hl: true }]} />
           </Sequence>
           <Sequence from={s(4.6)} layout="none">
             <BigType over="LALU" dur={s(1.4)} lines={[{ t: "PULANG DARI", at: 3 }, { t: "MADINAH", at: 9, hl: true }]} />
           </Sequence>
-        </PhotoScene>
+        </VideoScene>
       </At>
 
       {/* ---- KESIMPULAN ---- */}

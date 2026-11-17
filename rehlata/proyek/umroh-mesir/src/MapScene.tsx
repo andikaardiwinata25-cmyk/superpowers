@@ -5,11 +5,10 @@ import { BigType, FONT, GradText } from "./ui";
 
 // Coordinates in the original 1200x800 map image. The plane uses a 4x upscale.
 export const P = {
-  CAIRO: [659, 357] as [number, number],
-  MADINAH: [690, 371] as [number, number],
-  MEKKAH: [695, 387] as [number, number],
-  JEDDAH: [688, 386] as [number, number],
-  HOME: [760, 420] as [number, number], // direction towards Indonesia (off-focus)
+  CAIRO: [664, 297] as [number, number],
+  MADINAH: [694, 313] as [number, number],
+  MEKKAH: [696.5, 324.5] as [number, number],
+  JEDDAH: [691.5, 323.5] as [number, number],
 };
 const K = 4;
 
@@ -57,7 +56,7 @@ export const MapScene: React.FC<{
   const ck = (k: keyof Cam) => keys(f, cams.map((c) => [c.f, (c[k] as number) ?? 0]));
   const cx = ck("x");
   const cy = ck("y");
-  const zoom = ck("zoom");
+  const zoom = ck("zoom") * 1.15;
   const tilt = ck("tilt");
   const rot = ck("rot");
   const z = zoom / K;
@@ -70,7 +69,7 @@ export const MapScene: React.FC<{
   return (
     <AbsoluteFill
       style={{
-        background: "#2a1d10",
+        background: "#0b1a2e",
         overflow: "hidden",
         clipPath: `circle(${interpolate(enter, [0, 1], [0, 120])}% at 50% 45%)`,
         opacity: 1 - exit,
@@ -89,7 +88,7 @@ export const MapScene: React.FC<{
             transform: `translate(${width / 2}px, ${height * 0.56}px) rotateX(${tilt + exit * 25}deg) rotateZ(${rot}deg) scale(${z * (1 + exit * 0.3)}) translate(${-cx * K}px, ${-cy * K}px)`,
           }}
         >
-          <Img src={staticFile("map4x.jpg")} style={{ position: "absolute", width: 1200 * K, height: 800 * K }} />
+          <Img src={staticFile("sat4x.jpg")} style={{ position: "absolute", width: 1200 * K, height: 800 * K }} />
 
           {flats.map((fl, i) => {
             const p = soft(f, fl.at, 20);
@@ -105,7 +104,8 @@ export const MapScene: React.FC<{
                   fontWeight: 800,
                   fontSize: fl.size * K,
                   letterSpacing: "0.25em",
-                  color: "rgba(60,35,10,0.55)",
+                  color: "rgba(255,255,255,0.55)",
+                  textShadow: "0 2px 8px rgba(0,0,0,0.5)",
                   opacity: p,
                   whiteSpace: "nowrap",
                 }}
@@ -130,21 +130,22 @@ export const MapScene: React.FC<{
             const head2 = at(q, Math.max(0, p - 0.02));
             const ang = (Math.atan2(head[1] - head2[1], head[0] - head2[0]) * 180) / Math.PI;
             const col = r.color ?? C.red;
-            const sw = 7 * sc;
+            const sw = 5 * sc;
+            const alt = Math.sin(Math.PI * p); // altitude: take-off -> cruise -> landing
+            const planeS = 1.3 + alt * 0.5;
             return (
               <React.Fragment key={i}>
                 <svg width={1200 * K} height={800 * K} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
-                  <path d={d} fill="none" stroke="rgba(40,20,0,0.35)" strokeWidth={sw * 1.6} strokeLinecap="round" strokeDasharray={L} strokeDashoffset={L * (1 - p)} transform={`translate(${6 * sc}, ${10 * sc})`} style={{ filter: `blur(${3 * sc}px)` }} />
-                </svg>
-                <svg width={1200 * K} height={800 * K} style={{ position: "absolute", left: 0, top: 0, overflow: "visible", transform: `translateZ(${26 * sc}px)` }}>
-                  <path d={d} fill="none" stroke="white" strokeWidth={sw * 1.8} strokeLinecap="round" strokeDasharray={L} strokeDashoffset={L * (1 - p)} />
-                  <path d={d} fill="none" stroke={col} strokeWidth={sw} strokeLinecap="round" strokeDasharray={r.dashed ? `${16 * sc} ${12 * sc}` : L} strokeDashoffset={r.dashed ? 0 : L * (1 - p)} mask={undefined} style={r.dashed ? { clipPath: undefined } : undefined} />
+                  <path d={d} fill="none" stroke="rgba(0,0,0,0.35)" strokeWidth={sw * 1.4} strokeLinecap="round" strokeDasharray={L} strokeDashoffset={L * (1 - p)} transform={`translate(${5 * sc}, ${8 * sc})`} style={{ filter: `blur(${3 * sc}px)` }} />
                   {p < 1 ? (
-                    <g transform={`translate(${head[0] * K}, ${head[1] * K}) rotate(${ang}) scale(${sc * 1.25})`}>
-                      <circle r={22} fill="white" />
-                      {/* little plane */}
-                      <path d="M -14 -3 L 4 -3 L 12 -14 L 16 -14 L 11 -3 L 16 -3 L 19 -8 L 21 -8 L 19 0 L 21 8 L 19 8 L 16 3 L 11 3 L 16 14 L 12 14 L 4 3 L -14 3 Z" fill={C.ink} transform="translate(-4,0)" />
-                    </g>
+                    <image href={staticFile("plane.png")} width={64} height={64} opacity={0.35} style={{ filter: "brightness(0) blur(3px)" }} transform={`translate(${head[0] * K + alt * 40 * sc}, ${head[1] * K + alt * 60 * sc}) rotate(${ang + 45}) scale(${sc * planeS}) translate(-32,-32)`} />
+                  ) : null}
+                </svg>
+                <svg width={1200 * K} height={800 * K} style={{ position: "absolute", left: 0, top: 0, overflow: "visible", transform: `translateZ(${18 * sc}px)` }}>
+                  <path d={d} fill="none" stroke="white" strokeWidth={sw * 1.9} strokeLinecap="round" strokeDasharray={L} strokeDashoffset={L * (1 - p)} />
+                  <path d={d} fill="none" stroke={col} strokeWidth={sw} strokeLinecap="round" strokeDasharray={L} strokeDashoffset={L * (1 - p)} />
+                  {p < 1 ? (
+                    <image href={staticFile("plane.png")} width={64} height={64} style={{ filter: "drop-shadow(0 0 3px rgba(0,0,0,0.6))" }} transform={`translate(${head[0] * K}, ${head[1] * K - alt * 30 * sc}) rotate(${ang + 45}) scale(${sc * planeS}) translate(-32,-32)`} />
                   ) : null}
                 </svg>
               </React.Fragment>
@@ -258,7 +259,7 @@ export const MapScene: React.FC<{
       </AbsoluteFill>
 
       {/* paper vignette + warm grade */}
-      <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 40%, rgba(30,15,0,0.55) 100%)" }} />
+      <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 40%, rgba(0,8,20,0.5) 100%)" }} />
 
       {header ? (
         <BigType
