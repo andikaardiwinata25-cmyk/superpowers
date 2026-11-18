@@ -211,7 +211,7 @@ const SFX: S[] = [
   [15.3, "whoosh_low", 0.3], ...TXT(15.4, [17.0], 17.7), [18.3, "whoosh", 0.36], [18.4, "sparkle", 0.16], [21.9, "swish_down", 0.24],
   ...TXT(22.4, [], 23.3),
   [24.4, "swell_hit", 0.28], ...TXT(24.6, [28.2], 29.0),
-  [34.4, "whoosh", 0.36], [34.6, "pop", 0.3], [35.2, "whoosh", 0.34], [40.4, "whoosh", 0.36], [40.6, "pop", 0.3], [41.2, "whoosh", 0.34],
+  [28.3, "whoosh", 0.36], [28.45, "pop", 0.28], [34.4, "whoosh", 0.36], [34.6, "pop", 0.3], [35.2, "whoosh", 0.34], [40.4, "whoosh", 0.36], [40.6, "pop", 0.3], [41.2, "whoosh", 0.34],
   ...TXT(42.6, [43.5], 44.2), [49.4, "whoosh_low", 0.32], ...TXT(49.6, [], 51.2),
   [52.0, "whoosh", 0.34], [55.4, "tick", 0.3], [56.6, "blip", 0.34], [57.4, "blip", 0.34], [57.5, "whoosh", 0.32],
   ...TXT(58.4, [58.5], 60.3), [58.6, "whoosh", 0.36], [59.6, "bubble_down", 0.26],
@@ -273,6 +273,9 @@ export const Kumpul: React.FC = () => {
       <At from={24.6} to={30.0}>
         <BigType num="03" over="ALASAN KETIGA" dur={s(5.4)} lines={[{ t: "PEMBAGIAN", at: s(3.6) }, { t: "ALBUM FOTO", at: s(4.4), hl: true }]} />
       </At>
+      <At from={28.3} to={34.2}>
+        <PhotoCard page src="album/hal-1.jpg" x={640} y={1060} w={400} h={540} dur={s(5.9)} rz={4} ry={-16} from="bottom" />
+      </At>
       <At from={31.0} to={34.3}>
         <BigType over="ISINYA SELAMA PERJALANAN" dur={s(3.3)} size={84} lines={[{ t: "DOKUMENTASI", at: s(0.3) }, { t: "UMROH KAMU", at: s(0.9), hl: true }]} />
       </At>
@@ -281,10 +284,10 @@ export const Kumpul: React.FC = () => {
           <TagRow yellow text="ISI ALBUM: MESIR" at={s(0.3)} />
         </div>
         <Sequence from={0} layout="none">
-          <PhotoCard src="mesir-masjid.jpg" x={300} y={620} w={380} h={300} dur={s(4.5)} rz={-6} ry={14} from="left" />
+          <PhotoCard page src="album/hal-3.jpg" x={300} y={760} w={380} h={500} dur={s(4.5)} rz={-6} ry={14} from="left" />
         </Sequence>
         <Sequence from={s(0.9)} layout="none">
-          <PhotoCard src="mesir-makam-emas.jpg" x={700} y={700} w={380} h={300} dur={s(3.6)} rz={5} ry={-14} from="right" />
+          <PhotoCard page src="album/hal-7.jpg" x={710} y={840} w={380} h={500} dur={s(3.6)} rz={5} ry={-14} from="right" />
         </Sequence>
       </At>
       <At from={40.3} to={42.5}>
@@ -292,10 +295,10 @@ export const Kumpul: React.FC = () => {
           <TagRow yellow text="ISI ALBUM: SAUDI" at={s(0.2)} />
         </div>
         <Sequence from={0} layout="none">
-          <PhotoCard src="kaaba.jpg" x={300} y={620} w={380} h={300} dur={s(2.2)} rz={-5} ry={14} from="left" />
+          <PhotoCard page src="album/hal-27.jpg" x={300} y={760} w={380} h={500} dur={s(2.2)} rz={-5} ry={14} from="left" />
         </Sequence>
         <Sequence from={s(0.6)} layout="none">
-          <PhotoCard src="madinah.jpg" x={700} y={700} w={380} h={300} dur={s(1.6)} rz={6} ry={-14} from="right" />
+          <PhotoCard page src="album/hal-35.jpg" x={710} y={840} w={380} h={500} dur={s(1.6)} rz={6} ry={-14} from="right" />
         </Sequence>
       </At>
       <At from={42.6} to={48.2}>

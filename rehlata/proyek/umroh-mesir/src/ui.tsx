@@ -147,7 +147,8 @@ export const PhotoCard: React.FC<{
   from?: "left" | "right" | "bottom" | "top";
   blend?: boolean;
   highlight?: number; // 0..1
-}> = ({ src, x, y, w, h, dur, caption, rz = -4, ry = 10, from = "right", blend = false, highlight = 0 }) => {
+  page?: boolean; // show the whole image (album page), no parallax crop
+}> = ({ src, x, y, w, h, dur, caption, rz = -4, ry = 10, from = "right", blend = false, highlight = 0, page = false }) => {
   const f = useCurrentFrame();
   const p = pop(f, 0, 13, 0.9);
   const out = soft(f, dur - 10, 10);
@@ -194,13 +195,13 @@ export const PhotoCard: React.FC<{
               src={staticFile(src)}
               style={{
                 position: "absolute",
-                width: "118%",
-                height: "118%",
-                left: "-9%",
-                top: "-9%",
+                width: page ? "100%" : "118%",
+                height: page ? "100%" : "118%",
+                left: page ? 0 : "-9%",
+                top: page ? 0 : "-9%",
                 objectFit: "cover",
                 // inner parallax: image moves opposite to the card rotation
-                transform: `translate(${-wobY * 3}px, ${wobX * 3}px) scale(${1 + f * 0.0006})`,
+                transform: page ? undefined : `translate(${-wobY * 3}px, ${wobX * 3}px) scale(${1 + f * 0.0006})`,
                 mixBlendMode: blend ? "multiply" : undefined,
               }}
             />
