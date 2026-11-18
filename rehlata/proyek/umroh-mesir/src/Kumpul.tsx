@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, Img, interpolate, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { Audio, Video } from "@remotion/media";
 import { C, keysS, pop, s, soft } from "./lib";
-import { PhotoScene, VideoScene } from "./Scenes";
+import { VideoScene } from "./Scenes";
 import { BigType, FONT, PhotoCard, QuestionBubble, TagRow } from "./ui";
 
 /* "Kenapa harus kumpul dulu sebelum pulang?" — Rehlata Tour, airport arrival. 81.8 s */
@@ -90,7 +90,7 @@ const Checklist: React.FC<{ items: { t: string; at: number }[]; dur: number; tit
         style={{
           position: "absolute",
           left: 90,
-          top: 640,
+          top: 1220,
           width: 640,
           transformOrigin: "0% 50%",
           transform: `rotateY(${(1 - p) * -40 + Math.sin(f / 40) * 3}deg) scale(${(0.7 + p * 0.3) * (1 - out * 0.2)})`,
@@ -172,7 +172,7 @@ const SFX: S[] = [
   [24.4, "swell_hit", 0.28], ...TXT(24.6, [28.2], 29.0),
   [28.3, "whoosh", 0.36], [28.45, "pop", 0.28], [34.4, "whoosh", 0.36], [34.6, "pop", 0.3], [35.2, "whoosh", 0.34], [40.4, "whoosh", 0.36], [40.6, "pop", 0.3], [41.2, "whoosh", 0.34],
   ...TXT(42.6, [43.5], 44.2), [49.4, "whoosh_low", 0.32], ...TXT(49.6, [], 51.2),
-  [52.0, "whoosh", 0.34], [55.4, "tick", 0.3], [56.6, "blip", 0.34], [57.4, "blip", 0.34], [57.5, "whoosh", 0.32],
+  [53.7, "whoosh", 0.3], [55.4, "tick", 0.3], [56.6, "blip", 0.34], [57.4, "blip", 0.34],
   ...TXT(58.4, [58.5], 60.3), [59.5, "whoosh", 0.36], [60.1, "bubble_down", 0.26],
   ...TXT(63.2, [64.9], 65.5),
   ...TXT(72.6, [72.9], 73.6), [74.8, "ding", 0.28],
@@ -260,18 +260,22 @@ export const Kumpul: React.FC = () => {
       </At>
 
       {/* fotografer b-roll */}
-      <At from={49.4} to={52.0}>
-        <PhotoScene src="broll/camera.jpg" from={{ s: 1.3, x: -40, y: 0, ry: 8, rx: 3 }} to={{ s: 1.1, x: 30, y: 0, ry: -6, rx: 0 }}>
-          <BigType over="FOTONYA" dur={s(2.6)} lines={[{ t: "PAKAI", at: s(0.2) }, { t: "FOTOGRAFER", at: s(1.8), hl: true }]} />
-        </PhotoScene>
+      <At from={49.4} to={58.3}>
+        <VideoScene
+          clips={[
+            { src: "broll/fotografer-1.mp4", at: 0, dur: s(4.4), trim: 3 },
+            { src: "broll/fotografer-2.mp4", at: s(4.3), dur: s(8.9) - s(4.3), trim: 20 },
+          ]}
+        >
+          <Sequence from={0} durationInFrames={s(2.6)} layout="none">
+            <BigType over="FOTONYA" dur={s(2.6)} lines={[{ t: "PAKAI", at: s(0.2) }, { t: "FOTOGRAFER", at: s(1.8), hl: true }]} />
+          </Sequence>
+        </VideoScene>
       </At>
       <At from={52.0} to={58.3}>
         <BigType yellow="PAKETNYA SUDAH" dur={s(6.3)} lines={[{ t: "ALL", at: s(3.4) }, { t: "INCLUDE", at: s(3.7), hl: true }]} />
         <Sequence from={s(4.2)} layout="none">
           <Checklist title="TERMASUK" dur={s(2.1)} items={[{ t: "Fotografer", at: s(0.4) }, { t: "Videografer", at: s(1.2) }]} />
-        </Sequence>
-        <Sequence from={s(5.5)} layout="none">
-          <PhotoCard src="broll/camcorder.jpg" x={760} y={1250} w={340} h={250} dur={s(0.8)} rz={6} ry={-14} from="right" />
         </Sequence>
       </At>
 
