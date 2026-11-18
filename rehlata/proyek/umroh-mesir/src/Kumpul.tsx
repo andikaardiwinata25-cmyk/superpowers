@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, Img, interpolate, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { Audio, Video } from "@remotion/media";
 import { C, keysS, pop, s, soft } from "./lib";
-import { PhotoScene } from "./Scenes";
+import { PhotoScene, VideoScene } from "./Scenes";
 import { BigType, FONT, PhotoCard, QuestionBubble, TagRow } from "./ui";
 
 /* "Kenapa harus kumpul dulu sebelum pulang?" — Rehlata Tour, airport arrival. 81.8 s */
@@ -199,12 +199,9 @@ export const Kumpul: React.FC = () => {
 
       {/* koper b-roll */}
       <At from={7.8} to={10.8}>
-        <PhotoScene src="broll/carousel.jpg" from={{ s: 1.35, x: 60, y: 0, ry: -8, rx: 4 }} to={{ s: 1.15, x: -40, y: 0, ry: 6, rx: 0 }}>
-          <BigType over="KARENA SAMBIL" tagAt={3} dur={s(3)} lines={[{ t: "NUNGGU", at: s(0.2) }, { t: "KOPER", at: s(1.1), hl: true }]} />
-          <Sequence from={s(0.9)} layout="none">
-            <PhotoCard src="broll/suitcases.jpg" x={640} y={1180} w={420} h={300} dur={s(2.1)} rz={5} ry={-14} from="right" />
-          </Sequence>
-        </PhotoScene>
+        <VideoScene clips={[{ src: "broll/koper.mp4", at: 0, dur: s(3), trim: 15 }]}>
+          <BigType over="KARENA SAMBIL" tagAt={3} dur={s(3)} lines={[{ t: "NUNGGU", at: s(0.2) }, { t: "KOPER", at: s(1.1), hl: true }, { t: "DIBAGIKAN", at: s(1.5) }]} />
+        </VideoScene>
       </At>
 
       {/* 01 makan malam */}
