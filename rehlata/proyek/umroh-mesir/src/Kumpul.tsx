@@ -131,8 +131,8 @@ const PhoneMock: React.FC<{ dur: number }> = ({ dur }) => {
       <div
         style={{
           position: "absolute",
-          left: 690,
-          top: 1050,
+          left: 505,
+          top: 1060,
           width: 300,
           height: 590,
           transform: `translate(-50%,-50%) translateY(${(1 - p) * 500}px) rotateY(${-18 + Math.sin(f / 30) * 5}deg) rotateZ(${6 + shake * 0.2}deg)`,
@@ -156,48 +156,7 @@ const PhoneMock: React.FC<{ dur: number }> = ({ dur }) => {
   );
 };
 
-/* ---------- "buktinya" rapid montage with flash ---------- */
-const Montage: React.FC = () => {
-  const f = useCurrentFrame();
-  const clips = ["mekkah.mp4", "madinah-1.mp4", "madinah-2.mp4"];
-  const seg = 25;
-  const i = Math.min(clips.length - 1, Math.floor(f / seg));
-  const local = f - i * seg;
-  const flash = Math.max(0, 1 - local / 5);
-  return (
-    <AbsoluteFill style={{ background: "#000" }}>
-      {clips.map((c, k) => (
-        <Sequence key={k} from={k * seg} durationInFrames={seg} layout="none">
-          <AbsoluteFill style={{ transform: `scale(${1.15 - (f - k * seg) * 0.004}) rotate(${(k - 1) * 1.2}deg)` }}>
-            <Video src={staticFile(c)} trimBefore={20} muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-          </AbsoluteFill>
-        </Sequence>
-      ))}
-      <AbsoluteFill style={{ background: "white", opacity: flash * 0.8 }} />
-      {/* camera viewfinder frame */}
-      <AbsoluteFill style={{ border: "3px solid rgba(255,255,255,0.8)", margin: 70, marginTop: 260, marginBottom: 420, borderRadius: 6 }} />
-      <div style={{ position: "absolute", left: 100, top: 290 }}>
-        <TagRow yellow text="BUKTINYA, HASIL FOTOGRAFER KAMI" at={0} />
-      </div>
-    </AbsoluteFill>
-  );
-};
 
-/* ---------- closing summary ---------- */
-const Summary: React.FC<{ dur: number }> = ({ dur }) => (
-  <>
-    <BigType yellow="KENAPA KUMPUL DULU?" dur={dur} size={70} y={290} lines={[{ t: "3 ALASANNYA:", at: 6 }]} />
-    <Checklist
-      title="SEBELUM PULANG KE RUMAH"
-      dur={dur}
-      items={[
-        { t: "Makan malam", at: 14 },
-        { t: "Sertifikat umroh", at: 24 },
-        { t: "Album foto eksklusif", at: 34 },
-      ]}
-    />
-  </>
-);
 
 /* ---------- sound design (Winata UI tones) ---------- */
 const LEAD: Record<string, number> = { whoosh: 0.2, whoosh_big: 0.1, whoosh_low: 0.1, swish_down: 0.15, click: 0.1, chime_up: 0.15, ding: 0.1, rise_soft: 0.08, sparkle: 0.3, riser: 0.9, swell_hit: 1.1, shimmer_down: 0.3 };
@@ -214,11 +173,9 @@ const SFX: S[] = [
   [28.3, "whoosh", 0.36], [28.45, "pop", 0.28], [34.4, "whoosh", 0.36], [34.6, "pop", 0.3], [35.2, "whoosh", 0.34], [40.4, "whoosh", 0.36], [40.6, "pop", 0.3], [41.2, "whoosh", 0.34],
   ...TXT(42.6, [43.5], 44.2), [49.4, "whoosh_low", 0.32], ...TXT(49.6, [], 51.2),
   [52.0, "whoosh", 0.34], [55.4, "tick", 0.3], [56.6, "blip", 0.34], [57.4, "blip", 0.34], [57.5, "whoosh", 0.32],
-  ...TXT(58.4, [58.5], 60.3), [58.6, "whoosh", 0.36], [59.6, "bubble_down", 0.26],
+  ...TXT(58.4, [58.5], 60.3), [59.5, "whoosh", 0.36], [60.1, "bubble_down", 0.26],
   ...TXT(63.2, [64.9], 65.5),
-  [67.2, "riser", 0.2], [67.4, "click", 0.42], [68.23, "click", 0.42], [69.07, "click", 0.42], [69.9, "whoosh_big", 0.3],
   ...TXT(72.6, [72.9], 73.6), [74.8, "ding", 0.28],
-  [76.9, "whoosh_big", 0.34], ...TXT(77.0, [77.1], 77.1), [77.4, "blip", 0.34], [77.75, "blip", 0.34], [78.1, "blip", 0.34], [78.6, "ding", 0.3],
 ];
 
 export const Kumpul: React.FC = () => {
@@ -252,7 +209,7 @@ export const Kumpul: React.FC = () => {
 
       {/* 01 makan malam */}
       <At from={11.5} to={15.3}>
-        <PhotoCard src="broll/dinner.jpg" x={640} y={1080} w={460} h={340} dur={s(3.8)} caption="MAKAN MALAM DULU" rz={4} ry={-14} from="right" />
+        <PhotoCard src="broll/nasi-kotak.jpg" x={600} y={1080} w={460} h={340} dur={s(3.8)} caption="MAKAN MALAM DULU" rz={4} ry={-14} from="right" />
       </At>
       <At from={12.7} to={15.3}>
         <BigType num="01" over="ALASAN PERTAMA" dur={s(2.6)} lines={[{ t: "MAKAN", at: s(0.15) }, { t: "MALAM", at: s(0.6), hl: true }]} />
@@ -274,7 +231,7 @@ export const Kumpul: React.FC = () => {
         <BigType num="03" over="ALASAN KETIGA" dur={s(5.4)} lines={[{ t: "PEMBAGIAN", at: s(3.6) }, { t: "ALBUM FOTO", at: s(4.4), hl: true }]} />
       </At>
       <At from={28.3} to={34.2}>
-        <PhotoCard page src="album/hal-1.jpg" x={640} y={1060} w={400} h={540} dur={s(5.9)} rz={4} ry={-16} from="bottom" />
+        <PhotoCard page src="album/hal-1.jpg" x={505} y={1040} w={400} h={540} dur={s(5.9)} rz={4} ry={-16} from="bottom" />
       </At>
       <At from={31.0} to={34.3}>
         <BigType over="ISINYA SELAMA PERJALANAN" dur={s(3.3)} size={84} lines={[{ t: "DOKUMENTASI", at: s(0.3) }, { t: "UMROH KAMU", at: s(0.9), hl: true }]} />
@@ -324,8 +281,8 @@ export const Kumpul: React.FC = () => {
       {/* HP belum proper */}
       <At from={58.4} to={63.2}>
         <BigType over="NGGAK PERLU TAKUT" dur={s(4.8)} size={86} lines={[{ t: "HP KAMU", at: s(1.9) }, { t: "KURANG PROPER", at: s(3.2), hl: true }]} />
-        <Sequence from={s(0.2)} layout="none">
-          <PhoneMock dur={s(4.6)} />
+        <Sequence from={s(1.1)} durationInFrames={s(2.2)} layout="none">
+          <PhoneMock dur={s(2.2)} />
         </Sequence>
       </At>
       <At from={63.2} to={67.3}>
@@ -333,17 +290,10 @@ export const Kumpul: React.FC = () => {
       </At>
 
       {/* bukti: rapid montage */}
-      <At from={67.4} to={69.9}>
-        <Montage />
-      </At>
 
       {/* ending */}
       <At from={72.6} to={76.6}>
         <BigType yellow="OKE DEH," dur={s(4)} lines={[{ t: "AKU MAU", at: s(0.3) }, { t: "KUMPUL DULU!", at: s(1.0), hl: true }]} />
-      </At>
-      <At from={77.0} to={81.8}>
-        <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 60%)" }} />
-        <Summary dur={s(4.8)} />
       </At>
 
       {SFX.map(([t, name, vol], i) => (
