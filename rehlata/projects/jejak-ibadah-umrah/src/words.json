@@ -1,0 +1,961 @@
+[
+{
+"text": "ketika",
+"start": 0.0,
+"end": 0.44,
+"key": false,
+"i": 0
+},
+{
+"text": "berada",
+"start": 0.44,
+"end": 0.76,
+"key": false,
+"i": 1
+},
+{
+"text": "di",
+"start": 0.76,
+"end": 0.96,
+"key": false,
+"i": 2
+},
+{
+"text": "Makkah,",
+"start": 0.96,
+"end": 2.08,
+"key": false,
+"i": 3
+},
+{
+"text": "sudah",
+"start": 2.08,
+"end": 2.46,
+"key": false,
+"i": 4
+},
+{
+"text": "melaksanakan",
+"start": 2.46,
+"end": 3.32,
+"key": false,
+"i": 5
+},
+{
+"text": "umrah",
+"start": 3.32,
+"end": 4.14,
+"key": true,
+"i": 6
+},
+{
+"text": "sekali",
+"start": 4.14,
+"end": 4.52,
+"key": false,
+"i": 7
+},
+{
+"text": "kemudian,",
+"start": 4.52,
+"end": 5.82,
+"key": false,
+"i": 8
+},
+{
+"text": "ingin",
+"start": 6.18,
+"end": 6.78,
+"key": false,
+"i": 9
+},
+{
+"text": "melaksanakan",
+"start": 6.78,
+"end": 7.38,
+"key": false,
+"i": 10
+},
+{
+"text": "umrah",
+"start": 7.38,
+"end": 7.84,
+"key": false,
+"i": 11
+},
+{
+"text": "yang",
+"start": 7.84,
+"end": 8.0,
+"key": false,
+"i": 12
+},
+{
+"text": "kedua",
+"start": 8.0,
+"end": 8.38,
+"key": true,
+"i": 13
+},
+{
+"text": "kali,",
+"start": 8.38,
+"end": 8.74,
+"key": false,
+"i": 14
+},
+{
+"text": "yang",
+"start": 8.84,
+"end": 9.14,
+"key": false,
+"i": 15
+},
+{
+"text": "ketiga",
+"start": 9.14,
+"end": 9.48,
+"key": true,
+"i": 16
+},
+{
+"text": "kali",
+"start": 9.48,
+"end": 9.82,
+"key": false,
+"i": 17
+},
+{
+"text": "dan",
+"start": 9.82,
+"end": 10.08,
+"key": false,
+"i": 18
+},
+{
+"text": "seterusnya.",
+"start": 10.08,
+"end": 11.06,
+"key": false,
+"i": 19
+},
+{
+"text": "Apakah",
+"start": 11.06,
+"end": 11.66,
+"key": false,
+"i": 20
+},
+{
+"text": "hal",
+"start": 11.66,
+"end": 11.84,
+"key": false,
+"i": 21
+},
+{
+"text": "tersebut",
+"start": 11.84,
+"end": 12.32,
+"key": false,
+"i": 22
+},
+{
+"text": "dianjurkan,",
+"start": 12.32,
+"end": 13.06,
+"key": false,
+"i": 23
+},
+{
+"text": "atau",
+"start": 13.24,
+"end": 13.52,
+"key": false,
+"i": 24
+},
+{
+"text": "cukup",
+"start": 13.74,
+"end": 14.18,
+"key": false,
+"i": 26
+},
+{
+"text": "sekali",
+"start": 14.18,
+"end": 14.56,
+"key": false,
+"i": 27
+},
+{
+"text": "umrah",
+"start": 14.56,
+"end": 15.1,
+"key": true,
+"i": 28
+},
+{
+"text": "saja?",
+"start": 15.1,
+"end": 15.36,
+"key": false,
+"i": 29
+},
+{
+"text": "Nabi ﷺ",
+"start": 15.62,
+"end": 17.46,
+"key": false,
+"i": 31
+},
+{
+"text": "pernah",
+"start": 17.62,
+"end": 17.9,
+"key": false,
+"i": 35
+},
+{
+"text": "bersabda:",
+"start": 17.9,
+"end": 18.58,
+"key": false,
+"i": 36
+},
+{
+"text": "Al-'umratu",
+"start": 18.58,
+"end": 19.72,
+"key": false,
+"i": 37
+},
+{
+"text": "ilal",
+"start": 19.72,
+"end": 19.98,
+"key": false,
+"i": 40
+},
+{
+"text": "'umrati",
+"start": 19.98,
+"end": 20.38,
+"key": false,
+"i": 41
+},
+{
+"text": "kaffāratun",
+"start": 20.38,
+"end": 21.38,
+"key": true,
+"i": 42
+},
+{
+"text": "limā",
+"start": 21.38,
+"end": 21.8,
+"key": false,
+"i": 44
+},
+{
+"text": "bainahumā.",
+"start": 21.8,
+"end": 22.54,
+"key": true,
+"i": 45
+},
+{
+"text": "Bahwa",
+"start": 22.54,
+"end": 23.46,
+"key": false,
+"i": 47
+},
+{
+"text": "umrah",
+"start": 23.46,
+"end": 24.2,
+"key": false,
+"i": 48
+},
+{
+"text": "satu",
+"start": 24.2,
+"end": 24.64,
+"key": false,
+"i": 49
+},
+{
+"text": "ke",
+"start": 24.64,
+"end": 25.16,
+"key": false,
+"i": 50
+},
+{
+"text": "umrah",
+"start": 25.16,
+"end": 25.58,
+"key": false,
+"i": 51
+},
+{
+"text": "berikutnya",
+"start": 25.58,
+"end": 26.22,
+"key": false,
+"i": 52
+},
+{
+"text": "merupakan",
+"start": 26.22,
+"end": 26.76,
+"key": false,
+"i": 53
+},
+{
+"text": "penghapus",
+"start": 26.76,
+"end": 27.56,
+"key": true,
+"i": 54
+},
+{
+"text": "atas",
+"start": 27.56,
+"end": 28.16,
+"key": false,
+"i": 55
+},
+{
+"text": "dosa-dosa",
+"start": 28.16,
+"end": 29.02,
+"key": true,
+"i": 56
+},
+{
+"text": "antara",
+"start": 29.02,
+"end": 29.4,
+"key": false,
+"i": 58
+},
+{
+"text": "keduanya.",
+"start": 29.4,
+"end": 29.88,
+"key": false,
+"i": 59
+},
+{
+"text": "Berarti",
+"start": 29.88,
+"end": 30.58,
+"key": false,
+"i": 60
+},
+{
+"text": "dalam",
+"start": 30.58,
+"end": 30.78,
+"key": false,
+"i": 61
+},
+{
+"text": "hal",
+"start": 30.78,
+"end": 31.02,
+"key": false,
+"i": 62
+},
+{
+"text": "ini",
+"start": 31.02,
+"end": 31.3,
+"key": false,
+"i": 63
+},
+{
+"text": "tentu",
+"start": 31.3,
+"end": 31.72,
+"key": false,
+"i": 64
+},
+{
+"text": "dibolehkan,",
+"start": 31.72,
+"end": 32.38,
+"key": true,
+"i": 65
+},
+{
+"text": "bahkan",
+"start": 32.38,
+"end": 33.1,
+"key": false,
+"i": 66
+},
+{
+"text": "dianjurkan",
+"start": 33.1,
+"end": 33.84,
+"key": true,
+"i": 67
+},
+{
+"text": "bagi",
+"start": 33.84,
+"end": 34.58,
+"key": false,
+"i": 68
+},
+{
+"text": "mereka",
+"start": 34.58,
+"end": 34.84,
+"key": false,
+"i": 69
+},
+{
+"text": "yang",
+"start": 34.84,
+"end": 35.22,
+"key": false,
+"i": 70
+},
+{
+"text": "memiliki",
+"start": 35.22,
+"end": 35.58,
+"key": false,
+"i": 71
+},
+{
+"text": "kesempatan",
+"start": 35.58,
+"end": 36.3,
+"key": true,
+"i": 72
+},
+{
+"text": "waktu",
+"start": 36.3,
+"end": 36.64,
+"key": false,
+"i": 73
+},
+{
+"text": "untuk",
+"start": 36.64,
+"end": 37.42,
+"key": false,
+"i": 74
+},
+{
+"text": "melaksanakannya.",
+"start": 37.42,
+"end": 38.44,
+"key": false,
+"i": 75
+},
+{
+"text": "Namun",
+"start": 38.44,
+"end": 39.02,
+"key": false,
+"i": 76
+},
+{
+"text": "jangan",
+"start": 39.02,
+"end": 39.22,
+"key": false,
+"i": 77
+},
+{
+"text": "sampai",
+"start": 39.22,
+"end": 39.78,
+"key": false,
+"i": 78
+},
+{
+"text": "hal",
+"start": 39.78,
+"end": 40.34,
+"key": false,
+"i": 79
+},
+{
+"text": "tersebut",
+"start": 40.34,
+"end": 40.82,
+"key": false,
+"i": 80
+},
+{
+"text": "kemudian",
+"start": 40.82,
+"end": 41.4,
+"key": false,
+"i": 81
+},
+{
+"text": "mengganggu",
+"start": 41.4,
+"end": 42.94,
+"key": false,
+"i": 82
+},
+{
+"text": "kewajiban",
+"start": 42.94,
+"end": 43.56,
+"key": true,
+"i": 83
+},
+{
+"text": "lainnya,",
+"start": 43.56,
+"end": 45.44,
+"key": false,
+"i": 84
+},
+{
+"text": "seperti",
+"start": 45.44,
+"end": 45.86,
+"key": false,
+"i": 85
+},
+{
+"text": "misalkan",
+"start": 45.86,
+"end": 46.88,
+"key": false,
+"i": 86
+},
+{
+"text": "sholat",
+"start": 46.88,
+"end": 47.3,
+"key": true,
+"i": 87
+},
+{
+"text": "fardhunya,",
+"start": 47.3,
+"end": 47.8,
+"key": true,
+"i": 88
+},
+{
+"text": "atau",
+"start": 47.8,
+"end": 48.76,
+"key": false,
+"i": 89
+},
+{
+"text": "mengganggu",
+"start": 48.76,
+"end": 49.72,
+"key": false,
+"i": 90
+},
+{
+"text": "tentang",
+"start": 49.72,
+"end": 50.14,
+"key": false,
+"i": 91
+},
+{
+"text": "kewajiban",
+"start": 50.14,
+"end": 50.88,
+"key": false,
+"i": 92
+},
+{
+"text": "dunianya,",
+"start": 50.88,
+"end": 51.76,
+"key": true,
+"i": 93
+},
+{
+"text": "sehingga",
+"start": 51.76,
+"end": 52.26,
+"key": false,
+"i": 94
+},
+{
+"text": "dia",
+"start": 52.26,
+"end": 52.42,
+"key": false,
+"i": 95
+},
+{
+"text": "melupakan",
+"start": 52.42,
+"end": 53.04,
+"key": false,
+"i": 96
+},
+{
+"text": "hal-hal",
+"start": 53.04,
+"end": 53.64,
+"key": false,
+"i": 97
+},
+{
+"text": "yang",
+"start": 53.64,
+"end": 53.8,
+"key": false,
+"i": 99
+},
+{
+"text": "seharusnya",
+"start": 53.8,
+"end": 54.44,
+"key": false,
+"i": 100
+},
+{
+"text": "dia",
+"start": 54.44,
+"end": 54.64,
+"key": false,
+"i": 101
+},
+{
+"text": "lakukan",
+"start": 54.64,
+"end": 55.18,
+"key": false,
+"i": 102
+},
+{
+"text": "karena",
+"start": 55.18,
+"end": 55.48,
+"key": false,
+"i": 104
+},
+{
+"text": "ingin",
+"start": 55.48,
+"end": 55.82,
+"key": false,
+"i": 105
+},
+{
+"text": "mengejar",
+"start": 55.82,
+"end": 56.3,
+"key": false,
+"i": 106
+},
+{
+"text": "sesuatu",
+"start": 56.3,
+"end": 57.16,
+"key": false,
+"i": 107
+},
+{
+"text": "yang",
+"start": 57.16,
+"end": 57.42,
+"key": false,
+"i": 108
+},
+{
+"text": "nilainya",
+"start": 57.42,
+"end": 58.02,
+"key": false,
+"i": 109
+},
+{
+"text": "sunnah.",
+"start": 58.02,
+"end": 59.02,
+"key": true,
+"i": 110
+},
+{
+"text": "Maka",
+"start": 59.02,
+"end": 59.82,
+"key": false,
+"i": 111
+},
+{
+"text": "hal",
+"start": 59.82,
+"end": 60.18,
+"key": false,
+"i": 112
+},
+{
+"text": "yang",
+"start": 60.18,
+"end": 60.32,
+"key": false,
+"i": 113
+},
+{
+"text": "perlu",
+"start": 60.32,
+"end": 60.5,
+"key": false,
+"i": 114
+},
+{
+"text": "diperhatikan",
+"start": 60.5,
+"end": 61.0,
+"key": false,
+"i": 115
+},
+{
+"text": "adalah",
+"start": 61.0,
+"end": 61.4,
+"key": false,
+"i": 116
+},
+{
+"text": "melaksanakan",
+"start": 61.4,
+"end": 62.5,
+"key": false,
+"i": 117
+},
+{
+"text": "umrah",
+"start": 62.5,
+"end": 63.04,
+"key": false,
+"i": 118
+},
+{
+"text": "dengan",
+"start": 63.04,
+"end": 63.34,
+"key": false,
+"i": 119
+},
+{
+"text": "ilmu",
+"start": 63.34,
+"end": 63.8,
+"key": true,
+"i": 120
+},
+{
+"text": "dan",
+"start": 63.8,
+"end": 64.38,
+"key": false,
+"i": 121
+},
+{
+"text": "mengerjakannya",
+"start": 64.38,
+"end": 65.76,
+"key": false,
+"i": 122
+},
+{
+"text": "dengan",
+"start": 65.76,
+"end": 66.04,
+"key": false,
+"i": 123
+},
+{
+"text": "sebaik",
+"start": 66.04,
+"end": 66.82,
+"key": true,
+"i": 124
+},
+{
+"text": "mungkin",
+"start": 66.82,
+"end": 67.18,
+"key": false,
+"i": 125
+},
+{
+"text": "tanpa",
+"start": 67.18,
+"end": 68.24,
+"key": false,
+"i": 126
+},
+{
+"text": "harus",
+"start": 68.24,
+"end": 69.36,
+"key": false,
+"i": 127
+},
+{
+"text": "mengorbankan",
+"start": 69.36,
+"end": 70.58,
+"key": false,
+"i": 128
+},
+{
+"text": "hal-hal",
+"start": 70.58,
+"end": 71.06,
+"key": false,
+"i": 129
+},
+{
+"text": "yang",
+"start": 71.06,
+"end": 71.2,
+"key": false,
+"i": 131
+},
+{
+"text": "lain",
+"start": 71.2,
+"end": 71.46,
+"key": false,
+"i": 132
+},
+{
+"text": "yang",
+"start": 71.46,
+"end": 71.76,
+"key": false,
+"i": 133
+},
+{
+"text": "lebih",
+"start": 71.76,
+"end": 72.08,
+"key": false,
+"i": 134
+},
+{
+"text": "utama.",
+"start": 72.08,
+"end": 72.56,
+"key": true,
+"i": 135
+},
+{
+"text": "Maka",
+"start": 72.56,
+"end": 73.14,
+"key": false,
+"i": 136
+},
+{
+"text": "manakah",
+"start": 73.14,
+"end": 73.5,
+"key": false,
+"i": 137
+},
+{
+"text": "yang",
+"start": 73.5,
+"end": 73.64,
+"key": false,
+"i": 138
+},
+{
+"text": "lebih",
+"start": 73.64,
+"end": 73.82,
+"key": false,
+"i": 139
+},
+{
+"text": "utama?",
+"start": 73.82,
+"end": 74.16,
+"key": true,
+"i": 140
+},
+{
+"text": "Maka",
+"start": 74.48,
+"end": 74.82,
+"key": false,
+"i": 141
+},
+{
+"text": "kita",
+"start": 74.82,
+"end": 75.1,
+"key": false,
+"i": 142
+},
+{
+"text": "yang",
+"start": 75.1,
+"end": 75.4,
+"key": false,
+"i": 143
+},
+{
+"text": "paling",
+"start": 75.4,
+"end": 75.72,
+"key": false,
+"i": 144
+},
+{
+"text": "mengetahuinya.",
+"start": 75.72,
+"end": 76.78,
+"key": true,
+"i": 145
+},
+{
+"text": "Wallāhu ta'ālā a'lam.",
+"start": 76.78,
+"end": 78.66,
+"key": false,
+"i": 146
+},
+{
+"text": "Wassalamu'alaikum",
+"start": 78.66,
+"end": 79.86,
+"key": false,
+"i": 152
+},
+{
+"text": "warahmatullahi",
+"start": 79.86,
+"end": 80.82,
+"key": false,
+"i": 153
+},
+{
+"text": "wabarakatuh.",
+"start": 80.82,
+"end": 82.36,
+"key": false,
+"i": 154
+}
+]

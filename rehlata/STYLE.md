@@ -85,9 +85,33 @@ Dua gaya yang dipakai, pilih sesuai topik:
 - [ ] 9:16, 30 fps, 60–75 detik
 - [ ] Hook kuat di 3 detik pertama
 - [ ] Subtitle Montserrat, **kecil**, putih, kata kunci hijau muda, sinkron kata per kata
-- [ ] Subtitle & teks penting aman dari area UI (bawah ±15%, kanan ±12%)
+- [ ] Subtitle & teks penting aman dari area UI (lihat **Safe zone** di bawah)
 - [ ] Label istilah dan pop-up judul di momen kunci
 - [ ] Shot berganti tiap 2–4 detik, kamera selalu bergerak
 - [ ] Sumber foto / disclaimer dicantumkan kecil
 - [ ] VO pakai suara "Dokter Brando" (±150 kata/menit, hook pertanyaan + jeda)
 - [ ] Audio voice-over jelas, musik tidak menutupi suara
+
+## 7. Safe zone (terbaru, gabungan TikTok / Reels / Shorts)
+
+Di kanvas 1080×1920, semua teks & elemen penting harus di dalam kotak ini:
+
+| Sisi | Jangan dipakai | Area aman |
+|---|---|---|
+| Atas | 250 px (±13%) – username/tab/judul | y ≥ 250 |
+| Bawah | 400 px (±21%) – caption, musik, tombol | y ≤ 1520 |
+| Kiri | 60 px | x ≥ 60 |
+| Kanan | 130 px (±12%) – like/komen/share | x ≤ 950 |
+
+Subtitle tetap di ±62% tinggi (y ≈ 1195). Label/judul di zona atas y 250–500.
+
+## 8. Gaya "kartu" (referensi folder CLAUDE EDITOR → contoh style editing)
+
+- Footage di dalam **kartu rounded** (radius ±40 px) dengan border putih tipis + glow, di atas
+  latar gelap bervignet (sesekali latar abu terang) dengan grid halus.
+- Hook boleh full-screen lalu kartu "mengecil" ke posisinya.
+- Badge kecil berwarna (merah/hijau/hitam) + judul pendek di atas kartu, checklist/#1 #2 untuk poin.
+- Teks Arab (hadits, doa) pakai font **Amiri**, ambil teks dari sumber terverifikasi
+  (contoh: dataset hadith-api fawazahmed0 di jsdelivr) dan tulis rujukannya (HR. … no. …).
+- SFX pelan: swipe/whoosh tiap ganti shot, click untuk chip, paper flip untuk kertas, light-leak flash untuk momen kunci.
+- Contoh lengkap: `rehlata/projects/jejak-ibadah-umrah/` (Remotion).
