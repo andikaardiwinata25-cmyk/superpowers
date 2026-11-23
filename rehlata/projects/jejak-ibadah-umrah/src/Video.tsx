@@ -110,7 +110,16 @@ const SEGS: Seg[] = [
 	{from: 76.8, to: 78.7, kind: 'speaker', zoom: 'wide'},
 	{from: 78.7, to: DURATION_S, kind: 'broll', src: '8321', rate: 0.85},
 ];
+const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const CUTS = SEGS.slice(1).map((s) => s.from);
+
+// latar di-blur supaya teks tengah terbaca
+const BLUR_RANGES: [number, number][] = [
+	[42.9, 59.0],
+	[76.8, 99],
+];
+const blurAt = (t: number) =>
+	Math.max(0, ...BLUR_RANGES.map(([a, b]) => interpolate(t, [a, a + 0.35, b - 0.2, b], [0, 1, 1, 0], clamp)));
 
 const LIGHT_RANGES: [number, number][] = [
 	[29.9, 38.4],
@@ -125,7 +134,6 @@ const usePop = (atS: number, damping = 13) => {
 	const {fps} = useVideoConfig();
 	return spring({frame: frame - f(atS), fps, config: {damping, mass: 0.6, stiffness: 180}});
 };
-const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const fadeOut = (frame: number, endS: number, dur = 6) => interpolate(frame, [f(endS) - dur, f(endS)], [1, 0], clamp);
 // zoom-punch singkat di awal setiap shot
 const punch = (frame: number) => interpolate(frame, [0, 8], [1.09, 1], {...clamp, easing: Easing.out(Easing.cubic)});
@@ -172,9 +180,12 @@ const Frame: React.FC<{seg: Seg; children: React.ReactNode}> = ({seg, children})
 	const {fps} = useVideoConfig();
 	if (!seg.card) {
 		// full screen + gradien atas/bawah supaya teks terbaca
+		const b = blurAt(seg.from + frame / fps);
 		return (
 			<AbsoluteFill style={{transform: `scale(${punch(frame)})`}}>
-				{children}
+				<AbsoluteFill style={{filter: b > 0.01 ? `blur(${b * 22}px) brightness(${1 - b * 0.35})` : undefined, transform: `scale(${1 + b * 0.06})`}}>
+					{children}
+				</AbsoluteFill>
 				<AbsoluteFill
 					style={{
 						background:
@@ -592,25 +603,25 @@ const CheckRow: React.FC<{text: string; tag?: string; at: number; until: number;
 		<div
 			style={{
 				position: 'absolute',
-				left: 290,
+				left: 250,
 				top: y,
 				display: 'flex',
 				alignItems: 'center',
-				gap: 14,
+				gap: 20,
 				opacity: fadeOut(frame, until) * interpolate(p, [0, 0.3], [0, 1], clamp),
 				transform: `translateX(${interpolate(p, [0, 1], [-40, 0])}px)`,
 				fontFamily: MONT,
-				fontWeight: 700,
-				fontSize: 30,
+				fontWeight: 800,
+				fontSize: 48,
 				color: '#fff',
 				textShadow: '0 3px 12px rgba(0,0,0,0.7)',
 			}}
 		>
 			<div
 				style={{
-					width: 34,
-					height: 34,
-					borderRadius: 9,
+					width: 54,
+					height: 54,
+					borderRadius: 13,
 					background: ok ? GREEN : 'rgba(0,0,0,0.3)',
 					border: ok ? 'none' : '2px solid rgba(255,255,255,0.7)',
 					display: 'flex',
@@ -619,14 +630,14 @@ const CheckRow: React.FC<{text: string; tag?: string; at: number; until: number;
 				}}
 			>
 				{ok ? (
-					<svg width="22" height="22" viewBox="0 0 24 24">
+					<svg width="34" height="34" viewBox="0 0 24 24">
 						<path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#0b0b0b" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="30" strokeDashoffset={30 * (1 - tick)} />
 					</svg>
 				) : null}
 			</div>
 			<span style={{opacity: ok ? 1 : 0.8}}>{text}</span>
 			{tag ? (
-				<span style={{fontSize: 18, fontWeight: 800, letterSpacing: 1.5, padding: '3px 9px', borderRadius: 6, background: 'rgba(255,255,255,0.18)', color: '#e6e6e6'}}>
+				<span style={{fontSize: 24, fontWeight: 800, letterSpacing: 1.5, padding: '5px 12px', borderRadius: 6, background: 'rgba(255,255,255,0.18)', color: '#e6e6e6'}}>
 					{tag}
 				</span>
 			) : null}
@@ -763,7 +774,6 @@ const CutFlash: React.FC = () => {
 
 const TopGraphics: React.FC = () => (
 	<>
-		<SeriesTag />
 		{/* HOOK */}
 		<Line at={0.15} until={4.45} y={300} size={26} weight={700} runs={[{t: 'JEJAK IBADAH', c: 'rgba(255,255,255,0.75)'}]} />
 		<Line at={0.35} until={4.45} y={338} size={74} runs={[{t: 'Umrah '}, {t: 'berkali-kali', c: GREEN}, {t: ','}]} />
@@ -800,10 +810,10 @@ const TopGraphics: React.FC = () => (
 		<Badge text="TAPI INGAT!" color={RED} at={38.5} until={42.9} y={Y1} />
 		<Line at={39.0} until={42.9} y={Y2} size={42} runs={[{t: 'Jangan sampai '}, {t: 'mengganggu', c: RED}]} />
 
-		<Line at={42.94} until={59.0} y={Y1} size={34} runs={[{t: 'KEWAJIBAN ', c: GREEN}, {t: 'LAINNYA'}]} />
-		<CheckRow text="Sholat fardhu" at={46.88} until={59.0} y={Y1 + 48} ok />
-		<CheckRow text="Kewajiban dunia" at={50.14} until={59.0} y={Y1 + 92} ok />
-		<CheckRow text="Umrah" tag="SUNNAH" at={58.02} until={59.0} y={Y1 + 136} ok={false} />
+		<Line at={43.1} until={59.0} y={640} size={58} runs={[{t: 'KEWAJIBAN ', c: GREEN}, {t: 'LAINNYA'}]} />
+		<CheckRow text="Sholat fardhu" at={46.88} until={59.0} y={740} ok />
+		<CheckRow text="Kewajiban dunia" at={50.14} until={59.0} y={818} ok />
+		<CheckRow text="Umrah" tag="SUNNAH" at={58.02} until={59.0} y={896} ok={false} />
 
 		{/* YANG PERLU DIPERHATIKAN (kartu, terang) */}
 		<Badge text="YANG PERLU DIPERHATIKAN" color="#141414" at={59.1} until={67.2} y={Y1} />
@@ -817,9 +827,10 @@ const TopGraphics: React.FC = () => (
 		<Line at={74.6} until={76.8} y={Y1 + 52} size={44} runs={[{t: 'Kita', font: 'play', c: GOLD}, {t: ' yang paling tahu.'}]} />
 
 		{/* Penutup Arab */}
-		<Line at={76.85} until={78.7} y={Y1 + 2} size={70} runs={[{t: 'وَاللّٰهُ تَعَالَى أَعْلَمُ', font: 'arab', c: GOLD}]} />
-		<Line at={77.2} until={78.7} y={Y1 + 108} size={26} weight={600} runs={[{t: "Wallāhu ta'ālā a'lam", c: 'rgba(255,255,255,0.85)'}]} />
-		<Line at={78.75} until={DURATION_S} y={Y1 + 10} size={54} runs={[{t: 'السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللّٰهِ وَبَرَكَاتُهُ', font: 'arab', c: GOLD}]} />
+		<Line at={76.85} until={78.7} y={770} size={96} runs={[{t: 'وَاللّٰهُ تَعَالَى أَعْلَمُ', font: 'arab', c: GOLD}]} />
+		<Line at={77.2} until={78.7} y={905} size={30} weight={600} runs={[{t: "Wallāhu ta'ālā a'lam", c: 'rgba(255,255,255,0.9)'}]} />
+		<Line at={78.75} until={DURATION_S} y={790} size={68} runs={[{t: 'السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللّٰهِ وَبَرَكَاتُهُ', font: 'arab', c: GOLD}]} />
+		<Line at={79.3} until={DURATION_S} y={900} size={28} weight={600} runs={[{t: "Wassalāmu'alaikum warahmatullāhi wabarakātuh", c: 'rgba(255,255,255,0.9)'}]} />
 	</>
 );
 
@@ -856,7 +867,7 @@ const Subtitles: React.FC = () => {
 		const end = Math.min(c[c.length - 1].end + 0.25, next ? next[0].start : 999);
 		return t >= c[0].start && t < end;
 	});
-	if (idx < 0) return null;
+	if (idx < 0 || t >= 76.8) return null;
 	const c = chunks[idx];
 	const p = spring({frame: frame - f(c[0].start), fps: FPS, config: {damping: 18, mass: 0.4}});
 	return (
