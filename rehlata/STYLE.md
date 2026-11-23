@@ -107,11 +107,14 @@ Subtitle tetap di ±62% tinggi (y ≈ 1195). Label/judul di zona atas y 250–50
 
 ## 8. Gaya "kartu" (referensi folder CLAUDE EDITOR → contoh style editing)
 
-- Footage di dalam **kartu rounded** (radius ±40 px) dengan border putih tipis + glow, di atas
+- Default **full screen** (gradien gelap di atas supaya teks terbaca, bingkai sudut tipis yang "snap" tiap potongan).
+- Kartu hanya untuk **bagian penjelasan** (arti dalil, hukum, poin-poin): footage di dalam **kartu rounded** (radius ±40 px) dengan border putih tipis + glow, di atas
   latar gelap bervignet (sesekali latar abu terang) dengan grid halus.
 - Hook boleh full-screen lalu kartu "mengecil" ke posisinya.
 - Badge kecil berwarna (merah/hijau/hitam) + judul pendek di atas kartu, checklist/#1 #2 untuk poin.
 - Teks Arab (hadits, doa) pakai font **Amiri**, ambil teks dari sumber terverifikasi
   (contoh: dataset hadith-api fawazahmed0 di jsdelivr) dan tulis rujukannya (HR. … no. …).
-- SFX pelan: swipe/whoosh tiap ganti shot, click untuk chip, paper flip untuk kertas, light-leak flash untuk momen kunci.
+- Teks judul rapat (line-height ±1.08, jarak antar baris ±50 px), muncul kata per kata (naik + blur), kata kunci diberi garis bawah yang tergambar.
+- Tiap potongan: zoom-punch + kilatan putih singkat + **SFX klik** (+ whoosh halus).
+- SFX pelan lainnya: click untuk chip, paper flip untuk kertas, light-leak flash untuk momen kunci.
 - Contoh lengkap: `rehlata/projects/jejak-ibadah-umrah/` (Remotion).

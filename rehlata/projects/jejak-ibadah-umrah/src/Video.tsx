@@ -32,9 +32,14 @@ const GOLD = '#E8C27A';
 // atas 250px, bawah 400px (y <= 1520), kiri 60px, kanan 130px (x <= 950)
 const SAFE = {top: 250, bottom: 1520, left: 60, right: 950};
 
-// Kartu video (gaya "edittomm": kartu rounded, border putih glow)
+// Kartu video (gaya "edittomm") — hanya untuk bagian penjelasan
 const CARD = {x: 180, y: 540, w: 720, h: 940};
 const SUB_Y = 1195; // pusat subtitle, ±62% tinggi frame
+
+// Baris teks atas (dirapatkan)
+const Y1 = 300;
+const Y2 = 354;
+const Y3 = 402;
 
 /* ------------------------------------------------------------------ */
 /* Fonts                                                               */
@@ -51,10 +56,7 @@ const fonts: [string, string, string, string?][] = [
 ];
 Promise.all(
 	fonts.map(([fam, file, weight, style]) => {
-		const ff = new FontFace(fam, `url(${staticFile(file)})`, {
-			weight,
-			style: style ?? 'normal',
-		});
+		const ff = new FontFace(fam, `url(${staticFile(file)})`, {weight, style: style ?? 'normal'});
 		return ff.load().then((l) => document.fonts.add(l));
 	}),
 )
@@ -72,46 +74,48 @@ const PLAY = 'Playfair, serif';
 /* Timeline                                                            */
 /* ------------------------------------------------------------------ */
 type Theme = 'dark' | 'light';
+type Zoom = 'hook' | 'wide' | 'mid' | 'tight';
 type Seg =
-	| {from: number; to: number; kind: 'full'}
-	| {from: number; to: number; kind: 'speaker'; zoom: 'wide' | 'mid' | 'tight'; enterFromFull?: boolean}
-	| {from: number; to: number; kind: 'broll'; src: string; offset?: number; rate?: number}
-	| {from: number; to: number; kind: 'hadith'};
+	| {from: number; to: number; kind: 'speaker'; zoom: Zoom; card?: boolean; enterFromFull?: boolean}
+	| {from: number; to: number; kind: 'broll'; src: string; offset?: number; rate?: number; card?: boolean; enterFromFull?: boolean}
+	| {from: number; to: number; kind: 'hadith'; card?: undefined; enterFromFull?: undefined};
 
 const SEGS: Seg[] = [
-	{from: 0, to: 4.5, kind: 'full'},
-	{from: 4.5, to: 8.0, kind: 'speaker', zoom: 'mid', enterFromFull: true},
+	{from: 0, to: 4.5, kind: 'speaker', zoom: 'hook'},
+	{from: 4.5, to: 8.0, kind: 'speaker', zoom: 'mid'},
 	{from: 8.0, to: 11.0, kind: 'broll', src: '8487', rate: 0.78},
 	{from: 11.0, to: 15.4, kind: 'speaker', zoom: 'tight'},
 	{from: 15.4, to: 18.4, kind: 'broll', src: 'kabah'},
 	{from: 18.4, to: 23.4, kind: 'hadith'},
-	{from: 23.4, to: 26.7, kind: 'speaker', zoom: 'mid'},
-	{from: 26.7, to: 29.9, kind: 'broll', src: 'hujan'},
-	{from: 29.9, to: 33.8, kind: 'speaker', zoom: 'wide'},
-	{from: 33.8, to: 36.1, kind: 'broll', src: '8467', rate: 0.72},
-	{from: 36.1, to: 38.4, kind: 'broll', src: 'kabah', offset: 6},
+	// --- penjelasan hadits (kartu) ---
+	{from: 23.4, to: 26.7, kind: 'speaker', zoom: 'mid', card: true, enterFromFull: true},
+	{from: 26.7, to: 29.9, kind: 'broll', src: 'hujan', card: true},
+	{from: 29.9, to: 33.8, kind: 'speaker', zoom: 'wide', card: true},
+	{from: 33.8, to: 36.1, kind: 'broll', src: '8467', rate: 0.72, card: true},
+	{from: 36.1, to: 38.4, kind: 'broll', src: 'kabah', offset: 6, card: true},
+	// --- full ---
 	{from: 38.4, to: 42.9, kind: 'speaker', zoom: 'tight'},
 	{from: 42.9, to: 47.8, kind: 'broll', src: 'live_isya'},
 	{from: 47.8, to: 51.8, kind: 'speaker', zoom: 'mid'},
 	{from: 51.8, to: 55.0, kind: 'broll', src: '8389', rate: 0.94},
 	{from: 55.0, to: 59.0, kind: 'speaker', zoom: 'tight'},
-	{from: 59.0, to: 61.0, kind: 'broll', src: '3450'},
-	{from: 61.0, to: 63.0, kind: 'broll', src: '8489', rate: 0.9},
-	{from: 63.0, to: 67.2, kind: 'speaker', zoom: 'mid'},
+	// --- yang perlu diperhatikan (kartu) ---
+	{from: 59.0, to: 61.0, kind: 'broll', src: '3450', card: true, enterFromFull: true},
+	{from: 61.0, to: 63.0, kind: 'broll', src: '8489', rate: 0.9, card: true},
+	{from: 63.0, to: 67.2, kind: 'speaker', zoom: 'mid', card: true},
+	// --- full ---
 	{from: 67.2, to: 69.6, kind: 'broll', src: '8320'},
 	{from: 69.6, to: 72.5, kind: 'broll', src: '3438', rate: 0.9},
 	{from: 72.5, to: 76.8, kind: 'speaker', zoom: 'tight'},
 	{from: 76.8, to: 78.7, kind: 'speaker', zoom: 'wide'},
 	{from: 78.7, to: DURATION_S, kind: 'broll', src: '8321', rate: 0.85},
 ];
+const CUTS = SEGS.slice(1).map((s) => s.from);
 
-// Segmen dengan latar terang (variasi seperti referensi)
 const LIGHT_RANGES: [number, number][] = [
 	[29.9, 38.4],
 	[59.0, 67.2],
 ];
-const themeAt = (t: number): Theme =>
-	LIGHT_RANGES.some(([a, b]) => t >= a && t < b) ? 'light' : 'dark';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
@@ -121,42 +125,28 @@ const usePop = (atS: number, damping = 13) => {
 	const {fps} = useVideoConfig();
 	return spring({frame: frame - f(atS), fps, config: {damping, mass: 0.6, stiffness: 180}});
 };
-
-const fadeOut = (frame: number, endS: number, dur = 6) =>
-	interpolate(frame, [f(endS) - dur, f(endS)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
+const fadeOut = (frame: number, endS: number, dur = 6) => interpolate(frame, [f(endS) - dur, f(endS)], [1, 0], clamp);
+// zoom-punch singkat di awal setiap shot
+const punch = (frame: number) => interpolate(frame, [0, 8], [1.09, 1], {...clamp, easing: Easing.out(Easing.cubic)});
 
 /* ------------------------------------------------------------------ */
-/* Background                                                          */
+/* Background (hanya terlihat saat mode kartu / hadits)                */
 /* ------------------------------------------------------------------ */
 const Background: React.FC = () => {
 	const frame = useCurrentFrame();
 	const t = frame / FPS;
-	// crossfade 6 frame antar tema
 	let lightAmt = 0;
 	for (const [a, b] of LIGHT_RANGES) {
-		lightAmt = Math.max(
-			lightAmt,
-			interpolate(t, [a - 0.1, a + 0.1, b - 0.1, b + 0.1], [0, 1, 1, 0], {
-				extrapolateLeft: 'clamp',
-				extrapolateRight: 'clamp',
-			}),
-		);
+		lightAmt = Math.max(lightAmt, interpolate(t, [a - 0.1, a + 0.1, b - 0.1, b + 0.1], [0, 1, 1, 0], clamp));
 	}
 	const drift = Math.sin(frame / 90) * 40;
 	return (
 		<AbsoluteFill>
+			<AbsoluteFill style={{background: `radial-gradient(circle at 50% 45%, #26262b 0%, #101012 45%, #050506 100%)`}} />
 			<AbsoluteFill
-				style={{
-					background: `radial-gradient(circle at 50% ${45 + drift / 20}%, #26262b 0%, #101012 45%, #050506 100%)`,
-				}}
+				style={{opacity: lightAmt, background: `radial-gradient(circle at 50% 45%, #ffffff 0%, #e4e4e4 45%, #a9a9a9 100%)`}}
 			/>
-			<AbsoluteFill
-				style={{
-					opacity: lightAmt,
-					background: `radial-gradient(circle at 50% ${45 + drift / 20}%, #ffffff 0%, #e4e4e4 45%, #a9a9a9 100%)`,
-				}}
-			/>
-			{/* grid halus */}
 			<AbsoluteFill
 				style={{
 					opacity: 0.06 + lightAmt * 0.04,
@@ -173,22 +163,36 @@ const Background: React.FC = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/* Card / Shots                                                        */
+/* Shots                                                               */
 /* ------------------------------------------------------------------ */
 const cardShadow = '0 0 0 3px rgba(255,255,255,0.92), 0 0 34px rgba(255,255,255,0.35), 0 40px 80px rgba(0,0,0,0.55)';
 
-const Card: React.FC<{seg: Seg; children: React.ReactNode}> = ({seg, children}) => {
-	const frame = useCurrentFrame(); // relatif terhadap Sequence
+const Frame: React.FC<{seg: Seg; children: React.ReactNode}> = ({seg, children}) => {
+	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
+	if (!seg.card) {
+		// full screen + gradien atas/bawah supaya teks terbaca
+		return (
+			<AbsoluteFill style={{transform: `scale(${punch(frame)})`}}>
+				{children}
+				<AbsoluteFill
+					style={{
+						background:
+							'linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 18%, rgba(0,0,0,0) 34%, rgba(0,0,0,0) 52%, rgba(0,0,0,0.25) 72%, rgba(0,0,0,0.5) 100%)',
+					}}
+				/>
+			</AbsoluteFill>
+		);
+	}
 	const enter = spring({frame, fps, config: {damping: 15, mass: 0.7, stiffness: 160}});
 	let x = CARD.x;
 	let y = CARD.y;
 	let w = CARD.w;
 	let h = CARD.h;
 	let r = 40;
-	let scale = interpolate(enter, [0, 1], [0.9, 1]);
-	let opacity = interpolate(enter, [0, 0.4], [0, 1], {extrapolateRight: 'clamp'});
-	if (seg.kind === 'speaker' && seg.enterFromFull) {
+	let scale = interpolate(enter, [0, 1], [0.95, 1]);
+	let opacity = 1;
+	if (seg.enterFromFull) {
 		const p = spring({frame, fps, config: {damping: 18, mass: 0.8, stiffness: 120}});
 		x = interpolate(p, [0, 1], [0, CARD.x]);
 		y = interpolate(p, [0, 1], [0, CARD.y]);
@@ -198,7 +202,6 @@ const Card: React.FC<{seg: Seg; children: React.ReactNode}> = ({seg, children}) 
 		scale = 1;
 		opacity = 1;
 	}
-	// sedikit melayang supaya kamera tidak pernah diam
 	const floatY = Math.sin(frame / 25) * 4;
 	return (
 		<div
@@ -217,19 +220,30 @@ const Card: React.FC<{seg: Seg; children: React.ReactNode}> = ({seg, children}) 
 			}}
 		>
 			{children}
+			<AbsoluteFill
+				style={{
+					background:
+						'linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.45) 100%), radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.35) 100%)',
+				}}
+			/>
 		</div>
 	);
 };
 
-const ZOOMS = {wide: [1.0, 1.06], mid: [1.16, 1.24], tight: [1.42, 1.52]} as const;
+const ZOOMS: Record<Zoom, [number, number]> = {
+	hook: [1.14, 1.0],
+	wide: [1.0, 1.05],
+	mid: [1.18, 1.25],
+	tight: [1.36, 1.44],
+};
 
 const SpeakerShot: React.FC<{seg: Extract<Seg, {kind: 'speaker'}>}> = ({seg}) => {
 	const frame = useCurrentFrame();
 	const len = f(seg.to - seg.from);
 	const [z0, z1] = ZOOMS[seg.zoom];
-	const z = interpolate(frame, [0, len], [z0, z1], {easing: Easing.inOut(Easing.quad)});
+	const z = interpolate(frame, [0, len], [z0, z1], {easing: seg.zoom === 'hook' ? Easing.out(Easing.cubic) : Easing.inOut(Easing.quad)});
 	return (
-		<Card seg={seg}>
+		<Frame seg={seg}>
 			<OffthreadVideo
 				src={staticFile('main.mp4')}
 				startFrom={f(seg.from)}
@@ -239,66 +253,30 @@ const SpeakerShot: React.FC<{seg: Extract<Seg, {kind: 'speaker'}>}> = ({seg}) =>
 					height: '100%',
 					objectFit: 'cover',
 					transform: `scale(${z})`,
-					transformOrigin: '50% 36%',
+					// full: wajah turun sedikit supaya tidak tertutup teks atas
+					transformOrigin: seg.card ? '50% 36%' : '50% 18%',
 				}}
 			/>
-			<Vignette />
-		</Card>
+		</Frame>
 	);
 };
-
-const Vignette: React.FC = () => (
-	<AbsoluteFill
-		style={{
-			background:
-				'linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.45) 100%), radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.35) 100%)',
-		}}
-	/>
-);
 
 const BrollShot: React.FC<{seg: Extract<Seg, {kind: 'broll'}>; index: number}> = ({seg, index}) => {
 	const frame = useCurrentFrame();
 	const len = f(seg.to - seg.from);
 	const dir = index % 2 === 0 ? 1 : -1;
-	const z = interpolate(frame, [0, len], [1.08, 1.18]);
-	const tx = interpolate(frame, [0, len], [-14 * dir, 14 * dir]);
+	const z = interpolate(frame, [0, len], [1.06, 1.16]);
+	const tx = interpolate(frame, [0, len], [-16 * dir, 16 * dir]);
 	return (
-		<Card seg={seg}>
+		<Frame seg={seg}>
 			<OffthreadVideo
 				src={staticFile(`broll/${seg.src}.mp4`)}
 				startFrom={f(seg.offset ?? 0)}
 				playbackRate={seg.rate ?? 1}
 				muted
-				style={{
-					width: '100%',
-					height: '100%',
-					objectFit: 'cover',
-					transform: `scale(${z}) translateX(${tx}px)`,
-				}}
+				style={{width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${z}) translateX(${tx}px)`}}
 			/>
-			<Vignette />
-		</Card>
-	);
-};
-
-const FullShot: React.FC<{seg: Seg}> = ({seg}) => {
-	const frame = useCurrentFrame();
-	const len = f(seg.to - seg.from);
-	const z = interpolate(frame, [0, len], [1.12, 1.0], {easing: Easing.out(Easing.cubic)});
-	return (
-		<AbsoluteFill>
-			<OffthreadVideo
-				src={staticFile('main.mp4')}
-				muted
-				style={{width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${z})`, transformOrigin: '50% 35%'}}
-			/>
-			<AbsoluteFill
-				style={{
-					background:
-						'linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 32%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.35) 100%)',
-				}}
-			/>
-		</AbsoluteFill>
+		</Frame>
 	);
 };
 
@@ -316,31 +294,45 @@ const HADITH: {w: string; at: number}[] = [
 ];
 
 const HadithScene: React.FC = () => {
-	const frame = useCurrentFrame(); // relatif (mulai 18.4)
+	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 	const t = frame / fps + 18.4;
 	const enter = spring({frame, fps, config: {damping: 14, mass: 0.8, stiffness: 140}});
 	const len = f(23.4 - 18.4);
 	const z = interpolate(frame, [0, len], [1, 1.05]);
-	const srcIn = interpolate(t, [22.4, 22.8], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+	const srcIn = interpolate(t, [22.4, 22.8], [0, 1], clamp);
 	const imgW = 1040;
-	const imgTop = 300;
+	// partikel cahaya melayang
+	const dots = Array.from({length: 18}, (_, i) => {
+		const sx = (i * 137) % 1080;
+		const sy = 1900 - ((frame * (1.2 + (i % 5) * 0.4) + i * 211) % 2100);
+		return {x: sx + Math.sin((frame + i * 20) / 30) * 20, y: sy, s: 3 + (i % 4) * 2, o: 0.15 + (i % 3) * 0.12};
+	});
 	return (
 		<AbsoluteFill>
+			{/* latar: footage Ka'bah blur & gelap */}
+			<AbsoluteFill style={{transform: `scale(${1.15 + frame / 1500})`, filter: 'blur(18px) brightness(0.35) saturate(0.8)'}}>
+				<OffthreadVideo src={staticFile('broll/kabah.mp4')} startFrom={f(3)} muted style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+			</AbsoluteFill>
+			{dots.map((d, i) => (
+				<div
+					key={i}
+					style={{position: 'absolute', left: d.x, top: d.y, width: d.s, height: d.s, borderRadius: '50%', background: GOLD, opacity: d.o, boxShadow: `0 0 10px ${GOLD}`}}
+				/>
+			))}
 			<div
 				style={{
 					position: 'absolute',
 					left: (1080 - imgW) / 2 - 10,
-					top: imgTop,
+					top: 300,
 					width: imgW,
 					height: imgW,
 					transform: `translateY(${interpolate(enter, [0, 1], [120, 0])}px) rotate(${interpolate(enter, [0, 1], [-6, -1.5])}deg) scale(${z * interpolate(enter, [0, 1], [0.85, 1])})`,
-					opacity: interpolate(enter, [0, 0.3], [0, 1], {extrapolateRight: 'clamp'}),
+					opacity: interpolate(enter, [0, 0.3], [0, 1], clamp),
 					filter: 'drop-shadow(0 30px 40px rgba(0,0,0,0.6))',
 				}}
 			>
 				<Img src={staticFile('img/parchment.png')} style={{width: '100%', height: '100%'}} />
-				{/* area kertas: x 11%–86%, y 22%–78% */}
 				<div
 					style={{
 						position: 'absolute',
@@ -352,7 +344,7 @@ const HadithScene: React.FC = () => {
 						flexDirection: 'column',
 						alignItems: 'center',
 						justifyContent: 'center',
-						gap: 18,
+						gap: 14,
 					}}
 				>
 					<div style={{fontFamily: MONT, fontWeight: 700, fontSize: 22, letterSpacing: 6, color: '#7a4b22'}}>
@@ -381,6 +373,7 @@ const HadithScene: React.FC = () => {
 									style={{
 										opacity: interpolate(p, [0, 1], [0.12, 1]),
 										transform: `translateY(${interpolate(p, [0, 1], [10, 0])}px)`,
+										filter: `blur(${interpolate(p, [0, 1], [4, 0])}px)`,
 										color: w === 'كَفَّارَةٌ' && t > 20.38 ? '#1f6b1a' : undefined,
 									}}
 								>
@@ -389,17 +382,7 @@ const HadithScene: React.FC = () => {
 							);
 						})}
 					</div>
-					<div
-						style={{
-							opacity: srcIn,
-							fontFamily: MONT,
-							fontWeight: 600,
-							fontSize: 22,
-							color: '#6b4220',
-							textAlign: 'center',
-							lineHeight: 1.4,
-						}}
-					>
+					<div style={{opacity: srcIn, fontFamily: MONT, fontWeight: 600, fontSize: 22, color: '#6b4220', textAlign: 'center', lineHeight: 1.35}}>
 						“Umrah ke umrah berikutnya adalah penghapus dosa di antara keduanya.”
 						<br />
 						<span style={{fontWeight: 800, fontSize: 19, letterSpacing: 2}}>HR. AL-BUKHARI NO. 1773 & MUSLIM NO. 1349</span>
@@ -411,19 +394,14 @@ const HadithScene: React.FC = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/* Top-zone graphics                                                   */
+/* Motion-graphic text components                                      */
 /* ------------------------------------------------------------------ */
-const Badge: React.FC<{text: string; color: string; at: number; until: number; y: number; dark?: boolean}> = ({
-	text,
-	color,
-	at,
-	until,
-	y,
-	dark,
-}) => {
+const Badge: React.FC<{text: string; color: string; at: number; until: number; y: number; dark?: boolean}> = ({text, color, at, until, y, dark}) => {
 	const frame = useCurrentFrame();
 	const p = usePop(at);
 	if (frame < f(at) || frame > f(until)) return null;
+	const wipe = interpolate(frame - f(at), [0, 9], [100, 0], {...clamp, easing: Easing.out(Easing.cubic)});
+	const shine = interpolate(frame - f(at), [6, 22], [-40, 140], clamp);
 	return (
 		<div
 			style={{
@@ -433,74 +411,126 @@ const Badge: React.FC<{text: string; color: string; at: number; until: number; y
 				right: 0,
 				display: 'flex',
 				justifyContent: 'center',
-				opacity: fadeOut(frame, until) * interpolate(p, [0, 0.3], [0, 1], {extrapolateRight: 'clamp'}),
-				transform: `scale(${interpolate(p, [0, 1], [0.6, 1])})`,
+				opacity: fadeOut(frame, until),
+				transform: `scale(${interpolate(p, [0, 1], [0.7, 1])})`,
 			}}
 		>
 			<div
 				style={{
+					position: 'relative',
+					overflow: 'hidden',
 					fontFamily: MONT,
 					fontWeight: 800,
-					fontSize: 26,
+					fontSize: 24,
 					letterSpacing: 2,
-					padding: '8px 20px',
+					padding: '7px 18px',
 					borderRadius: 8,
 					background: color,
 					color: dark ? '#0b0b0b' : '#fff',
 					boxShadow: `0 0 22px ${color}88`,
+					clipPath: `inset(0 ${wipe}% 0 0 round 8px)`,
 				}}
 			>
 				{text}
+				<div
+					style={{
+						position: 'absolute',
+						top: 0,
+						bottom: 0,
+						left: `${shine}%`,
+						width: 40,
+						background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent)',
+						transform: 'skewX(-20deg)',
+					}}
+				/>
 			</div>
 		</div>
 	);
 };
 
 type Run = {t: string; c?: string; font?: 'play' | 'arab'};
-const Line: React.FC<{
-	runs: Run[];
-	at: number;
-	until: number;
-	y: number;
-	size?: number;
-	theme?: Theme;
-	weight?: number;
-}> = ({runs, at, until, y, size = 50, theme = 'dark', weight = 800}) => {
+// Judul: muncul kata per kata (naik + blur), kata berwarna dapat garis bawah yang "digambar"
+const Line: React.FC<{runs: Run[]; at: number; until: number; y: number; size?: number; theme?: Theme; weight?: number; stagger?: number}> = ({
+	runs,
+	at,
+	until,
+	y,
+	size = 44,
+	theme = 'dark',
+	weight = 800,
+	stagger = 2.5,
+}) => {
 	const frame = useCurrentFrame();
-	const p = usePop(at, 15);
+	const {fps} = useVideoConfig();
 	if (frame < f(at) || frame > f(until)) return null;
 	const base = theme === 'dark' ? '#ffffff' : '#141414';
+	const isArab = runs.every((r) => r.font === 'arab');
+	let wi = 0;
 	return (
 		<div
+			dir={isArab ? 'rtl' : undefined}
 			style={{
 				position: 'absolute',
 				top: y,
 				left: SAFE.left + 60,
-				right: 1080 - SAFE.right + 0,
+				right: 1080 - SAFE.right,
 				textAlign: 'center',
 				fontFamily: MONT,
 				fontWeight: weight,
 				fontSize: size,
-				lineHeight: 1.15,
+				lineHeight: 1.08,
+				letterSpacing: -0.5,
 				color: base,
-				opacity: fadeOut(frame, until) * interpolate(p, [0, 0.35], [0, 1], {extrapolateRight: 'clamp'}),
-				transform: `translateY(${interpolate(p, [0, 1], [26, 0])}px)`,
-				textShadow: theme === 'dark' ? '0 4px 18px rgba(0,0,0,0.6)' : 'none',
+				opacity: fadeOut(frame, until),
+				textShadow: theme === 'dark' ? '0 3px 14px rgba(0,0,0,0.65)' : 'none',
 			}}
 		>
-			{runs.map((r, i) => (
-				<span
-					key={i}
-					style={{
-						color: r.c ?? base,
-						fontFamily: r.font === 'play' ? PLAY : r.font === 'arab' ? AMIRI : MONT,
-						fontStyle: r.font === 'play' ? 'italic' : 'normal',
-						fontWeight: r.font === 'play' ? 600 : r.font === 'arab' ? 700 : weight,
-					}}
-				>
-					{r.t}
-				</span>
-			))}
+			{runs.map((r, ri) => {
+				const parts = isArab ? [r.t] : r.t.split(/(\s+)/).filter((x) => x.length);
+				return (
+					<span key={ri} style={{position: 'relative', display: 'inline-block', whiteSpace: 'pre'}}>
+						{parts.map((p, pi) => {
+							if (/^\s+$/.test(p)) return <span key={pi}>{p}</span>;
+							const d = wi++ * stagger;
+							const s = spring({frame: frame - f(at) - d, fps, config: {damping: 14, mass: 0.5, stiffness: 200}});
+							return (
+								<span
+									key={pi}
+									style={{
+										display: 'inline-block',
+										color: r.c ?? base,
+										fontFamily: r.font === 'play' ? PLAY : r.font === 'arab' ? AMIRI : MONT,
+										fontStyle: r.font === 'play' ? 'italic' : 'normal',
+										fontWeight: r.font === 'play' ? 600 : r.font === 'arab' ? 700 : weight,
+										letterSpacing: r.font ? 0 : undefined,
+										opacity: interpolate(s, [0, 0.5], [0, 1], clamp),
+										transform: `translateY(${interpolate(s, [0, 1], [size * 0.55, 0])}px)`,
+										filter: `blur(${interpolate(s, [0, 1], [8, 0])}px)`,
+									}}
+								>
+									{p}
+								</span>
+							);
+						})}
+						{r.c === GREEN || r.c === RED || r.c === '#2f8f4a' ? (
+							<span
+								style={{
+									position: 'absolute',
+									left: 2,
+									right: 2,
+									bottom: -4,
+									height: 4,
+									borderRadius: 2,
+									background: r.c,
+									transformOrigin: 'left',
+									transform: `scaleX(${interpolate(frame - f(at), [8, 20], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)})})`,
+									boxShadow: `0 0 10px ${r.c}`,
+								}}
+							/>
+						) : null}
+					</span>
+				);
+			})}
 		</div>
 	);
 };
@@ -515,92 +545,88 @@ const Chip: React.FC<{text: string; at: number; until: number; x: number; y: num
 	theme = 'dark',
 }) => {
 	const frame = useCurrentFrame();
-	const p = usePop(at, 11);
+	const p = usePop(at, 10);
 	if (frame < f(at) || frame > f(until)) return null;
+	const ring = interpolate(frame - f(at), [0, 12], [0, 1], clamp);
 	return (
-		<div
-			style={{
-				position: 'absolute',
-				left: x,
-				top: y,
-				transform: `translateX(-50%) scale(${interpolate(p, [0, 1], [0.4, 1])})`,
-				opacity: fadeOut(frame, until) * interpolate(p, [0, 0.3], [0, 1], {extrapolateRight: 'clamp'}),
-				fontFamily: MONT,
-				fontWeight: 700,
-				fontSize: 28,
-				padding: '10px 20px',
-				borderRadius: 14,
-				border: `2px solid ${color}`,
-				color: theme === 'dark' ? '#fff' : '#111',
-				background: theme === 'dark' ? 'rgba(20,20,22,0.85)' : 'rgba(255,255,255,0.9)',
-				boxShadow: `0 0 18px ${color}55`,
-				whiteSpace: 'nowrap',
-			}}
-		>
-			{text}
+		<div style={{position: 'absolute', left: x, top: y, transform: 'translateX(-50%)', opacity: fadeOut(frame, until)}}>
+			{/* ring "klik" */}
+			<div
+				style={{
+					position: 'absolute',
+					inset: -6,
+					borderRadius: 18,
+					border: `2px solid ${color}`,
+					opacity: 1 - ring,
+					transform: `scale(${1 + ring * 0.35})`,
+				}}
+			/>
+			<div
+				style={{
+					transform: `scale(${interpolate(p, [0, 1], [0.4, 1])})`,
+					opacity: interpolate(p, [0, 0.3], [0, 1], clamp),
+					fontFamily: MONT,
+					fontWeight: 700,
+					fontSize: 26,
+					padding: '8px 18px',
+					borderRadius: 12,
+					border: `2px solid ${color}`,
+					color: theme === 'dark' ? '#fff' : '#111',
+					background: theme === 'dark' ? 'rgba(20,20,22,0.85)' : 'rgba(255,255,255,0.92)',
+					boxShadow: `0 0 18px ${color}55`,
+					whiteSpace: 'nowrap',
+				}}
+			>
+				{text}
+			</div>
 		</div>
 	);
 };
 
-const CheckRow: React.FC<{text: string; tag?: string; at: number; until: number; y: number; ok: boolean}> = ({
-	text,
-	tag,
-	at,
-	until,
-	y,
-	ok,
-}) => {
+const CheckRow: React.FC<{text: string; tag?: string; at: number; until: number; y: number; ok: boolean}> = ({text, tag, at, until, y, ok}) => {
 	const frame = useCurrentFrame();
 	const p = usePop(at, 14);
 	if (frame < f(at) || frame > f(until)) return null;
+	const tick = interpolate(frame - f(at), [4, 12], [0, 1], clamp);
 	return (
 		<div
 			style={{
 				position: 'absolute',
-				left: 250,
+				left: 290,
 				top: y,
 				display: 'flex',
 				alignItems: 'center',
-				gap: 16,
-				opacity: fadeOut(frame, until) * interpolate(p, [0, 0.3], [0, 1], {extrapolateRight: 'clamp'}),
+				gap: 14,
+				opacity: fadeOut(frame, until) * interpolate(p, [0, 0.3], [0, 1], clamp),
 				transform: `translateX(${interpolate(p, [0, 1], [-40, 0])}px)`,
 				fontFamily: MONT,
 				fontWeight: 700,
-				fontSize: 32,
+				fontSize: 30,
 				color: '#fff',
-				textShadow: '0 3px 12px rgba(0,0,0,0.6)',
+				textShadow: '0 3px 12px rgba(0,0,0,0.7)',
 			}}
 		>
 			<div
 				style={{
-					width: 38,
-					height: 38,
-					borderRadius: 10,
-					background: ok ? GREEN : 'transparent',
-					border: ok ? 'none' : '2px solid rgba(255,255,255,0.6)',
-					color: '#0b0b0b',
+					width: 34,
+					height: 34,
+					borderRadius: 9,
+					background: ok ? GREEN : 'rgba(0,0,0,0.3)',
+					border: ok ? 'none' : '2px solid rgba(255,255,255,0.7)',
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
-					fontSize: 26,
-					fontWeight: 800,
 				}}
 			>
-				{ok ? '✓' : ''}
+				{ok ? (
+					<svg width="22" height="22" viewBox="0 0 24 24">
+						<path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#0b0b0b" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="30" strokeDashoffset={30 * (1 - tick)} />
+					</svg>
+				) : null}
 			</div>
-			<span style={{opacity: ok ? 1 : 0.75}}>{text}</span>
+			<span style={{opacity: ok ? 1 : 0.8}}>{text}</span>
 			{tag ? (
-				<span
-					style={{
-						fontSize: 20,
-						fontWeight: 800,
-						letterSpacing: 1.5,
-						padding: '4px 10px',
-						borderRadius: 6,
-						background: 'rgba(255,255,255,0.15)',
-						color: '#d7d7d7',
-					}}
-				>
+				<span style={{fontSize: 18, fontWeight: 800, letterSpacing: 1.5, padding: '3px 9px', borderRadius: 6, background: 'rgba(255,255,255,0.18)', color: '#e6e6e6'}}>
 					{tag}
 				</span>
 			) : null}
@@ -622,20 +648,20 @@ const NumRow: React.FC<{n: string; text: Run[]; at: number; until: number; y: nu
 				display: 'flex',
 				justifyContent: 'center',
 				alignItems: 'center',
-				gap: 16,
-				opacity: fadeOut(frame, until) * interpolate(p, [0, 0.3], [0, 1], {extrapolateRight: 'clamp'}),
-				transform: `scale(${interpolate(p, [0, 1], [0.7, 1])})`,
+				gap: 14,
+				opacity: fadeOut(frame, until) * interpolate(p, [0, 0.3], [0, 1], clamp),
+				transform: `translateX(${interpolate(p, [0, 1], [60, 0])}px)`,
 			}}
 		>
-			<span style={{fontFamily: MONT, fontWeight: 800, fontSize: 46, color: '#1a1a1a'}}>{n}</span>
+			<span style={{fontFamily: MONT, fontWeight: 800, fontSize: 42, color: '#1a1a1a'}}>{n}</span>
 			<span
 				style={{
 					fontFamily: MONT,
 					fontWeight: 700,
-					fontSize: 30,
+					fontSize: 28,
 					color: '#fff',
 					background: '#2a2a2d',
-					padding: '10px 22px',
+					padding: '9px 20px',
 					borderRadius: 10,
 					boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
 				}}
@@ -650,115 +676,152 @@ const NumRow: React.FC<{n: string; text: Run[]; at: number; until: number; y: nu
 	);
 };
 
+/* ------------------------------------------------------------------ */
+/* Global motion graphics                                              */
+/* ------------------------------------------------------------------ */
+const segAt = (t: number) => SEGS.find((s) => t >= s.from && t < s.to) ?? SEGS[SEGS.length - 1];
+const themeAt = (t: number): Theme => (LIGHT_RANGES.some(([a, b]) => t >= a && t < b) ? 'light' : 'dark');
+
+// label seri + progress bar tipis
 const SeriesTag: React.FC = () => {
 	const frame = useCurrentFrame();
 	const t = frame / FPS;
 	const theme = themeAt(t);
-	const o = interpolate(frame, [f(4.3), f(4.9)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+	const o = interpolate(frame, [f(4.3), f(4.9)], [0, 1], clamp);
+	const col = theme === 'dark' ? 'rgba(255,255,255,' : 'rgba(0,0,0,';
 	return (
-		<div
-			style={{
-				position: 'absolute',
-				top: SAFE.top + 4,
-				left: 0,
-				right: 0,
-				textAlign: 'center',
-				fontFamily: MONT,
-				fontWeight: 700,
-				fontSize: 20,
-				letterSpacing: 7,
-				color: theme === 'dark' ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.5)',
-				opacity: o,
-			}}
-		>
-			JEJAK IBADAH · UMRAH
+		<div style={{position: 'absolute', top: SAFE.top + 2, left: 0, right: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, opacity: o}}>
+			<div style={{fontFamily: MONT, fontWeight: 700, fontSize: 19, letterSpacing: 7, color: col + '0.6)'}}>JEJAK IBADAH · UMRAH</div>
+			<div style={{width: 200, height: 3, borderRadius: 2, background: col + '0.18)', overflow: 'hidden'}}>
+				<div style={{width: `${(frame / TOTAL_FRAMES) * 100}%`, height: '100%', background: GREEN, boxShadow: `0 0 8px ${GREEN}`}} />
+			</div>
 		</div>
 	);
 };
 
-const TopGraphics: React.FC = () => {
-	const Y1 = 310; // baris judul 1
-	const Y2 = 380;
-	const Y3 = 448;
+// bingkai sudut (viewfinder) yang "snap" di setiap potongan full-screen
+const Corners: React.FC = () => {
+	const frame = useCurrentFrame();
+	const t = frame / FPS;
+	const seg = segAt(t);
+	if (seg.card || seg.kind === 'hadith' || t < 4.5) return null;
+	const local = frame - f(seg.from);
+	const p = spring({frame: local, fps: FPS, config: {damping: 14, mass: 0.5}});
+	const inset = interpolate(p, [0, 1], [-30, 0]);
+	const o = interpolate(p, [0, 1], [0, 0.55]) * fadeOut(frame, seg.to, 3);
+	const L = 46;
+	const st = (x: number, y: number, rot: number): React.CSSProperties => ({
+		position: 'absolute',
+		left: x,
+		top: y,
+		width: L,
+		height: L,
+		borderTop: '3px solid #fff',
+		borderLeft: '3px solid #fff',
+		transform: `rotate(${rot}deg)`,
+		opacity: o,
+	});
+	const x0 = 110 + inset;
+	const x1 = SAFE.right - 30 - L - inset;
+	const y0 = 520 + inset;
+	const y1 = 1440 - L - inset;
 	return (
 		<>
-			<SeriesTag />
-			{/* HOOK (full-screen) */}
-			<Line at={0.15} until={4.45} y={300} size={30} weight={700} runs={[{t: 'JEJAK IBADAH', c: 'rgba(255,255,255,0.75)'}]} />
-			<Line at={0.35} until={4.45} y={360} size={76} runs={[{t: 'Umrah '}, {t: 'berkali-kali', c: GREEN}, {t: ','}]} />
-			<Line at={1.0} until={4.45} y={450} size={70} runs={[{t: 'boleh ', font: 'play', c: GOLD}, {t: 'nggak?'}]} />
+			<div style={st(x0, y0, 0)} />
+			<div style={st(x1, y0, 90)} />
+			<div style={st(x1, y1, 180)} />
+			<div style={st(x0, y1, 270)} />
+		</>
+	);
+};
 
-			{/* PERTANYAAN */}
-			<Badge text="PERTANYAAN" color={RED} at={4.6} until={11.0} y={Y1} />
-			<Chip text="Umrah ke-1" at={4.7} until={11.0} x={300} y={Y2 + 20} />
-			<Chip text="ke-2" at={8.0} until={11.0} x={490} y={Y2 + 20} />
-			<Chip text="ke-3" at={9.14} until={11.0} x={630} y={Y2 + 20} />
-			<Chip text="dst…" at={10.08} until={11.0} x={775} y={Y2 + 20} color="#ffffff" />
-
-			<Line at={11.1} until={15.4} y={Y1} size={40} runs={[{t: 'Apakah '}, {t: 'dianjurkan', c: GREEN}, {t: '?'}]} />
-			<Line at={13.3} until={15.4} y={Y2 + 4} size={40} runs={[{t: 'atau '}, {t: 'cukup sekali', c: RED}, {t: ' saja?'}]} />
-
-			{/* Nabi bersabda */}
-			<Line
-				at={15.5}
-				until={18.4}
-				y={Y1 - 4}
-				size={56}
-				runs={[{t: 'Nabi ', font: 'play', c: GOLD}, {t: 'ﷺ ', font: 'arab', c: GOLD}, {t: 'bersabda', font: 'play', c: GOLD}]}
-			/>
-			<Line at={16.2} until={18.4} y={Y3 - 10} size={26} weight={600} runs={[{t: 'Hadits riwayat Abu Hurairah r.a.', c: 'rgba(255,255,255,0.75)'}]} />
-
-			{/* Penjelasan hadits */}
-			<Badge text="ARTINYA" color={GREEN} dark at={23.5} until={29.9} y={Y1} />
-			<Line at={23.5} until={29.9} y={Y2} size={40} runs={[{t: 'Umrah ➝ umrah berikutnya'}]} />
-			<Line at={26.76} until={29.9} y={Y3} size={40} runs={[{t: '= '}, {t: 'penghapus dosa', c: GREEN}, {t: ' di antaranya'}]} />
-
-			{/* HUKUM (light) */}
-			<Badge text="HUKUMNYA" color="#141414" at={29.95} until={38.4} y={Y1} />
-			<Chip text="Dibolehkan ✓" at={31.72} until={38.4} x={390} y={Y2 + 14} color="#3aa55a" theme="light" />
-			<Chip text="Dianjurkan ✓" at={33.1} until={38.4} x={690} y={Y2 + 14} color="#3aa55a" theme="light" />
-			<Line
-				at={35.58}
-				until={38.4}
-				y={Y3 + 20}
-				size={28}
-				weight={700}
-				theme="light"
-				runs={[{t: 'bagi yang punya '}, {t: 'kesempatan & waktu', c: '#2f8f4a'}]}
-			/>
-
-			{/* TAPI INGAT */}
-			<Badge text="TAPI INGAT!" color={RED} at={38.5} until={42.9} y={Y1} />
-			<Line at={39.0} until={42.9} y={Y2} size={40} runs={[{t: 'Jangan sampai '}, {t: 'mengganggu', c: RED}]} />
-			<Line at={42.94} until={59.0} y={Y1 - 10} size={34} runs={[{t: 'KEWAJIBAN ', c: GREEN}, {t: 'LAINNYA'}]} />
-			<CheckRow text="Sholat fardhu" at={46.88} until={59.0} y={Y2 - 8} ok />
-			<CheckRow text="Kewajiban dunia" at={50.14} until={59.0} y={Y2 + 42} ok />
-			<CheckRow text="Umrah" tag="SUNNAH" at={58.02} until={59.0} y={Y2 + 92} ok={false} />
-
-			{/* YANG PERLU DIPERHATIKAN (light) */}
-			<Badge text="YANG PERLU DIPERHATIKAN" color="#141414" at={59.1} until={67.2} y={Y1} />
-			<NumRow n="#1" text={[{t: 'Umrah dengan '}, {t: 'ilmu', c: GREEN}]} at={63.34} until={67.2} y={Y2 - 4} />
-			<NumRow n="#2" text={[{t: 'Dikerjakan '}, {t: 'sebaik mungkin', c: GREEN}]} at={66.04} until={67.2} y={Y3 + 2} />
-
-			<Line at={67.3} until={72.5} y={Y1} size={40} runs={[{t: 'Tanpa '}, {t: 'mengorbankan', c: RED}]} />
-			<Line at={71.76} until={72.5} y={Y2 + 4} size={40} runs={[{t: 'yang lebih '}, {t: 'utama', c: GREEN}]} />
-
-			<Line at={73.14} until={76.8} y={Y1} size={42} runs={[{t: 'Mana yang lebih '}, {t: 'utama', c: GREEN}, {t: '?'}]} />
-			<Line at={74.6} until={76.8} y={Y2 + 6} size={44} runs={[{t: 'Kita', font: 'play', c: GOLD}, {t: ' yang paling tahu.'}]} />
-
-			{/* Penutup Arab */}
-			<Line at={76.85} until={78.7} y={Y1 + 2} size={70} runs={[{t: 'وَاللّٰهُ تَعَالَى أَعْلَمُ', font: 'arab', c: GOLD}]} />
-			<Line at={77.2} until={78.7} y={Y3 + 22} size={26} weight={600} runs={[{t: "Wallāhu ta'ālā a'lam", c: 'rgba(255,255,255,0.8)'}]} />
-			<Line
-				at={78.75}
-				until={DURATION_S}
-				y={Y1 + 10}
-				size={54}
-				runs={[{t: 'السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللّٰهِ وَبَرَكَاتُهُ', font: 'arab', c: GOLD}]}
+// kilatan putih + garis cahaya di setiap potongan
+const CutFlash: React.FC = () => {
+	const frame = useCurrentFrame();
+	const cut = CUTS.find((c) => frame >= f(c) && frame < f(c) + 6);
+	if (cut === undefined) return null;
+	const k = frame - f(cut);
+	const o = interpolate(k, [0, 5], [0.28, 0], clamp);
+	const sweep = interpolate(k, [0, 5], [-300, 1300], clamp);
+	return (
+		<>
+			<AbsoluteFill style={{background: '#fff', opacity: o}} />
+			<div
+				style={{
+					position: 'absolute',
+					top: -200,
+					bottom: -200,
+					left: sweep,
+					width: 160,
+					background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)',
+					transform: 'skewX(-18deg)',
+				}}
 			/>
 		</>
 	);
 };
+
+const TopGraphics: React.FC = () => (
+	<>
+		<SeriesTag />
+		{/* HOOK */}
+		<Line at={0.15} until={4.45} y={300} size={26} weight={700} runs={[{t: 'JEJAK IBADAH', c: 'rgba(255,255,255,0.75)'}]} />
+		<Line at={0.35} until={4.45} y={338} size={74} runs={[{t: 'Umrah '}, {t: 'berkali-kali', c: GREEN}, {t: ','}]} />
+		<Line at={1.0} until={4.45} y={414} size={68} runs={[{t: 'boleh ', font: 'play', c: GOLD}, {t: 'nggak?'}]} />
+
+		{/* PERTANYAAN */}
+		<Badge text="PERTANYAAN" color={RED} at={4.6} until={11.0} y={Y1} />
+		<Chip text="Umrah ke-1" at={4.7} until={11.0} x={300} y={Y2 + 6} />
+		<Chip text="ke-2" at={8.0} until={11.0} x={485} y={Y2 + 6} />
+		<Chip text="ke-3" at={9.14} until={11.0} x={620} y={Y2 + 6} />
+		<Chip text="dst…" at={10.08} until={11.0} x={760} y={Y2 + 6} color="#ffffff" />
+
+		<Line at={11.1} until={15.4} y={Y1} size={42} runs={[{t: 'Apakah '}, {t: 'dianjurkan', c: GREEN}, {t: '?'}]} />
+		<Line at={13.3} until={15.4} y={Y1 + 50} size={42} runs={[{t: 'atau '}, {t: 'cukup sekali', c: RED}, {t: ' saja?'}]} />
+
+		{/* Nabi bersabda */}
+		<Line at={15.5} until={18.4} y={Y1} size={56} runs={[{t: 'Nabi ', font: 'play', c: GOLD}, {t: 'ﷺ', font: 'arab', c: GOLD}, {t: ' bersabda', font: 'play', c: GOLD}]} />
+		<Line at={16.2} until={18.4} y={Y1 + 66} size={24} weight={600} runs={[{t: 'Hadits riwayat Abu Hurairah r.a.', c: 'rgba(255,255,255,0.8)'}]} />
+
+		<Badge text="HADITS" color={GOLD} dark at={18.5} until={23.4} y={Y1} />
+
+		{/* Penjelasan hadits (kartu) */}
+		<Badge text="ARTINYA" color={GREEN} dark at={23.5} until={29.9} y={Y1} />
+		<Line at={23.5} until={29.9} y={Y2} size={40} runs={[{t: 'Umrah ➝ umrah berikutnya'}]} />
+		<Line at={26.76} until={29.9} y={Y3} size={40} runs={[{t: '= '}, {t: 'penghapus dosa', c: GREEN}, {t: ' di antaranya'}]} />
+
+		{/* HUKUM (kartu, terang) */}
+		<Badge text="HUKUMNYA" color="#141414" at={29.95} until={38.4} y={Y1} />
+		<Chip text="Dibolehkan ✓" at={31.72} until={38.4} x={395} y={Y2 + 4} color="#3aa55a" theme="light" />
+		<Chip text="Dianjurkan ✓" at={33.1} until={38.4} x={685} y={Y2 + 4} color="#3aa55a" theme="light" />
+		<Line at={35.58} until={38.4} y={Y3 + 20} size={28} weight={700} theme="light" runs={[{t: 'bagi yang punya '}, {t: 'kesempatan & waktu', c: '#2f8f4a'}]} />
+
+		{/* TAPI INGAT */}
+		<Badge text="TAPI INGAT!" color={RED} at={38.5} until={42.9} y={Y1} />
+		<Line at={39.0} until={42.9} y={Y2} size={42} runs={[{t: 'Jangan sampai '}, {t: 'mengganggu', c: RED}]} />
+
+		<Line at={42.94} until={59.0} y={Y1} size={34} runs={[{t: 'KEWAJIBAN ', c: GREEN}, {t: 'LAINNYA'}]} />
+		<CheckRow text="Sholat fardhu" at={46.88} until={59.0} y={Y1 + 48} ok />
+		<CheckRow text="Kewajiban dunia" at={50.14} until={59.0} y={Y1 + 92} ok />
+		<CheckRow text="Umrah" tag="SUNNAH" at={58.02} until={59.0} y={Y1 + 136} ok={false} />
+
+		{/* YANG PERLU DIPERHATIKAN (kartu, terang) */}
+		<Badge text="YANG PERLU DIPERHATIKAN" color="#141414" at={59.1} until={67.2} y={Y1} />
+		<NumRow n="#1" text={[{t: 'Umrah dengan '}, {t: 'ilmu', c: GREEN}]} at={63.34} until={67.2} y={Y2} />
+		<NumRow n="#2" text={[{t: 'Dikerjakan '}, {t: 'sebaik mungkin', c: GREEN}]} at={66.04} until={67.2} y={Y2 + 58} />
+
+		<Line at={67.3} until={72.5} y={Y1} size={42} runs={[{t: 'Tanpa '}, {t: 'mengorbankan', c: RED}]} />
+		<Line at={71.76} until={72.5} y={Y1 + 50} size={42} runs={[{t: 'yang lebih '}, {t: 'utama', c: GREEN}]} />
+
+		<Line at={73.14} until={76.8} y={Y1} size={44} runs={[{t: 'Mana yang lebih '}, {t: 'utama', c: GREEN}, {t: '?'}]} />
+		<Line at={74.6} until={76.8} y={Y1 + 52} size={44} runs={[{t: 'Kita', font: 'play', c: GOLD}, {t: ' yang paling tahu.'}]} />
+
+		{/* Penutup Arab */}
+		<Line at={76.85} until={78.7} y={Y1 + 2} size={70} runs={[{t: 'وَاللّٰهُ تَعَالَى أَعْلَمُ', font: 'arab', c: GOLD}]} />
+		<Line at={77.2} until={78.7} y={Y1 + 108} size={26} weight={600} runs={[{t: "Wallāhu ta'ālā a'lam", c: 'rgba(255,255,255,0.85)'}]} />
+		<Line at={78.75} until={DURATION_S} y={Y1 + 10} size={54} runs={[{t: 'السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللّٰهِ وَبَرَكَاتُهُ', font: 'arab', c: GOLD}]} />
+	</>
+);
 
 /* ------------------------------------------------------------------ */
 /* Subtitles (Rehlata style)                                           */
@@ -785,15 +848,13 @@ const chunks: W[][] = (() => {
 	return out;
 })();
 
-// Saat hadits/lafaz Arab tampil besar, subtitle latin tetap muncul (transliterasi)
 const Subtitles: React.FC = () => {
 	const frame = useCurrentFrame();
 	const t = frame / FPS;
 	const idx = chunks.findIndex((c, i) => {
-		const start = c[0].start;
 		const next = chunks[i + 1];
 		const end = Math.min(c[c.length - 1].end + 0.25, next ? next[0].start : 999);
-		return t >= start && t < end;
+		return t >= c[0].start && t < end;
 	});
 	if (idx < 0) return null;
 	const c = chunks[idx];
@@ -809,7 +870,7 @@ const Subtitles: React.FC = () => {
 				fontFamily: MONT,
 				fontWeight: 700,
 				fontSize: 45,
-				lineHeight: 1.2,
+				lineHeight: 1.12,
 				transform: `scale(${interpolate(p, [0, 1], [0.92, 1])})`,
 			}}
 		>
@@ -842,34 +903,35 @@ type Sfx = {at: number; file: string; vol: number; len?: number};
 const SFX: Sfx[] = [
 	{at: 0.3, file: 'whoosh', vol: 0.35},
 	{at: 1.0, file: 'click', vol: 0.35},
-	{at: 4.45, file: 'zoom', vol: 0.22, len: 1.0},
-	{at: 4.7, file: 'click', vol: 0.35},
-	{at: 8.0, file: 'click', vol: 0.35},
-	{at: 9.14, file: 'click', vol: 0.35},
+	{at: 4.7, file: 'click', vol: 0.3},
+	{at: 9.14, file: 'click', vol: 0.3},
 	{at: 10.08, file: 'click', vol: 0.3},
-	{at: 13.3, file: 'deng', vol: 0.25},
+	{at: 11.1, file: 'shutter', vol: 0.18},
+	{at: 13.3, file: 'deng', vol: 0.22},
 	{at: 16.4, file: 'riser', vol: 0.22, len: 2.0},
 	{at: 18.35, file: 'paperflip', vol: 0.55},
 	{at: 18.4, file: 'aurora', vol: 0.22},
+	{at: 23.4, file: 'zoom', vol: 0.18, len: 1.0},
 	{at: 26.76, file: 'uitone2', vol: 0.25, len: 0.8},
-	{at: 29.9, file: 'whoosh', vol: 0.3},
-	{at: 31.72, file: 'click', vol: 0.35},
-	{at: 33.1, file: 'click', vol: 0.35},
-	{at: 38.45, file: 'deng', vol: 0.3},
-	{at: 46.88, file: 'click', vol: 0.35},
-	{at: 50.14, file: 'click', vol: 0.35},
+	{at: 31.72, file: 'click', vol: 0.32},
+	{at: 33.1, file: 'click', vol: 0.32},
+	{at: 38.45, file: 'deng', vol: 0.28},
+	{at: 42.94, file: 'shutter', vol: 0.2},
+	{at: 46.88, file: 'click', vol: 0.32},
+	{at: 50.14, file: 'click', vol: 0.32},
 	{at: 58.02, file: 'click', vol: 0.3},
-	{at: 59.0, file: 'whoosh', vol: 0.3},
-	{at: 63.34, file: 'shutter', vol: 0.3},
-	{at: 66.04, file: 'shutter', vol: 0.3},
+	{at: 59.0, file: 'zoom', vol: 0.18, len: 1.0},
+	{at: 63.34, file: 'shutter', vol: 0.28},
+	{at: 66.04, file: 'shutter', vol: 0.28},
+	{at: 73.14, file: 'shutter', vol: 0.18},
 	{at: 76.8, file: 'aurora', vol: 0.18},
-	{at: 78.7, file: 'whoosh', vol: 0.25},
 ];
 
-// whoosh halus di setiap pergantian shot (kecuali yang sudah punya sfx)
-const CUT_SFX: Sfx[] = SEGS.slice(1)
-	.filter((s) => !SFX.some((x) => Math.abs(x.at - s.from) < 0.3))
-	.map((s) => ({at: s.from - 0.08, file: 'swipes', vol: 0.12, len: 0.45}));
+// SETIAP transisi: klik + whoosh halus
+const CUT_SFX: Sfx[] = CUTS.flatMap((c) => [
+	{at: c, file: 'click', vol: 0.42, len: 0.5},
+	{at: c - 0.12, file: 'whoosh', vol: 0.16},
+]);
 
 const SfxTrack: React.FC = () => (
 	<>
@@ -883,8 +945,10 @@ const SfxTrack: React.FC = () => (
 
 const FLASHES: {at: number; file: string; opacity: number}[] = [
 	{at: 18.2, file: 'flare2', opacity: 0.75},
-	{at: 29.75, file: 'mlt3', opacity: 0.55},
-	{at: 59.85 - 0.95, file: 'mlt3', opacity: 0.5},
+	{at: 23.25, file: 'mlt3', opacity: 0.45},
+	{at: 38.25, file: 'flare2', opacity: 0.5},
+	{at: 58.9, file: 'mlt3', opacity: 0.45},
+	{at: 67.05, file: 'flare2', opacity: 0.5},
 	{at: 78.5, file: 'flare2', opacity: 0.7},
 ];
 
@@ -905,21 +969,19 @@ const Flashes: React.FC = () => (
 /* ------------------------------------------------------------------ */
 export const JejakIbadah: React.FC = () => {
 	const frame = useCurrentFrame();
-	const endFade = interpolate(frame, [TOTAL_FRAMES - 18, TOTAL_FRAMES - 1], [0, 1], {
-		extrapolateLeft: 'clamp',
-		extrapolateRight: 'clamp',
-	});
+	const endFade = interpolate(frame, [TOTAL_FRAMES - 18, TOTAL_FRAMES - 1], [0, 1], clamp);
 	return (
 		<AbsoluteFill style={{backgroundColor: '#000'}}>
 			<Background />
 			{SEGS.map((s, i) => (
 				<Sequence key={i} from={f(s.from)} durationInFrames={f(s.to) - f(s.from)}>
-					{s.kind === 'full' ? <FullShot seg={s} /> : null}
 					{s.kind === 'speaker' ? <SpeakerShot seg={s} /> : null}
 					{s.kind === 'broll' ? <BrollShot seg={s} index={i} /> : null}
 					{s.kind === 'hadith' ? <HadithScene /> : null}
 				</Sequence>
 			))}
+			<Corners />
+			<CutFlash />
 			<TopGraphics />
 			<Subtitles />
 			<Flashes />
